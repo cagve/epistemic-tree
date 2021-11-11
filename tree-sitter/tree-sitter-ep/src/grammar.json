@@ -1,0 +1,192 @@
+{
+  "name": "ep",
+  "rules": {
+    "formula": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "atom"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "negation_formula"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "si_formula"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "eq_formula"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "and_formula"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "or_formula"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "par_formula"
+        }
+      ]
+    },
+    "par_formula": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "SYMBOL",
+          "name": "formula"
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "negation_formula": {
+      "type": "PREC",
+      "value": 2,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "not"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "formula"
+          }
+        ]
+      }
+    },
+    "and_formula": {
+      "type": "PREC_LEFT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "formula"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "and"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "formula"
+          }
+        ]
+      }
+    },
+    "or_formula": {
+      "type": "PREC_LEFT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "formula"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "or"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "formula"
+          }
+        ]
+      }
+    },
+    "si_formula": {
+      "type": "PREC_LEFT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "formula"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "si"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "formula"
+          }
+        ]
+      }
+    },
+    "eq_formula": {
+      "type": "PREC_LEFT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "formula"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "eq"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "formula"
+          }
+        ]
+      }
+    },
+    "not": {
+      "type": "STRING",
+      "value": "-"
+    },
+    "si": {
+      "type": "STRING",
+      "value": "=>"
+    },
+    "eq": {
+      "type": "STRING",
+      "value": "<=>"
+    },
+    "and": {
+      "type": "STRING",
+      "value": "&&"
+    },
+    "or": {
+      "type": "STRING",
+      "value": "||"
+    },
+    "atom": {
+      "type": "PATTERN",
+      "value": "[p-z]"
+    }
+  },
+  "extras": [
+    {
+      "type": "PATTERN",
+      "value": "\\s"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [],
+  "inline": [],
+  "supertypes": []
+}
+
