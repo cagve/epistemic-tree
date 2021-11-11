@@ -26,7 +26,7 @@ El conjunto de átomos se define como [p-z] y el conjunto de átomos a1,a2,...,a
 
 ## TODO list
 - [ ] Pensar la manera de manejar las query(tipo de estructura de datos)
-- [.] Funciones para el parser
+- [ ] Funciones para el parser
 	- [ ] Comprueba si la fórmula es sintácticamente correcta
 	- [ ] Ordenar el conjunto de subfórmulas por su longitud.
 	- [X] Extraer texto del nodo
