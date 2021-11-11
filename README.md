@@ -1,6 +1,5 @@
-# Epistemic tree
+# Epistemic tree (DEV BRANCH)
 ## Índice
-* [Índice](#índice)
 * [Introducción](#introducción)
 * [Lenguaje(provisional)](#lenguaje(provisional))
 * [Brainstorming](#brainstorming)
