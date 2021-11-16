@@ -28,13 +28,14 @@ El conjunto de átomos se define como [p-z] y el conjunto de átomos a1,a2,...,a
 - [ ] Pensar la manera de manejar las query(tipo de estructura de datos)
 - [ ] Simplificar la gramática y extraer info con querys
 - [ ] Funciones para el parser
-	- [ ] Comprueba si la fórmula es sintácticamente correcta
+	- [ ] Comprueba si la fórmula es sintácticamente correcta(CUIDADO CON LOS PARÉNTESIS)
 	- [ ] Ordenar el conjunto de subfórmulas por su longitud.
 	- [X] Extraer texto del nodo
-	- [ ] Extraer tipo de fórmula
+	- [X] Extraer tipo de fórmula
+	- [X] Función de longitud
 	- [X] Extraer el conjunto de subfórmulas
-	- [ ] Si la fórmula es monádica, extraer la subfórmula afectada por el operador. Por ejemplo,
-	- [ ] Si la fórmula es diádica, extraer las subfórmulas afectadas por el operador. Por ejemplo,
+	- [X] Si la fórmula es monádica, extraer la subfórmula afectada por el operador. 
+	- [X] Si la fórmula es diádica, extraer las subfórmulas afectadas por el operador. 
 - [ ] Gramática tree-sitter
 	- [ ] Operadores modales
 	- [ ] Paréntesis y reglas de precedencia(Comprobar)

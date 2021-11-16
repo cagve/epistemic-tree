@@ -1,10 +1,10 @@
 from parsing import ts_manager as ts
 
-f1 = ts.Formula("-p")
+f1 = ts.Formula("--q&&q")
 parser = ts.TSManager(f1.formula)
 
-print(f1.get_term())
-
+for i in f1.get_subformulas():
+    print(i.formula)
 
 
 

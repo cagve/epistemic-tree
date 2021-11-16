@@ -4,24 +4,35 @@ module.exports = grammar({
   rules: {
 	formula: $ => choice(
 			$.atom,
-			$.negation_formula,
-			$.si_formula,
-			$.eq_formula,
-			$.and_formula,
-			$.or_formula,
-			$.par_formula
-		),
-	par_formula: $=> seq('(',$.formula,')'),
-	negation_formula: $=> prec(2,seq($.not, $.formula)),
-	and_formula: $=> prec.left(1, seq($.formula,$.and,$.formula)),
-	or_formula: $=> prec.left(1, seq($.formula,$.or,$.formula)),
-	si_formula: $=> prec.left(1, seq($.formula,$.si,$.formula)),
-	eq_formula: $=> prec.left(1, seq($.formula,$.eq,$.formula)),
-	not: $=> "-",
-	si: $=> "=>",
-	eq: $=> "<=>",
-	and: $=> "&&",
-	or: $=> "||",
-	atom: $ => /[p-z]/,
+			$._monary_expression,
+			$._binary_expression,
+			$._par_expression,
+			),
+
+	  _monary_expression: $=> prec.left(1,seq(field('operator',$._monary_operator), field('term',$.formula))),
+	  _binary_expression: $=> prec.left(1,seq(field('left_term',$.formula),field('operator',$._binary_operator), field('right_term',$.formula))),
+	  _par_expression:    $=> seq('(', $.formula, ')'),
+
+	  _monary_operator: $=> $.not,
+	  _binary_operator: $=> choice(
+		  $.and,
+		  $.or,
+		  $.iff,
+		  $.eq
+	  ),
+
+	  not: $ => "-",
+	  and: $ => "&&",
+	  iff: $ => "=>",
+	  eq: $ => "<>",
+	  or: $ => "||",
+	  atom: $ => /[p-z]/
   }
 });
+
+
+// FIELDS
+// 		field("and", $.and),
+// 		field("or", $.or),
+// 		field("iff", $.iff),
+// 		field("eq", $.eq),

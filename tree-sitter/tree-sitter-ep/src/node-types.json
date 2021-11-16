@@ -1,148 +1,75 @@
 [
   {
-    "type": "and_formula",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "and",
-          "named": true
-        },
-        {
-          "type": "formula",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "eq_formula",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "eq",
-          "named": true
-        },
-        {
-          "type": "formula",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "formula",
     "named": true,
-    "fields": {},
+    "fields": {
+      "left_term": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "formula",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "and",
+            "named": true
+          },
+          {
+            "type": "eq",
+            "named": true
+          },
+          {
+            "type": "iff",
+            "named": true
+          },
+          {
+            "type": "not",
+            "named": true
+          },
+          {
+            "type": "or",
+            "named": true
+          }
+        ]
+      },
+      "right_term": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "formula",
+            "named": true
+          }
+        ]
+      },
+      "term": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "formula",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
-        {
-          "type": "and_formula",
-          "named": true
-        },
         {
           "type": "atom",
           "named": true
         },
         {
-          "type": "eq_formula",
-          "named": true
-        },
-        {
-          "type": "negation_formula",
-          "named": true
-        },
-        {
-          "type": "or_formula",
-          "named": true
-        },
-        {
-          "type": "par_formula",
-          "named": true
-        },
-        {
-          "type": "si_formula",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "negation_formula",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
           "type": "formula",
-          "named": true
-        },
-        {
-          "type": "not",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "or_formula",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "formula",
-          "named": true
-        },
-        {
-          "type": "or",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "par_formula",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "formula",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "si_formula",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "formula",
-          "named": true
-        },
-        {
-          "type": "si",
           "named": true
         }
       ]
@@ -169,15 +96,15 @@
     "named": true
   },
   {
+    "type": "iff",
+    "named": true
+  },
+  {
     "type": "not",
     "named": true
   },
   {
     "type": "or",
-    "named": true
-  },
-  {
-    "type": "si",
     "named": true
   }
 ]

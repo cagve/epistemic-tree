@@ -35,45 +35,63 @@ class Formula:
 
     def get_subformulas(self):
         fbf_query = LP_LANGUAGE.query("""
-                (si_formula)  @expression
-                (and_formula) @expression
-                (or_formula)  @expression
-                (eq_formula)  @expression
-                (negation_formula) @expression
-                (atom) @expression
+                (formula
+                    operator:(or))@or_formula
+                (formula
+                    operator:(and))@and_formula
+                (formula
+                    operator:(iff))@iff_formula
+                (formula
+                    operator:(eq))@eq_formula
+                (formula
+                    operator:(not))@not_formula
+                (atom) @atom_formula
                 """)
         fbf = fbf_query.captures(self.node)
         formula_stack = []
         for i in fbf:
             current_formula = i[0]
-            node_text=parser.get_node_text(current_formula)
+            node_text=self.ts.get_node_text(current_formula)
             formula=Formula(node_text)
             formula_stack.append(formula) # Añado las fórmulas a una pila
         return formula_stack
 
     def get_formula_type(self):
-        cursor = self.tree.walk()
-        cursor.goto_first_child()
-        return{
-            'si_formula'      : "si",
-            'eq_formula'      : "eq",
-            'and_formula'      : "and",
-            'or_formula'       : "or",
-            'negation_formula' : "not",
-            'atom' : "atom"
-            }.get(cursor.node.type)
-
-    def get_term(self):
-        cursor = self.tree.walk()
-        type=self.get_formula_type()
-        if(type=="atom"):
-            return self.formula
-        elif(type=="not"):
-            cursor.goto_first_child()     
-            cursor.goto_first_child()     
-            cursor.goto_next_sibling()
-            return self.ts.get_node_text(cursor.node)
+        node = self.node
+        operator=node.child_by_field_name('operator')
+        if(operator == None):
+            return "atom"
         else:
-            return "No implementado"
+            return operator.type
 
+    def get_terms(self):
+        node=self.node
+        type=self.get_formula_type()
+        term_list = []
+        if(type=="atom"):
+            term_list.append(self)
+        elif(type=="not"):
+            term=node.child_by_field_name('term')
+            formula=Formula(self.ts.get_node_text(term))
+            term_list.append(formula)
+        else:
+            first_term=node.child_by_field_name('left_term')
+            second_term=node.child_by_field_name('right_term')
+            first_formula=Formula(self.ts.get_node_text(first_term))
+            second_formula=Formula(self.ts.get_node_text(second_term))
+            term_list.append(first_formula)
+            term_list.append(second_formula)
+        return term_list
+    
+    def get_len(self):
+        node=self.node
+        type=self.get_formula_type()
+        len=0
+        if(type=="atom"):
+            len=1
+        else:
+            len=1
+            for i in self.get_terms():
+                len=len+i.get_len()
+        return len
 

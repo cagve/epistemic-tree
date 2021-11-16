@@ -10,31 +10,77 @@
         },
         {
           "type": "SYMBOL",
-          "name": "negation_formula"
+          "name": "_monary_expression"
         },
         {
           "type": "SYMBOL",
-          "name": "si_formula"
+          "name": "_binary_expression"
         },
         {
           "type": "SYMBOL",
-          "name": "eq_formula"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "and_formula"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "or_formula"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "par_formula"
+          "name": "_par_expression"
         }
       ]
     },
-    "par_formula": {
+    "_monary_expression": {
+      "type": "PREC_LEFT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_monary_operator"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "term",
+            "content": {
+              "type": "SYMBOL",
+              "name": "formula"
+            }
+          }
+        ]
+      }
+    },
+    "_binary_expression": {
+      "type": "PREC_LEFT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "left_term",
+            "content": {
+              "type": "SYMBOL",
+              "name": "formula"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_binary_operator"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "right_term",
+            "content": {
+              "type": "SYMBOL",
+              "name": "formula"
+            }
+          }
+        ]
+      }
+    },
+    "_par_expression": {
       "type": "SEQ",
       "members": [
         {
@@ -51,122 +97,46 @@
         }
       ]
     },
-    "negation_formula": {
-      "type": "PREC",
-      "value": 2,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "not"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "formula"
-          }
-        ]
-      }
+    "_monary_operator": {
+      "type": "SYMBOL",
+      "name": "not"
     },
-    "and_formula": {
-      "type": "PREC_LEFT",
-      "value": 1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "formula"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "and"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "formula"
-          }
-        ]
-      }
-    },
-    "or_formula": {
-      "type": "PREC_LEFT",
-      "value": 1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "formula"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "or"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "formula"
-          }
-        ]
-      }
-    },
-    "si_formula": {
-      "type": "PREC_LEFT",
-      "value": 1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "formula"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "si"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "formula"
-          }
-        ]
-      }
-    },
-    "eq_formula": {
-      "type": "PREC_LEFT",
-      "value": 1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "formula"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "eq"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "formula"
-          }
-        ]
-      }
+    "_binary_operator": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "and"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "or"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "iff"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "eq"
+        }
+      ]
     },
     "not": {
       "type": "STRING",
       "value": "-"
     },
-    "si": {
+    "and": {
+      "type": "STRING",
+      "value": "&&"
+    },
+    "iff": {
       "type": "STRING",
       "value": "=>"
     },
     "eq": {
       "type": "STRING",
-      "value": "<=>"
-    },
-    "and": {
-      "type": "STRING",
-      "value": "&&"
+      "value": "<>"
     },
     "or": {
       "type": "STRING",
