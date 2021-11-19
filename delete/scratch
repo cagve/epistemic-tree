@@ -1,8 +1,0 @@
-:lua require('dap').toggle_breakpoints()
-:lua require('dap').continue()
-:lua require('dap').pause()
-:lua require('dap').step_into()
-:lua require('dap').run_to_cursor()
-:lua require('dap').repl.toggle()
-:lua require'dap.ui.variables'.scopes()
-

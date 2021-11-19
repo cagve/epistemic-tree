@@ -1,5 +1,6 @@
 # Conjunto de funciones para trababajar con tree-sitter. 
 from tree_sitter import Parser,Language
+
 LP_LANGUAGE = Language('tree-sitter/build/my-languages.so', 'ep')
 parser = Parser()
 parser.set_language(LP_LANGUAGE)
@@ -49,12 +50,25 @@ class Formula:
                 """)
         fbf = fbf_query.captures(self.node)
         formula_stack = []
+        subformulas = []
         for i in fbf:
             current_formula = i[0]
             node_text=self.ts.get_node_text(current_formula)
-            formula=Formula(node_text)
-            formula_stack.append(formula) # Añado las fórmulas a una pila
-        return formula_stack
+            formula_stack.append(node_text) # Añado las fórmulas a una pila
+            formula_stack=list(dict.fromkeys(formula_stack))
+        for i in formula_stack:
+            formula=Formula(i)
+            subformulas.append(formula)
+
+        j=0
+        size=len(subformulas)
+
+        # Bubble sort: algoritmo para ordenar de mayor a menor las fórmulas
+        for i in range(size-1):
+            for j in range(0, size-i-1):
+                if subformulas[j].get_len() < subformulas[j + 1].get_len():
+                    subformulas[j], subformulas[j + 1] = subformulas[j + 1], subformulas[j]
+        return subformulas
 
     def get_formula_type(self):
         node = self.node
