@@ -109,3 +109,23 @@ class Formula:
                 len=len+i.get_len()
         return len
 
+    def parse(self):
+        fbf_query = LP_LANGUAGE.query("""
+                (ERROR)@error
+                """)
+        # Captura los errores
+        fbf = fbf_query.captures(self.node)
+        # Bucle que comprueba que hay el mismo numero de parentesis abiuertos y cerrados
+        # En caso de que j<0 ocurre cuando ocurre un ) antes que un (. Esto es porque en el caso de los paréntesis Treesitter no lo capta como error
+        flag=True
+        j = 0
+        for char in self.formula:
+            if char == ')':
+                j -= 1
+                if j < 0:
+                    flag=False
+            elif char == '(':
+                j += 1
+            flag=j == 0
+        return flag and len(fbf)==0
+
