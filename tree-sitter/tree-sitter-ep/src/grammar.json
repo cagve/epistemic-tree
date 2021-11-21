@@ -98,8 +98,17 @@
       ]
     },
     "_monary_operator": {
-      "type": "SYMBOL",
-      "name": "not"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "not"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "know"
+        }
+      ]
     },
     "_binary_operator": {
       "type": "CHOICE",
@@ -142,9 +151,26 @@
       "type": "STRING",
       "value": "||"
     },
+    "know": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "K"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "agent"
+        }
+      ]
+    },
     "atom": {
       "type": "PATTERN",
       "value": "[p-z]"
+    },
+    "agent": {
+      "type": "PATTERN",
+      "value": "[a-d]"
     }
   },
   "extras": [

@@ -13,7 +13,10 @@ module.exports = grammar({
 	  _binary_expression: $=> prec.left(1,seq(field('left_term',$.formula),field('operator',$._binary_operator), field('right_term',$.formula))),
 	  _par_expression:    $=> seq('(', $.formula, ')'),
 
-	  _monary_operator: $=> $.not,
+	  _monary_operator: $=> choice(
+		$.not,
+		$.know
+	  ),
 	  _binary_operator: $=> choice(
 		  $.and,
 		  $.or,
@@ -26,7 +29,9 @@ module.exports = grammar({
 	  iff: $ => "=>",
 	  eq: $ => "<>",
 	  or: $ => "||",
-	  atom: $ => /[p-z]/
+	  know: $=> seq("K",$.agent),
+	  atom: $ => /[p-z]/,
+	  agent: $=> /[a-d]/
   }
 });
 

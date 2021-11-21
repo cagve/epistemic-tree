@@ -30,6 +30,10 @@
             "named": true
           },
           {
+            "type": "know",
+            "named": true
+          },
+          {
             "type": "not",
             "named": true
           },
@@ -76,12 +80,35 @@
     }
   },
   {
+    "type": "know",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "agent",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "(",
     "named": false
   },
   {
     "type": ")",
     "named": false
+  },
+  {
+    "type": "K",
+    "named": false
+  },
+  {
+    "type": "agent",
+    "named": true
   },
   {
     "type": "and",
