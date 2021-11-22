@@ -28,7 +28,8 @@ El conjunto de átomos se define como [p-z] y el conjunto de átomos a1,a2,...,a
 - [ ] Pensar la manera de manejar las query(tipo de estructura de datos)
 - [ ] Simplificar la gramática y extraer info con querys
 - [ ] Funciones para el parser
-	- [ ] Extraer el agente de la fórmula modal
+	- [ ] Manego de errores 
+	- [X] Extraer el agente de la fórmula modal
 	- [X] Comprueba si la fórmula es sintácticamente correcta(CUIDADO CON LOS PARÉNTESIS)
 	- [X] Ordenar el conjunto de subfórmulas por su longitud.
 	- [X] Extraer texto del nodo

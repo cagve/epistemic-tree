@@ -1,5 +1,10 @@
 [
   {
+    "type": "agent",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "formula",
     "named": true,
     "fields": {
@@ -105,10 +110,6 @@
   {
     "type": "K",
     "named": false
-  },
-  {
-    "type": "agent",
-    "named": true
   },
   {
     "type": "and",

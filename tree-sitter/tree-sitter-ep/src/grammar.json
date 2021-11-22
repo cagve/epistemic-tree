@@ -169,8 +169,17 @@
       "value": "[p-z]"
     },
     "agent": {
-      "type": "PATTERN",
-      "value": "[a-d]"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[a-d]"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[a-d]\\d+"
+        }
+      ]
     }
   },
   "extras": [

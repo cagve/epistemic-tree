@@ -129,3 +129,15 @@ class Formula:
             flag=j == 0
         return flag and len(fbf)==0
 
+    def get_agent(self):
+        cursor = self.tree.walk()
+        if(self.get_formula_type()=="know"): # Por el árbol que te genera para acceder al agente tenemos que ir a hijo e hijo y hermano
+            assert cursor.goto_first_child()
+            assert cursor.goto_first_child()
+            assert cursor.goto_next_sibling()
+            agent = cursor.node
+            return self.ts.get_node_text(agent)
+        else: # MANEJO DE EERRORES
+            print("No es una fórmula de conocimiento")
+
+

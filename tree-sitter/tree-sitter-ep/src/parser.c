@@ -6,11 +6,11 @@
 #endif
 
 #define LANGUAGE_VERSION 13
-#define STATE_COUNT 15
-#define LARGE_STATE_COUNT 5
-#define SYMBOL_COUNT 18
+#define STATE_COUNT 16
+#define LARGE_STATE_COUNT 2
+#define SYMBOL_COUNT 20
 #define ALIAS_COUNT 0
-#define TOKEN_COUNT 11
+#define TOKEN_COUNT 12
 #define EXTERNAL_TOKEN_COUNT 0
 #define FIELD_COUNT 4
 #define MAX_ALIAS_SEQUENCE_LENGTH 3
@@ -26,14 +26,16 @@ enum {
   sym_or = 7,
   anon_sym_K = 8,
   sym_atom = 9,
-  sym_agent = 10,
-  sym_formula = 11,
-  sym__monary_expression = 12,
-  sym__binary_expression = 13,
-  sym__par_expression = 14,
-  sym__monary_operator = 15,
-  sym__binary_operator = 16,
-  sym_know = 17,
+  aux_sym_agent_token1 = 10,
+  aux_sym_agent_token2 = 11,
+  sym_formula = 12,
+  sym__monary_expression = 13,
+  sym__binary_expression = 14,
+  sym__par_expression = 15,
+  sym__monary_operator = 16,
+  sym__binary_operator = 17,
+  sym_know = 18,
+  sym_agent = 19,
 };
 
 static const char * const ts_symbol_names[] = {
@@ -47,7 +49,8 @@ static const char * const ts_symbol_names[] = {
   [sym_or] = "or",
   [anon_sym_K] = "K",
   [sym_atom] = "atom",
-  [sym_agent] = "agent",
+  [aux_sym_agent_token1] = "agent_token1",
+  [aux_sym_agent_token2] = "agent_token2",
   [sym_formula] = "formula",
   [sym__monary_expression] = "_monary_expression",
   [sym__binary_expression] = "_binary_expression",
@@ -55,6 +58,7 @@ static const char * const ts_symbol_names[] = {
   [sym__monary_operator] = "_monary_operator",
   [sym__binary_operator] = "_binary_operator",
   [sym_know] = "know",
+  [sym_agent] = "agent",
 };
 
 static const TSSymbol ts_symbol_map[] = {
@@ -68,7 +72,8 @@ static const TSSymbol ts_symbol_map[] = {
   [sym_or] = sym_or,
   [anon_sym_K] = anon_sym_K,
   [sym_atom] = sym_atom,
-  [sym_agent] = sym_agent,
+  [aux_sym_agent_token1] = aux_sym_agent_token1,
+  [aux_sym_agent_token2] = aux_sym_agent_token2,
   [sym_formula] = sym_formula,
   [sym__monary_expression] = sym__monary_expression,
   [sym__binary_expression] = sym__binary_expression,
@@ -76,6 +81,7 @@ static const TSSymbol ts_symbol_map[] = {
   [sym__monary_operator] = sym__monary_operator,
   [sym__binary_operator] = sym__binary_operator,
   [sym_know] = sym_know,
+  [sym_agent] = sym_agent,
 };
 
 static const TSSymbolMetadata ts_symbol_metadata[] = {
@@ -119,9 +125,13 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = true,
     .named = true,
   },
-  [sym_agent] = {
-    .visible = true,
-    .named = true,
+  [aux_sym_agent_token1] = {
+    .visible = false,
+    .named = false,
+  },
+  [aux_sym_agent_token2] = {
+    .visible = false,
+    .named = false,
   },
   [sym_formula] = {
     .visible = true,
@@ -148,6 +158,10 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .named = true,
   },
   [sym_know] = {
+    .visible = true,
+    .named = true,
+  },
+  [sym_agent] = {
     .visible = true,
     .named = true,
   },
@@ -264,7 +278,12 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       ACCEPT_TOKEN(sym_atom);
       END_STATE();
     case 15:
-      ACCEPT_TOKEN(sym_agent);
+      ACCEPT_TOKEN(aux_sym_agent_token1);
+      if (('0' <= lookahead && lookahead <= '9')) ADVANCE(16);
+      END_STATE();
+    case 16:
+      ACCEPT_TOKEN(aux_sym_agent_token2);
+      if (('0' <= lookahead && lookahead <= '9')) ADVANCE(16);
       END_STATE();
     default:
       return false;
@@ -287,6 +306,7 @@ static const TSLexMode ts_lex_modes[STATE_COUNT] = {
   [12] = {.lex_state = 0},
   [13] = {.lex_state = 0},
   [14] = {.lex_state = 0},
+  [15] = {.lex_state = 0},
 };
 
 static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
@@ -301,7 +321,8 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [sym_or] = ACTIONS(1),
     [anon_sym_K] = ACTIONS(1),
     [sym_atom] = ACTIONS(1),
-    [sym_agent] = ACTIONS(1),
+    [aux_sym_agent_token1] = ACTIONS(1),
+    [aux_sym_agent_token2] = ACTIONS(1),
   },
   [1] = {
     [sym_formula] = STATE(8),
@@ -315,46 +336,70 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [anon_sym_K] = ACTIONS(7),
     [sym_atom] = ACTIONS(9),
   },
-  [2] = {
-    [sym_formula] = STATE(11),
-    [sym__monary_expression] = STATE(9),
-    [sym__binary_expression] = STATE(10),
-    [sym__par_expression] = STATE(7),
-    [sym__monary_operator] = STATE(3),
-    [sym_know] = STATE(3),
-    [anon_sym_LPAREN] = ACTIONS(3),
-    [sym_not] = ACTIONS(5),
-    [anon_sym_K] = ACTIONS(7),
-    [sym_atom] = ACTIONS(9),
-  },
-  [3] = {
-    [sym_formula] = STATE(5),
-    [sym__monary_expression] = STATE(9),
-    [sym__binary_expression] = STATE(10),
-    [sym__par_expression] = STATE(7),
-    [sym__monary_operator] = STATE(3),
-    [sym_know] = STATE(3),
-    [anon_sym_LPAREN] = ACTIONS(3),
-    [sym_not] = ACTIONS(5),
-    [anon_sym_K] = ACTIONS(7),
-    [sym_atom] = ACTIONS(9),
-  },
-  [4] = {
-    [sym_formula] = STATE(6),
-    [sym__monary_expression] = STATE(9),
-    [sym__binary_expression] = STATE(10),
-    [sym__par_expression] = STATE(7),
-    [sym__monary_operator] = STATE(3),
-    [sym_know] = STATE(3),
-    [anon_sym_LPAREN] = ACTIONS(3),
-    [sym_not] = ACTIONS(5),
-    [anon_sym_K] = ACTIONS(7),
-    [sym_atom] = ACTIONS(9),
-  },
 };
 
 static const uint16_t ts_small_parse_table[] = {
-  [0] = 2,
+  [0] = 9,
+    ACTIONS(3), 1,
+      anon_sym_LPAREN,
+    ACTIONS(5), 1,
+      sym_not,
+    ACTIONS(7), 1,
+      anon_sym_K,
+    ACTIONS(9), 1,
+      sym_atom,
+    STATE(7), 1,
+      sym__par_expression,
+    STATE(9), 1,
+      sym__monary_expression,
+    STATE(10), 1,
+      sym__binary_expression,
+    STATE(11), 1,
+      sym_formula,
+    STATE(3), 2,
+      sym__monary_operator,
+      sym_know,
+  [29] = 9,
+    ACTIONS(3), 1,
+      anon_sym_LPAREN,
+    ACTIONS(5), 1,
+      sym_not,
+    ACTIONS(7), 1,
+      anon_sym_K,
+    ACTIONS(9), 1,
+      sym_atom,
+    STATE(5), 1,
+      sym_formula,
+    STATE(7), 1,
+      sym__par_expression,
+    STATE(9), 1,
+      sym__monary_expression,
+    STATE(10), 1,
+      sym__binary_expression,
+    STATE(3), 2,
+      sym__monary_operator,
+      sym_know,
+  [58] = 9,
+    ACTIONS(3), 1,
+      anon_sym_LPAREN,
+    ACTIONS(5), 1,
+      sym_not,
+    ACTIONS(7), 1,
+      anon_sym_K,
+    ACTIONS(9), 1,
+      sym_atom,
+    STATE(6), 1,
+      sym_formula,
+    STATE(7), 1,
+      sym__par_expression,
+    STATE(9), 1,
+      sym__monary_expression,
+    STATE(10), 1,
+      sym__binary_expression,
+    STATE(3), 2,
+      sym__monary_operator,
+      sym_know,
+  [87] = 2,
     STATE(4), 1,
       sym__binary_operator,
     ACTIONS(11), 6,
@@ -364,7 +409,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym_iff,
       sym_eq,
       sym_or,
-  [12] = 2,
+  [99] = 2,
     STATE(4), 1,
       sym__binary_operator,
     ACTIONS(13), 6,
@@ -374,7 +419,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym_iff,
       sym_eq,
       sym_or,
-  [24] = 1,
+  [111] = 1,
     ACTIONS(15), 6,
       ts_builtin_sym_end,
       anon_sym_RPAREN,
@@ -382,7 +427,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym_iff,
       sym_eq,
       sym_or,
-  [33] = 3,
+  [120] = 3,
     ACTIONS(17), 1,
       ts_builtin_sym_end,
     STATE(4), 1,
@@ -392,7 +437,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym_iff,
       sym_eq,
       sym_or,
-  [46] = 1,
+  [133] = 1,
     ACTIONS(21), 6,
       ts_builtin_sym_end,
       anon_sym_RPAREN,
@@ -400,7 +445,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym_iff,
       sym_eq,
       sym_or,
-  [55] = 1,
+  [142] = 1,
     ACTIONS(23), 6,
       ts_builtin_sym_end,
       anon_sym_RPAREN,
@@ -408,7 +453,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym_iff,
       sym_eq,
       sym_or,
-  [64] = 3,
+  [151] = 3,
     ACTIONS(25), 1,
       anon_sym_RPAREN,
     STATE(4), 1,
@@ -418,7 +463,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym_iff,
       sym_eq,
       sym_or,
-  [77] = 1,
+  [164] = 1,
     ACTIONS(27), 6,
       ts_builtin_sym_end,
       anon_sym_RPAREN,
@@ -426,28 +471,42 @@ static const uint16_t ts_small_parse_table[] = {
       sym_iff,
       sym_eq,
       sym_or,
-  [86] = 1,
+  [173] = 1,
     ACTIONS(29), 4,
       anon_sym_LPAREN,
       sym_not,
       anon_sym_K,
       sym_atom,
-  [93] = 1,
-    ACTIONS(31), 1,
+  [180] = 1,
+    ACTIONS(31), 4,
+      anon_sym_LPAREN,
+      sym_not,
+      anon_sym_K,
+      sym_atom,
+  [187] = 3,
+    ACTIONS(33), 1,
+      aux_sym_agent_token1,
+    ACTIONS(35), 1,
+      aux_sym_agent_token2,
+    STATE(14), 1,
       sym_agent,
 };
 
 static const uint32_t ts_small_parse_table_map[] = {
-  [SMALL_STATE(5)] = 0,
-  [SMALL_STATE(6)] = 12,
-  [SMALL_STATE(7)] = 24,
-  [SMALL_STATE(8)] = 33,
-  [SMALL_STATE(9)] = 46,
-  [SMALL_STATE(10)] = 55,
-  [SMALL_STATE(11)] = 64,
-  [SMALL_STATE(12)] = 77,
-  [SMALL_STATE(13)] = 86,
-  [SMALL_STATE(14)] = 93,
+  [SMALL_STATE(2)] = 0,
+  [SMALL_STATE(3)] = 29,
+  [SMALL_STATE(4)] = 58,
+  [SMALL_STATE(5)] = 87,
+  [SMALL_STATE(6)] = 99,
+  [SMALL_STATE(7)] = 111,
+  [SMALL_STATE(8)] = 120,
+  [SMALL_STATE(9)] = 133,
+  [SMALL_STATE(10)] = 142,
+  [SMALL_STATE(11)] = 151,
+  [SMALL_STATE(12)] = 164,
+  [SMALL_STATE(13)] = 173,
+  [SMALL_STATE(14)] = 180,
+  [SMALL_STATE(15)] = 187,
 };
 
 static const TSParseActionEntry ts_parse_actions[] = {
@@ -455,7 +514,7 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [1] = {.entry = {.count = 1, .reusable = false}}, RECOVER(),
   [3] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2),
   [5] = {.entry = {.count = 1, .reusable = true}}, SHIFT(3),
-  [7] = {.entry = {.count = 1, .reusable = true}}, SHIFT(14),
+  [7] = {.entry = {.count = 1, .reusable = true}}, SHIFT(15),
   [9] = {.entry = {.count = 1, .reusable = true}}, SHIFT(7),
   [11] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__monary_expression, 2, .production_id = 3),
   [13] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__binary_expression, 3, .production_id = 4),
@@ -466,8 +525,10 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [23] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_formula, 1, .production_id = 2),
   [25] = {.entry = {.count = 1, .reusable = true}}, SHIFT(12),
   [27] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__par_expression, 3),
-  [29] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_know, 2),
-  [31] = {.entry = {.count = 1, .reusable = true}}, SHIFT(13),
+  [29] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_agent, 1),
+  [31] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_know, 2),
+  [33] = {.entry = {.count = 1, .reusable = false}}, SHIFT(13),
+  [35] = {.entry = {.count = 1, .reusable = true}}, SHIFT(13),
 };
 
 #ifdef __cplusplus

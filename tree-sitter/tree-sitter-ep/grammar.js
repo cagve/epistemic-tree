@@ -31,7 +31,10 @@ module.exports = grammar({
 	  or: $ => "||",
 	  know: $=> seq("K",$.agent),
 	  atom: $ => /[p-z]/,
-	  agent: $=> /[a-d]/
+	  agent: $=> choice(
+		/[a-d]/,
+		/[a-d]\d+/,
+	  )
   }
 });
 
