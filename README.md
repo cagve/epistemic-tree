@@ -27,6 +27,8 @@ El conjunto de átomos se define como [p-z] y el conjunto de átomos a1,a2,...,a
 ## TODO list
 - [ ] Pensar la manera de manejar las query(tipo de estructura de datos)
 - [ ] Simplificar la gramática y extraer info con querys
+- [X] [IMP] Problema con los paréntesis externos. Lo ideal sería omitirlos en caso de que fueran exteriores. Se puede hacer tanto
+		desde la gramática como desde el programa.
 - [ ] Funciones para el parser
 	- [ ] Manego de errores 
 	- [X] Extraer el agente de la fórmula modal
@@ -38,6 +40,6 @@ El conjunto de átomos se define como [p-z] y el conjunto de átomos a1,a2,...,a
 	- [X] Extraer el conjunto de subfórmulas
 	- [X] Si la fórmula es monádica, extraer la subfórmula afectada por el operador. 
 	- [X] Si la fórmula es diádica, extraer las subfórmulas afectadas por el operador. 
-- [ ] Gramática tree-sitter
-	- [ ] Operadores modales
-	- [ ] Paréntesis y reglas de precedencia(Comprobar)
+- [X] Gramática tree-sitter
+	- [X] Operadores modales
+	- [X] Paréntesis y reglas de precedencia(Comprobar)

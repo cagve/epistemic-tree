@@ -29,7 +29,10 @@ class TSManager():
 
 class Formula:
     def __init__(self, formula):
-        self.formula=formula
+        if(formula[0]=='('): # ESTE IF ELIMINA LOS PARÉNTESIS EXTERIORES
+            self.formula=formula[1:-1]
+        else:
+            self.formula=formula
         self.ts = TSManager(self.formula)
         self.tree = self.ts.get_tree()
         self.node = self.ts.get_root_node()
@@ -42,6 +45,8 @@ class Formula:
                     operator:(and))@and_formula
                 (formula
                     operator:(iff))@iff_formula
+                (formula
+                    operator:(know))@eq_formula
                 (formula
                     operator:(eq))@eq_formula
                 (formula
@@ -84,7 +89,7 @@ class Formula:
         term_list = []
         if(type=="atom"):
             term_list.append(self)
-        elif(type=="not"):
+        elif(type=="not" or type=="know"):
             term=node.child_by_field_name('term')
             formula=Formula(self.ts.get_node_text(term))
             term_list.append(formula)
@@ -97,7 +102,12 @@ class Formula:
             term_list.append(second_formula)
         return term_list
     
-    def get_len(self):
+    # Elimina los paréntesis exteriores. Pensar
+    def simplify_par(self):
+        if(self.formula[0]=='('):
+                self.formula=self.formula[1:-1]
+
+    def get_len(self): # FALLO para los operadores negadores
         node=self.node
         type=self.get_formula_type()
         len=0
