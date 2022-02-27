@@ -25,8 +25,12 @@ El conjunto de átomos se define como [p-z] y el conjunto de átomos a1,a2,...,a
 * (IMP) Parser como clase: La idea es construir una clase que reciba la fórmula como atributo. Las funciones se definen como métodos de dicha clase.
 
 ## TODO list
-- [ ] Pensar la manera de manejar las query(tipo de estructura de datos)
+- [ ] Arbol
+	- [ ] Crear la función buscar parent
+	- [ ] Ahora mismo, las ramas se extraen a partir del, sería convienente que se extrajeran a partir de la fórmula
+	- [ ] [IMPORTANTE] Hay algunas funciones recursivas, no sé como devolver un único valor, por eso ahora mismo requieren de una lista que las rellena.
 - [ ] Simplificar la gramática y extraer info con querys
+- [X] Pensar la manera de manejar las query(tipo de estructura de datos)
 - [X] [IMP] Problema con los paréntesis externos. Lo ideal sería omitirlos en caso de que fueran exteriores. Se puede hacer tanto
 		desde la gramática como desde el programa.
 - [ ] Funciones para el parser
