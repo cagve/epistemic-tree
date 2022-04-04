@@ -1,6 +1,44 @@
 {
   "name": "ep",
   "rules": {
+    "valid_expression": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "label"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "formula"
+        }
+      ]
+    },
+    "label": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "digit"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "agent"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "digit"
+        }
+      ]
+    },
     "formula": {
       "type": "CHOICE",
       "members": [
@@ -178,6 +216,19 @@
         {
           "type": "PATTERN",
           "value": "[a-d]\\d+"
+        }
+      ]
+    },
+    "digit": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "\\d"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\d+"
         }
       ]
     }

@@ -2,6 +2,13 @@ module.exports = grammar({
 	name: 'ep',
 
   rules: {
+	  valid_expression: $ => choice(
+		  $.label,
+		  $.formula
+	  ),
+	label: $ => choice(
+		seq( $.label,'.',$.agent,'.',$.digit)
+		)
 	formula: $ => choice(
 			$.atom,
 			$._monary_expression,
@@ -34,13 +41,12 @@ module.exports = grammar({
 	  agent: $=> choice(
 		/[a-d]/,
 		/[a-d]\d+/,
+	  ),
+	  digit: $=> choice(
+		  /\d/,
+		  /\d+/
 	  )
   }
 });
 
 
-// FIELDS
-// 		field("and", $.and),
-// 		field("or", $.or),
-// 		field("iff", $.iff),
-// 		field("eq", $.eq),

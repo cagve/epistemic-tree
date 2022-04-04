@@ -150,4 +150,6 @@ class Formula:
         else: # MANEJO DE EERRORES
             print("No es una fórmula de conocimiento")
 
-
+class Label():
+    def __init__(self, label) -> None:
+        pass
