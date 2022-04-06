@@ -160,14 +160,13 @@ class Formula:
             return ""
 
 class Label(): 
-    #TODO: Mirar que herede los métodos de lista
+    # TODO: [improve] Mirar que herede los métodos de lista
     def __init__(self,label):
         self.label = label
         self.ts = Parser(self.label,LABEL_LANGUAGE)
         self.tree = self.ts.get_tree()
         self.node = self.ts.get_root_node()
 
-    #TODO: Método para convertir String en lista.
     def parse(self):
         fbf_query = LP_LANGUAGE.query("""
                 (ERROR)@error
@@ -175,4 +174,14 @@ class Label():
         fbf = fbf_query.captures(self.node)
         return len(fbf)==0
 
+    # TODO: [fun] labe.to_list() -> list: label en forma de lista
+    # TODO: [fun] label.len() -> int:  longitud de la etiqueta
+    # TODO: [fun] label1.relation(label2) -> string: non-proper extension o proper extension.
+    # TODO: [fun] label.append(agent,world) -> Incluye en la etiqueta la extensión "agent.world"
 
+class LabelledFormula:
+    def __init__(self, label, formula) -> None:
+        self.label = label
+        self.formula = formula
+
+    # TODO: [fun] label.from(str) -> LabelledFormula: Devuelve una fórmula creada a partir de una string completa 1.a.2.3-Kap (estudiar como separarlo)

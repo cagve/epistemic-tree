@@ -1,8 +1,15 @@
 class Node:
-    def __init__(self, data, left = None, right = None):
+    def __init__(self, labelled_formula=None, left = None, right = None):
         self.left = left
         self.right = right
-        self.data = data # Tupla (Label, Formula)
+        self.labelled_formula = labelled_formula
+
+    def get_label(self):
+        return self.labelled_formula.label
+
+    def get_formula(self):
+        return self.labelled_formula.formula
+
 
     def insert_one_child(self, data):
         if self.left is None:
