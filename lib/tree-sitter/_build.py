@@ -1,11 +1,11 @@
-from tree_sitter import Language, Parser
+from tree_sitter import Language
 
 Language.build_library(
   # Store the library in the `build` directory
-  'tree-sitter/build/my-languages.so',
+  'build/my-languages.so',
 
   # Include one or more languages
   [
-    'tree-sitter/tree-sitter-ep',
+    'tree-sitter-ep',
   ]
 )

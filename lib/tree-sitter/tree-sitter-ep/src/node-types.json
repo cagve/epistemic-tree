@@ -5,11 +5,6 @@
     "fields": {}
   },
   {
-    "type": "digit",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "formula",
     "named": true,
     "fields": {
@@ -105,53 +100,11 @@
     }
   },
   {
-    "type": "label",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "agent",
-          "named": true
-        },
-        {
-          "type": "digit",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "valid_expression",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "formula",
-          "named": true
-        },
-        {
-          "type": "label",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "(",
     "named": false
   },
   {
     "type": ")",
-    "named": false
-  },
-  {
-    "type": ".",
     "named": false
   },
   {
