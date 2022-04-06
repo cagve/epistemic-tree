@@ -19,7 +19,11 @@ def check_formula_methods():
         print("Fórmula no válida")
 
 def main():
-    check_formula_methods()
+    l = parser.Label("1.a.2.3")
+    if l.parse():
+        print("Es válida")
+    else:
+        print("No es válida")
 
 if __name__ == '__main__':
     main()

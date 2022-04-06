@@ -1,0 +1,39 @@
+[
+  {
+    "type": "agent",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "digit",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "label",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "agent",
+          "named": true
+        },
+        {
+          "type": "digit",
+          "named": true
+        },
+        {
+          "type": "label",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": ".",
+    "named": false
+  }
+]

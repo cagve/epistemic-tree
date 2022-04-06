@@ -1,19 +1,25 @@
 # Conjunto de funciones para trababajar con tree-sitter. 
-from tree_sitter import Parser,Language
+from tree_sitter import Parser as TSParser 
+from tree_sitter import Language as TSLanguage
 
-LP_LANGUAGE = Language('lib/tree-sitter/build/my-languages.so', 'ep')
-parser = Parser()
-parser.set_language(LP_LANGUAGE)
+LP_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'ep')
+LABEL_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'label')
 
 class Parser():
-    '''Class to handle treesitter lib'''
-    def __init__(self,formula):
-        self.formula=formula
+    """Class to handle treesitter lib"""
+    def __init__(self,cadena,language):
+        self.cadena=cadena
+        self.language = language
+
+    def get_parser(self):
+        parser = TSParser()
+        parser.set_language(self.language)
+        return parser
 
     def get_tree(self):
-        formula=self.formula.replace(" ","")
-        formula_bytes=bytes(formula,'utf-8')
-        tree = parser.parse(formula_bytes)
+        cadena=self.cadena.replace(" ","")
+        cadena_bytes=bytes(cadena,'utf-8')
+        tree = self.get_parser().parse(cadena_bytes)
         return tree
 
     def get_root_node(self):
@@ -22,18 +28,20 @@ class Parser():
         return root
 
     def get_node_text(self,node):
-        source_code_bytes=bytes(self.formula,'utf-8')
+        source_code_bytes=bytes(self.cadena,'utf-8')
         byte_text = source_code_bytes[node.start_byte:node.end_byte]
         node_text = byte_text.decode('utf-8')
         return node_text
 
 class Formula:
+    # ?? ESTA ESTO BIEN PUESTO AQUÍ???????
+    """Class for formula managment"""
     def __init__(self, formula):
         if(formula[0]=='('): # ESTE IF ELIMINA LOS PARÉNTESIS EXTERIORES
             self.formula=formula[1:-1]
         else:
             self.formula=formula
-        self.ts = Parser(self.formula)
+        self.ts = Parser(self.formula,LP_LANGUAGE)
         self.tree = self.ts.get_tree()
         self.node = self.ts.get_root_node()
 
@@ -150,4 +158,21 @@ class Formula:
             # Crear un tipo de error para esto
             print("No es una fórmula de conocimiento")
             return ""
+
+class Label(): 
+    #TODO: Mirar que herede los métodos de lista
+    def __init__(self,label):
+        self.label = label
+        self.ts = Parser(self.label,LABEL_LANGUAGE)
+        self.tree = self.ts.get_tree()
+        self.node = self.ts.get_root_node()
+
+    #TODO: Método para convertir String en lista.
+    def parse(self):
+        fbf_query = LP_LANGUAGE.query("""
+                (ERROR)@error
+                """)
+        fbf = fbf_query.captures(self.node)
+        return len(fbf)==0
+
 
