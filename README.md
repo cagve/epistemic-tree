@@ -49,3 +49,12 @@ El conjunto de átomos se define como [p-z] y el conjunto de átomos a1,a2,...,a
 	- [ ] Simplificar la gramática y extraer info con querys
 - [ ] Gramática tree-sitter Labels 
 	- [ ] Ahora mismo funciona, pero el arbol parser que te genera es un poco raro, seguro que se puede mejorar
+
+## AP
+* Node – The most elementary unit of a binary tree.
+* Root – The root of a binary is the topmost element. There is only one root in a binary tree.
+* Leaf – The leaves of a binary tree are the nodes which have no children.
+* Level – The level is the generation of the respective node. The root has level 0, the children of the root node is at level 1, the grandchildren of the root node is at level 2 and so on.
+* Parent – The parent of a node is the node that is one level upward of the node.
+* Child – The children of a node are the nodes that are one level downward of the node.
+

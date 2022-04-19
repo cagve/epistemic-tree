@@ -1,5 +1,5 @@
 import parser 
-import tree
+import tree as eptree
 
 def check_formula_methods():
     form = input("Introduce una fórmula: ")
@@ -27,20 +27,38 @@ def check_label_methods():
     else:
         print("No es válida")
 
-def check_nodes():
+def test_tree():
     label = parser.Label("1.a.2")
-    formula = parser.Formula("Kap")
+    formula1= parser.Formula("p&&Kaq")
+    formula2= parser.Formula("p")
+    formula3 = parser.Formula("Kap")
+    formula4 = parser.Formula("q")
 
-    labelled_formula = parser.LabelledFormula(label,formula)
+    labelled_formula1 = parser.LabelledFormula(label,formula1)
+    labelled_formula2 = parser.LabelledFormula(label,formula2)
+    labelled_formula3 = parser.LabelledFormula(label,formula3)
+    labelled_formula4 = parser.LabelledFormula(label,formula4)
 
-    node1 = tree.Node(labelled_formula)
-    print(node1.get_formula())
-    print(node1.get_label())
+    node1 = eptree.Node(labelled_formula1)
+    node2 = eptree.Node(labelled_formula2)
+    node3 = eptree.Node(labelled_formula3)
+    node4 = eptree.Node(labelled_formula4)
+
+    tree = eptree.Tree(labelled_formula1)
+    root = tree.root
+
+    tree.double_extension(labelled_formula2,labelled_formula3)
+
+    for node in tree.get_leafs(root):
+        print(node.get_labelled_formula())
+
+    
+#         # print(i.labelled_formula.get_formula().formula)
+#     # for i in tree.get_leafs(tree.root):
+
 
 def main():
-    # check_formula_methods()
-    check_label_methods()
-    # check_nodes()
+    test_tree()
 
 if __name__ == '__main__':
     main()

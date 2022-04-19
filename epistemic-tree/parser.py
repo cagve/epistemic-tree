@@ -184,4 +184,8 @@ class LabelledFormula:
         self.label = label
         self.formula = formula
 
+    def get_labelled_formula(self):
+        return self.label.label+" "+self.formula.formula
+
+
     # TODO: [fun] label.from(str) -> LabelledFormula: Devuelve una fórmula creada a partir de una string completa 1.a.2.3-Kap (estudiar como separarlo)
