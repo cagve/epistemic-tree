@@ -1,0 +1,10 @@
+{
+  "include": [
+    "epistemic-tree/*"
+  ],
+  
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+  ]
+}
