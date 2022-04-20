@@ -33,6 +33,7 @@ class Parser():
         node_text = byte_text.decode('utf-8')
         return node_text
 
+
 class Formula:
     # ?? ESTA ESTO BIEN PUESTO AQUÍ???????
     """Class for formula managment"""
@@ -91,7 +92,7 @@ class Formula:
         else:
             return operator.type
 
-    def get_terms(self):
+    def get_terms(self) -> list:
         node=self.node
         type=self.get_formula_type()
         term_list = []
@@ -158,6 +159,10 @@ class Formula:
             # Crear un tipo de error para esto
             print("No es una fórmula de conocimiento")
             return ""
+
+    def deny_formula(self):
+        return Formula("-("+self.formula+")")
+
 
 class Label(): 
     # TODO: [improve] Mirar que herede los métodos de lista

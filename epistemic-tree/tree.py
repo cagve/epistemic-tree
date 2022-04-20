@@ -1,5 +1,6 @@
 import parser
 
+COUNT = [10]
 class Node:
     """
     A class used to represent the nodes of the tree
@@ -126,7 +127,18 @@ class Tree:
                 self.preorder(node.left)
                 self.preorder(node.right)
 
-
+    #TODO: MEJORAR O BORRAR NO HACE FALTA
+    COUNT = [10]
+    def print_tree(self,root, space) :
+        if (root == None) :
+            return
+        space += COUNT[0]
+        self.print_tree(root.right, space)
+        print()
+        for i in range(COUNT[0], space):
+            print(end = " ")
+        print(root.get_labelled_formula())
+        self.print_tree(root.left, space)
 
     # # QUEDA RARO QUE TE PIDA LA BRANCH. Problema de recursividad
     # def get_branch(self,root, target, branch): 

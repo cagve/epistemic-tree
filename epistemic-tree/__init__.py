@@ -29,8 +29,8 @@ def check_label_methods():
         print("No es válida")
 
 def test_tree():
-    label = parser.Label("1.a.2")
-    formula1= parser.Formula("p&&Kaq")
+    label = parser.Label("1")
+    formula1= parser.Formula("-(p&&Kaq)&&r")
     formula2= parser.Formula("p")
     formula3 = parser.Formula("Kap")
     formula4 = parser.Formula("q")
@@ -51,17 +51,21 @@ def test_tree():
 
     
 def test_rules():
-    tree = test_tree()
-    rl.conjuntion_rule(tree.root,tree)
+    tree = test_tree() 
+    rl.conjuntion_rule(tree.root,tree) #
+    rl.neg_conjuntion_rule(tree.root.left,tree)
 
-    print(tree.root)
-    print("--")
-    print(tree.root.left)
-    print(tree.root.right)
-    print("--")
-    print(tree.root.left.left)
-    print(tree.root.left.right)
-
+    tree.print_tree(tree.root, 2)
+    # print(tree.root.get_labelled_formula())
+    # print("--")
+    # print(tree.root.left.get_labelled_formula())
+    # print(tree.root.right)
+    # print("--")
+    # print(tree.root.left.left.get_labelled_formula())
+    # print(tree.root.left.right)
+    # print("--")
+    # print(tree.root.left.left.left.get_labelled_formula())
+    # print(tree.root.left.left.right.get_labelled_formula())
 
 
 def main():
