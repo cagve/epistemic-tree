@@ -48,7 +48,7 @@ class Node:
 
     def get_labelled_formula(self) -> parser.LabelledFormula:
         """ Return labelled formula"""
-        return self.labelled_formula.get_labelled_formula()
+        return self.labelled_formula.to_string()
 
     def add_one_child(self, data: parser.LabelledFormula):
         """ Add one child to the node. Is the node has only one child, it will be always the left one."""
@@ -121,9 +121,10 @@ class Tree:
 
     def preorder(self,node):
         if node:
-            print(node.get_labelled_formula())
-            self.preorder(node.left)
-            self.preorder(node.right)
+            if(node != None):
+                print(node.get_labelled_formula())
+                self.preorder(node.left)
+                self.preorder(node.right)
 
 
 

@@ -54,14 +54,7 @@ def test_rules():
     tree = test_tree()
     rl.conjuntion_rule(tree.root,tree)
 
-    print(tree.root)
-    print("--")
-    print(tree.root.left)
-    print(tree.root.right)
-    print("--")
-    print(tree.root.left.left)
-    print(tree.root.left.right)
-
+    tree.preorder(tree.root)
 
 
 def main():
