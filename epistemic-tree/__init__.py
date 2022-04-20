@@ -53,10 +53,6 @@ def test_tree():
         print(node.get_labelled_formula())
 
     
-#         # print(i.labelled_formula.get_formula().formula)
-#     # for i in tree.get_leafs(tree.root):
-
-
 def main():
     test_tree()
 

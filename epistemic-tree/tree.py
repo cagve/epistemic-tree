@@ -1,37 +1,70 @@
+import parser
+
 class Node:
-    def __init__(self, labelled_formula, left = None, right = None):
+    """
+    A class used to represent the nodes of the tree
+
+    Attributes
+    ----------
+    labelled_formula: LabelledFormula
+        The formula of the node 
+    left: Node
+        Left child 
+    right: Node
+        Right child
+
+    Methods
+    -------
+    get_label()
+    get_formula()
+    get_labelled_formula()
+    add_one_child(data: LabelledFormula) -> Node
+    add_two_childs(data1,data2)
+    def get_childs() -> list
+    """
+
+    def __init__(self, labelled_formula: parser.LabelledFormula, left = None, right = None):
+        """
+        Parameters
+        ----------
+        labelled_formula : LabelledFormula
+            The formula of the node 
+        left : Node
+            Left child 
+        right : Node
+            Right child
+        """
         self.left = left
         self.right = right
         self.labelled_formula = labelled_formula
 
-    def get_label(self):
+    def get_label(self) -> parser.Label:
+        """ Return label of the labelled formula's node """
         return self.labelled_formula.label
 
-    def get_formula(self):
+    def get_formula(self) -> parser.Formula:
+        """ Return formula of the labelled formula's node """
         return self.labelled_formula.formula
 
-    def get_labelled_formula(self):
+    def get_labelled_formula(self) -> parser.LabelledFormula:
+        """ Return labelled formula"""
         return self.labelled_formula.get_labelled_formula()
 
-    def add_one_child(self, data):
+    def add_one_child(self, data: parser.LabelledFormula):
+        """ Add one child to the node. Is the node has only one child, it will be always the left one."""
+        #HACK: Sobra comprobar si tiene hijo o no.
         if self.left is None:
             self.left = Node(data)
-            return self.left
         else:
             self.left.add_one_child(data)
 
     def add_two_childs(self,data1,data2):
+        """ Add two children to the node."""
         self.left = Node(data1)
         self.right = Node(data2)
 
-    def print_tree(self):
-        if self.left:
-            self.left.print_tree()
-        print( self.labelled_formula.get_labelled_formula()),
-        if self.right:
-            self.right.print_tree()
- 
-    def get_childs(self):
+    def get_childs(self) -> list:
+        """Return a list wich contains the children of the node."""
         return [self.left,self.right]
 
 class Tree:
@@ -39,12 +72,6 @@ class Tree:
         self.root = Node(root)
         self.left = left
         self.right = right
-
-    def create_node(self,data):
-        """
-        Create node
-        """
-        return Node(data)
 
     def simple_extension(self, data):
         """
@@ -60,7 +87,7 @@ class Tree:
         for node in self.get_leafs(self.root):
             node.add_two_childs(data1,data2)
 
-    def get_leafs(self, node, leafs=None):
+    def get_leafs(self, node: Node, leafs=None) -> list:
         """
         Return list of nodes. If node != root, return leafs of a branch.
         """
@@ -77,7 +104,7 @@ class Tree:
                 self.get_leafs(node.right,leafs)
         return leafs
 
-    def count_leafs(self, node):
+    def count_leafs(self, node) -> int:
         """
         Return the numbers of leafs. If node != root, return leafs of a branch.
         """
@@ -127,14 +154,4 @@ class Tree:
     #             if node==None:
     #                 self.get_node(node.right,key, list)
     #     return list
-
-# tree = Tree("1")
-# node1 = tree.root
-# node2,node3 = tree.insert_two_childs(node1,"2","3")
-# node4 = tree.insert_one_child(node2,"4")
-# node5 = tree.insert_one_child(node4,"5")
-# node6,node7 = tree.insert_two_childs(node5,"6","7")
-# node10 = tree.insert_one_child(node8,"10")
-# node8,node9 = tree.insert_two_childs(node3,"8","9")
-
 
