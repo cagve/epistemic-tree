@@ -30,32 +30,36 @@ def check_label_methods():
 
 def test_tree():
     label = parser.Label("1")
-    formula1= parser.Formula("-(p&&Kaq)&&r")
+    formula1= parser.Formula("p&&Kaq")
     formula2= parser.Formula("p")
-    formula3 = parser.Formula("Kap")
+    formula3 = parser.Formula("Kaq")
     formula4 = parser.Formula("q")
+    formula5 = parser.Formula("r")
 
     labelled_formula1 = parser.LabelledFormula(label,formula1)
     labelled_formula2 = parser.LabelledFormula(label,formula2)
     labelled_formula3 = parser.LabelledFormula(label,formula3)
     labelled_formula4 = parser.LabelledFormula(label,formula4)
-
-    node1 = eptree.Node(labelled_formula1)
-    node2 = eptree.Node(labelled_formula2)
-    node3 = eptree.Node(labelled_formula3)
-    node4 = eptree.Node(labelled_formula4)
+    labelled_formula5 = parser.LabelledFormula(label,formula5)
 
     tree = eptree.Tree(labelled_formula1)
-    return tree
+    tree.simple_extension(labelled_formula2)
+    tree.simple_extension(labelled_formula3)
+    tree.double_extension(labelled_formula4,labelled_formula5)
+    tree.print_tree(tree.root,2)
+    print(tree.get_labelled_formula_from_id(tree.root, [1, 1, 1, 2]).get_labelled_formula())
+
+    for n in tree.get_branch(tree.root.left.left.right):
+        print(n.get_labelled_formula(), end=" > ")
 
 
     
 def test_rules():
     tree = test_tree() 
-    rl.conjuntion_rule(tree.root,tree) #
-    rl.neg_conjuntion_rule(tree.root.left,tree)
+    # rl.conjuntion_rule(tree.root,tree) #
+    # rl.neg_conjuntion_rule(tree.root.left,tree)
 
-    tree.print_tree(tree.root, 2)
+    # tree.print_tree(tree.root, 2)
     # print(tree.root.get_labelled_formula())
     # print("--")
     # print(tree.root.left.get_labelled_formula())
@@ -77,7 +81,7 @@ def test_labels():
     print(label2.is_subset(label1))
 
 def main():
-    test_labels()
+    test_tree()
 
 if __name__ == '__main__':
     main()

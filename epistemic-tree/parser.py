@@ -207,7 +207,7 @@ class Label():
 
 
 
-    # TODO: [fun] labe.to_list() -> list: label en forma de lista
+    # TODO: [fun] label.to_list() -> list: label en forma de lista
     # TODO: [fun] label.len() -> int:  longitud de la etiqueta
     # TODO: [fun] label1.relation(label2) -> string: non-proper extension o proper extension.
     # TODO: [fun] label.append(agent,world) -> Incluye en la etiqueta la extensión "agent.world"

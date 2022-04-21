@@ -1,4 +1,3 @@
-from functools import wraps
 import parser
 
 COUNT = [10]
@@ -25,7 +24,7 @@ class Node:
     def get_childs() -> list
     """
 
-    def __init__(self, labelled_formula: parser.LabelledFormula, id, left = None, right = None):
+    def __init__(self, labelled_formula: parser.LabelledFormula, id:list, left = None, right = None):
         """
         Parameters
         ----------
@@ -36,7 +35,7 @@ class Node:
         right : Node
             Right child
         """
-        self.id = id.copy()
+        self.id = id
         self.left = left
         self.right = right
         self.labelled_formula = labelled_formula
@@ -56,7 +55,7 @@ class Node:
     def get_id(self):
         return self.id
 
-    def add_one_child(self, data: parser.LabelledFormula, id):
+    def add_one_child(self, data: parser.LabelledFormula, id: list):
         """ Add one child to the node. Is the node has only one child, it will be always the left one."""
         #HACK: Sobra comprobar si tiene hijo o no.
         if self.left is None:
@@ -64,10 +63,10 @@ class Node:
         else:
             self.left.add_one_child(data, id)
 
-    def add_two_childs(self,data1,data2,id1, id2):
+    def add_two_childs(self,data1,data2,id):
         """ Add two children to the node."""
-        self.left = Node(data1,id1)
-        self.right = Node(data2,id2)
+        self.left = Node(data1,id)
+        self.right = Node(data2,id)
 
     def get_childs(self) -> list:
         """Return a list wich contains the children of the node."""
@@ -84,20 +83,15 @@ class Tree:
         Insert function will insert a node on every leafs
         """
         for node in self.get_leafs(self.root):
-            newid = node.id.copy()
-            newid.append(1)
-            node.add_one_child(data, newid)
+            print(node.id)
+            node.add_one_child(data, id)
 
     def double_extension(self,data1,data2):
         """
         Insert function will insert two childs on left child of the given node.
         """
         for node in self.get_leafs(self.root):
-            id1 = node.id.copy()
-            id1.append(1)
-            id2 = node.id.copy()
-            id2.append(2)
-            node.add_two_childs(data1,data2,id1,id2)
+            node.add_two_childs(data1,data2)
 
     def get_leafs(self, node: Node, leafs=None) -> list:
         """
@@ -138,18 +132,43 @@ class Tree:
                 self.preorder(node.left)
                 self.preorder(node.right)
 
-    def get_labelled_formula_from_id(self, node, id):
-        if(node != None):
-            if id == node.id:
-                return node 
-            return self.get_labelled_formula_from_id(node.left, id) or self.get_labelled_formula_from_id(node.right, id)
+    def get_branch(self,root, node, branch = None):
+        if branch == None:
+            branch = []
 
-    def get_branch(self,node):
-        branch = []
-        for x in range(0,len(node.id)): 
-            id = node.id[0:x+1]
-            branch.append(self.get_labelled_formula_from_id(self.root,id))
-        return branch
+        if root.get_labelled_formula() == node.get_labelled_formula():
+            return True
+
+        left = False
+        if root.left != None:
+            left = self.get_branch(root.left, node, branch)
+
+        right = False
+        if (not left and root.right != None):
+            right = self.get_branch(root.right, node, branch)
+
+        if left or right:
+            branch.append(root)
+
+        return left or right, branch
+
+
+#     # HACK: Node no me deja que valga null, y por eso no puedo evitar poner parent = none por defecto
+#     def get_parent(self, child: Node, parent) :
+#         child_data = child.get_labelled_formula()  
+#         if (parent is None):
+#             return None
+
+#         if ((child_data == parent.left.get_labelled_formula()) or (parent.right and child_data == parent.right.get_labelled_formula())):
+#             # Print its parent
+#             print(parent.get_labelled_formula())
+#             return parent
+#         else:
+#             self.get_parent(child, parent.left)
+#             if parent.right != None:
+#                 self.get_parent(child,parent.right)
+#                 # return self.get_parent(child, parent.right)
+
 
     def print_tree(self, root, space):
         if (root == None):
@@ -160,8 +179,35 @@ class Tree:
         print()
         for i in range(COUNT[0], space):
             print(end = " ")
-        print(root.id, end = " ")
-        print(root.get_labelled_formula())
+        print(root.id)
         self.print_tree(root.left, space)
 
+
+#     def get_branch(self,root, target, branch = None): 
+#         if branch == None:
+#             branch = []
+
+#         if root == None: 
+#             return False
+
+#         if root == target: 
+#             branch.append(root)
+#             return True
+#         if (self.get_branch(root.left, target,branch) or self.get_branch(root.right, target, branch)): 
+#             branch.append(root) 
+#         return branch
+
+    # # QUEDA RARO QUE TE PIDA LA BRANCH. Problema de recursividad
+    # def get_node(self, node, key, list):
+    #     """
+    #     Return function will return the node that match with the key(str)
+    #     """
+    #     if node!=None:
+    #         if node.data == key:
+    #             list.append(node)
+    #         else:
+    #             self.get_node(node.left, key, list),
+    #             if node==None:
+    #                 self.get_node(node.right,key, list)
+    #     return list
 
