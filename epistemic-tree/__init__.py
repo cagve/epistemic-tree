@@ -67,9 +67,17 @@ def test_rules():
     # print(tree.root.left.left.left.get_labelled_formula())
     # print(tree.root.left.left.right.get_labelled_formula())
 
+def test_labels():
+    label1 = parser.Label('1.a.1.a.1')
+    label2 = parser.Label('1.b.1')
+    label3 = parser.Label('1.a.1')
+    label4 = parser.Label('1.a.2')
+
+    print(label1.is_subset(label2))
+    print(label2.is_subset(label1))
 
 def main():
-    test_rules()
+    test_labels()
 
 if __name__ == '__main__':
     main()

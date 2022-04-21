@@ -179,6 +179,34 @@ class Label():
         fbf = fbf_query.captures(self.node)
         return len(fbf)==0
 
+    def len(self):
+       return len(self.label.replace('.',''))
+
+    def is_subset(self,label)-> bool:
+        """label1.is_subset(label2) => """
+        # label2 = parser.Label(label)
+        if self.len() > label.len():
+            return False
+        else:
+            label1_list = []
+            label2_list = []
+            for number in self.label:
+                if number.isdigit():
+                    label1_list.append(int(number))
+
+            for number in label.label:
+                if number.isdigit():
+                    label2_list.append(int(number))
+
+            i = 0
+            for digit in label1_list:
+                if digit != label2_list[i]:
+                    return False
+                i +=1
+            return True
+
+
+
     # TODO: [fun] labe.to_list() -> list: label en forma de lista
     # TODO: [fun] label.len() -> int:  longitud de la etiqueta
     # TODO: [fun] label1.relation(label2) -> string: non-proper extension o proper extension.

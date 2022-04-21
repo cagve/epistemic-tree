@@ -25,7 +25,6 @@ def neg_conjuntion_rule(node: eptree.Node, tree: eptree.Tree):
     labelled_formula2 = parser.LabelledFormula(node.get_label(), formula.get_terms()[1])
     tree.double_extension(labelled_formula1,labelled_formula2)
 
-
 def apply_rule(tree: eptree.Tree):
     print("test")
 

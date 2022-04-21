@@ -127,18 +127,51 @@ class Tree:
                 self.preorder(node.left)
                 self.preorder(node.right)
 
-    #TODO: MEJORAR O BORRAR NO HACE FALTA
-    COUNT = [10]
-    def print_tree(self,root, space) :
-        if (root == None) :
-            return
-        space += COUNT[0]
-        self.print_tree(root.right, space)
-        print()
-        for i in range(COUNT[0], space):
-            print(end = " ")
-        print(root.get_labelled_formula())
-        self.print_tree(root.left, space)
+#     def pint_level_order(self,node):
+#         h =  self.get_height(node)
+#         for i in range(1, h+1):
+#             self.print_current_level(node, i)
+
+#     def print_current_level(self, node, level):
+
+
+#     def get_height(self,node) -> int:
+#         if node is None:
+#             return 0
+#         else:
+#             lheight = self.height(node.left)
+#             rheight = self.height(node.right)
+#         if lheight > rheight:
+#             return lheight+1
+#         else:
+#             return rheight+1
+
+
+
+#    #TODO: MEJORAR O BORRAR NO HACE FALTA
+#    COUNT = [10]
+#    def print_tree(self,root, space) :
+#        if (root == None) :
+#            return
+#        space += COUNT[0]
+#        self.print_tree(root.right, space)
+#        print()
+#        for i in range(COUNT[0], space):
+#            print(end = " ")
+#        print(root.get_labelled_formula())
+#        self.print_tree(root.left, space)
+
+#    def breath(self, node):
+#        list = []
+#        visited = []
+
+#        list.append(node)
+#        visited.append(node)
+
+#        while list:
+#            m = list.pop(0)
+#            print(m, end=" ")
+#        for n in 
 
     # # QUEDA RARO QUE TE PIDA LA BRANCH. Problema de recursividad
     # def get_branch(self,root, target, branch): 
