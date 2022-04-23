@@ -30,27 +30,38 @@ def check_label_methods():
 
 def test_tree():
     label = parser.Label("1")
-    formula1= parser.Formula("p&&Kaq")
-    formula2= parser.Formula("p")
+    label2 = parser.Label("1.a.1")
+    formula1= parser.Formula("-Kaq")
+    formula2= parser.Formula("-Kap")
     formula3 = parser.Formula("Kaq")
     formula4 = parser.Formula("q")
     formula5 = parser.Formula("r")
 
-    labelled_formula1 = parser.LabelledFormula(label,formula1)
-    labelled_formula2 = parser.LabelledFormula(label,formula2)
+    labelled_formula1 = parser.LabelledFormula(label, formula1)
+    labelled_formula2 = parser.LabelledFormula(label2, formula2)
     labelled_formula3 = parser.LabelledFormula(label,formula3)
     labelled_formula4 = parser.LabelledFormula(label,formula4)
     labelled_formula5 = parser.LabelledFormula(label,formula5)
 
     tree = eptree.Tree(labelled_formula1)
     tree.simple_extension(labelled_formula2)
-    tree.simple_extension(labelled_formula3)
-    tree.double_extension(labelled_formula4,labelled_formula5)
-    tree.print_tree(tree.root,2)
-    print(tree.get_labelled_formula_from_id(tree.root, [1, 1, 1, 2]).get_labelled_formula())
 
-    for n in tree.get_branch(tree.root.left.left.right):
-        print(n.get_labelled_formula(), end=" > ")
+    rl.neg_know_rule(tree.root, tree)
+
+    # tree.double_extension(labelled_formula4,labelled_formula5)
+    tree.print_tree(tree.root,2)
+    print("-----------------------------------------------------------")
+    tree.print_label_tree(tree.root,2)
+
+    # print(labelappend.label)
+    # branch = tree.get_branch(tree.root)
+    # print(rl.get_label_branch(branch))
+    # for n in rl.get_label_branch(branch):
+    #     print(n)
+
+    # for n in tree.get_branch(tree.root.left.left.right):
+    #     print(n.get_labelled_formula(), end=" > ")
+
 
 
     

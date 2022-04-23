@@ -1,4 +1,5 @@
 # Conjunto de funciones para trababajar con tree-sitter. 
+from types import new_class
 from tree_sitter import Parser as TSParser 
 from tree_sitter import Language as TSLanguage
 
@@ -182,7 +183,7 @@ class Label():
     def len(self):
        return len(self.label.replace('.',''))
 
-    def is_subset(self,label)-> bool:
+    def is_sublabel(self,label)-> bool:
         """label1.is_subset(label2) => """
         # label2 = parser.Label(label)
         if self.len() > label.len():
@@ -204,6 +205,18 @@ class Label():
                     return False
                 i +=1
             return True
+
+    def append(self, agent, world):
+        new_label = self.label +"."+agent+"."+world
+        return Label(new_label)
+
+    def simplify_label(self) -> int:
+        """ Devuelve el núímero de la etiqueta 1.a.2.b.3 -> 123"""
+        label_num  = ""
+        for number in self.label:
+            if number.isdigit():
+                label_num = label_num+number
+        return int(label_num)
 
 
 

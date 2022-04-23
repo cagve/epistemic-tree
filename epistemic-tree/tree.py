@@ -2,6 +2,7 @@ from functools import wraps
 import parser
 
 COUNT = [10]
+COUNT2 = [10]
 class Node:
     """
     A class used to represent the nodes of the tree
@@ -146,7 +147,7 @@ class Tree:
 
     def get_branch(self,node):
         branch = []
-        for x in range(0,len(node.id)): 
+        for x in range(0,3): 
             id = node.id[0:x+1]
             branch.append(self.get_labelled_formula_from_id(self.root,id))
         return branch
@@ -160,8 +161,20 @@ class Tree:
         print()
         for i in range(COUNT[0], space):
             print(end = " ")
-        print(root.id, end = " ")
+        # print(root.id, end = " ")
         print(root.get_labelled_formula())
         self.print_tree(root.left, space)
+
+    def print_label_tree(self, node, space):
+        if (node == None):
+            return False
+
+        space += COUNT2[0]
+        self.print_tree(node.right, space)
+        print()
+        for i in range(COUNT[0], space):
+            print(end = " ")
+        print(node.id)
+        self.print_label_tree(node.left, space)
 
 
