@@ -26,7 +26,7 @@ class Node:
     def get_childs() -> list
     """
 
-    def __init__(self, labelled_formula: parser.LabelledFormula, id, left = None, right = None):
+    def __init__(self, labelled_formula: parser.LabelledFormula, id: int, left = None, right = None):
         """
         Parameters
         ----------
@@ -37,7 +37,7 @@ class Node:
         right : Node
             Right child
         """
-        self.id = id.copy()
+        self.id = id
         self.left = left
         self.right = right
         self.labelled_formula = labelled_formula
@@ -76,7 +76,7 @@ class Node:
 
 class Tree:
     def __init__(self, root, left = None, right = None):
-        self.root = Node(root,[1])
+        self.root = Node(root,1)
         self.left = left
         self.right = right
 
@@ -85,8 +85,7 @@ class Tree:
         Insert function will insert a node on every leafs
         """
         for node in self.get_leafs(self.root):
-            newid = node.id.copy()
-            newid.append(1)
+            newid = int(str(node.id)+str(1))
             node.add_one_child(data, newid)
 
     def double_extension(self,data1,data2):
@@ -94,10 +93,8 @@ class Tree:
         Insert function will insert two childs on left child of the given node.
         """
         for node in self.get_leafs(self.root):
-            id1 = node.id.copy()
-            id1.append(1)
-            id2 = node.id.copy()
-            id2.append(2)
+            id1 = int(str(node.id)+str(1))
+            id2 = int(str(node.id)+str(2))
             node.add_two_childs(data1,data2,id1,id2)
 
     def get_leafs(self, node: Node, leafs=None) -> list:
@@ -147,8 +144,10 @@ class Tree:
 
     def get_branch(self,node):
         branch = []
-        for x in range(0,3): 
-            id = node.id[0:x+1]
+        id = node.id
+        branch.append(node)
+        while id!=1:
+            id = int(str(id)[:-1])
             branch.append(self.get_labelled_formula_from_id(self.root,id))
         return branch
 
@@ -170,7 +169,7 @@ class Tree:
             return False
 
         space += COUNT2[0]
-        self.print_tree(node.right, space)
+        self.print_label_tree(node.right, space)
         print()
         for i in range(COUNT[0], space):
             print(end = " ")
