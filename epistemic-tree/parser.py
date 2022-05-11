@@ -39,10 +39,10 @@ class Formula:
     # ?? ESTA ESTO BIEN PUESTO AQUÍ???????
     """Class for formula managment"""
     def __init__(self, formula):
-        if(formula[0]=='('): # ESTE IF ELIMINA LOS PARÉNTESIS EXTERIORES
-            self.formula=formula[1:-1]
+        if(formula[0]=='(' and formula[-1]==')'): # ESTE IF ELIMINA LOS PARÉNTESIS EXTERIORES
+            self.formula=formula[1:-1].replace(" ","")
         else:
-            self.formula=formula
+            self.formula=formula.replace(" ","")
         self.ts = Parser(self.formula,LP_LANGUAGE)
         self.tree = self.ts.get_tree()
         self.node = self.ts.get_root_node()
@@ -164,6 +164,29 @@ class Formula:
     def deny_formula(self):
         return Formula("-("+self.formula+")")
 
+    def delete_negation(self):
+        if self.get_formula_type() != 'not':
+            return self
+        elif self.get_terms()[0].get_formula_type() == 'not': 
+            return self.get_terms()[0].get_terms()[0].delete_negation()
+        else:
+            return self
+
+
+    def simplify_formula(self):
+        if self.get_formula_type() == 'not':
+            # Simplifica las negaciones:  ---p => -p
+            if self.get_terms()[0].get_formula_type() == 'not':
+                return self.delete_negation()
+            # Simplifica los parentesis de la negación -(p) --> -p
+            elif self.get_terms()[0].get_formula_type() == 'atom' or self.get_terms()[0].get_formula_type() == 'know':
+                return Formula("-"+self.get_terms()[0].formula) 
+            else: 
+                return self
+        else:
+            return self
+
+
 
 class Label(): 
     # TODO: [improve] Mirar que herede los métodos de lista
@@ -230,6 +253,15 @@ class LabelledFormula:
         self.label = label
         self.formula = formula
 
+    def get_contradiction(self, lab_formula) -> bool:
+        deny_formula = self.formula.deny_formula().simplify_formula()
+        formula = lab_formula.formula.simplify_formula()
+        print(deny_formula.formula)
+        print(formula.formula)
+        if deny_formula.formula == formula.formula:
+            return True
+        return False
+        
     def to_string(self):
         return self.label.label+" "+self.formula.formula
 

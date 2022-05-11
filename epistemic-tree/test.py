@@ -2,6 +2,7 @@ import sys
 import rules as rl
 import tree as t
 import parser
+import unittest
 
 help = """
 Comando no encontrado, comandos disponibles:
@@ -112,19 +113,43 @@ def check_label_methods():
     else:
         print("No es válida")
 
-def main():
-    if sys.argv[1] == 'rules':
-        test_rules(int(sys.argv[2]))
-    elif sys.argv[1] == 'tree':
-            test_tree()
-    elif sys.argv[1] == 'formulas':
-        check_formula_methods()
-    elif sys.argv[1] == 'labels':
-        check_label_methods()
-    else:
-        print(help)
-        
-    
+class TestUnit(unittest.TestCase):
+    def test_paser(self):
+        self.assertEqual(parser.Formula("p").parse(),True)
+        self.assertEqual(parser.Formula("p&&q").parse(),True)
+        self.assertEqual(parser.Formula("p=>p").parse(),True)
+        self.assertEqual(parser.Formula("(Kap&&(r=>r))=>-p").parse(),True)
+        self.assertEqual(parser.Formula("p(&&q)").parse(),False)
+
+    def test_neg(self):
+        label1 = parser.Label("1")
+        label2 = parser.Label("2")
+
+        formula1 = parser.Formula("p")
+        formula2 = parser.Formula("-Kap")
+        formula3 = parser.Formula("-(Ka(p => Kbr))")
+        formula4 = parser.Formula("(Kap&&(r=>r))=>-p")
+        lab_formula1 = parser.LabelledFormula(label1,formula1)
+        lab_formula2 = parser.LabelledFormula(label1,formula2)
+        lab_formula3 = parser.LabelledFormula(label1,formula3)
+        lab_formula4 = parser.LabelledFormula(label1,formula4)
+
+        formulaa = parser.Formula("--------p")
+        formulab = parser.Formula("Kap")
+        formulac = parser.Formula("Ka(p => Kbr)")
+        formulad = parser.Formula("-((Kap&&(r=>r))=>-p)")
+        lab_formulaa = parser.LabelledFormula(label1,formulaa)
+        lab_formulab = parser.LabelledFormula(label2,formulab)
+        lab_formulac = parser.LabelledFormula(label1,formulac)
+        lab_formulad = parser.LabelledFormula(label1,formulad)
+
+        self.assertEqual(lab_formula1.get_contradiction(lab_formulaa),False)
+        self.assertEqual(lab_formula2.get_contradiction(lab_formulab),True)
+        self.assertEqual(lab_formula3.get_contradiction(lab_formulac),True)
+        self.assertEqual(lab_formula4.get_contradiction(lab_formulad),True)
+
+
+
 if __name__ == '__main__':
-    main()
+    unittest.main() 
 
