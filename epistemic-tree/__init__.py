@@ -3,14 +3,20 @@ import rules as rl
 import tree as t
 def deny():
     label = parser.Label("1")
-    formula1 = parser.Formula("-(-(-p&&p)&&-(-p&&p))")
-    # formula1 = parser.Formula("-(Kap&&Kaq))")
+    f1 = parser.Formula("p=>q")
+    f2 = parser.Formula("r=>-q")
+    f3 = parser.Formula("-(r=>-p)")
 
-    labelled_formula1 = parser.LabelledFormula(label, formula1 )
-    tree = t.Tree(labelled_formula1)
+    lf1 = parser.LabelledFormula(label, f1 )
+    lf2 = parser.LabelledFormula(label, f2 )
+    lf3 = parser.LabelledFormula(label, f3 )
+    tree = t.Tree(lf1)
+    tree.simple_extension(lf2)
+    tree.simple_extension(lf3)
 
-    rl.neg_conjuntion_rule(tree.root,tree)
-    rl.conjuntion_rule(tree.root.left,tree)
+    rl.neg_implication_rule(tree.root.left.left, tree)
+    rl.implication_rule(tree.root, tree)
+    rl.implication_rule(tree.root.left, tree)
 
     tree.print_tree(tree.root,2)
 
