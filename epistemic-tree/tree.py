@@ -143,7 +143,7 @@ class Tree:
             return self.get_labelled_formula_from_id(node.left, id) or self.get_labelled_formula_from_id(node.right, id)
 
     def get_branch(self,node):
-        branch = []
+        branch = Branch()
         id = node.id
         branch.append(node)
         while id!=1:
@@ -175,5 +175,9 @@ class Tree:
             print(end = " ")
         print(node.id)
         self.print_label_tree(node.left, space)
+
+class Branch(list):
+    def is_close(self):
+        print("hello world")
 
 
