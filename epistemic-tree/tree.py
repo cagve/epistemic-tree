@@ -1,4 +1,4 @@
-from functools import wraps
+import itertools
 import parser
 
 COUNT = [10]
@@ -51,6 +51,10 @@ class Node:
         return self.labelled_formula.formula
 
     def get_labelled_formula(self) -> parser.LabelledFormula:
+        """ Return labelled formula"""
+        return self.labelled_formula
+
+    def get_labelled_formula_string(self) -> parser.LabelledFormula:
         """ Return labelled formula"""
         return self.labelled_formula.to_string()
 
@@ -132,15 +136,15 @@ class Tree:
     def preorder(self,node):
         if node:
             if(node != None):
-                print(node.get_labelled_formula())
+                print(node.get_labelled_formula_string())
                 self.preorder(node.left)
                 self.preorder(node.right)
 
-    def get_labelled_formula_from_id(self, node, id):
+    def get_node_from_id(self, node, id):
         if(node != None):
             if id == node.id:
                 return node 
-            return self.get_labelled_formula_from_id(node.left, id) or self.get_labelled_formula_from_id(node.right, id)
+            return self.get_node_from_id(node.left, id) or self.get_node_from_id(node.right, id)
 
     def get_branch(self,node):
         branch = Branch()
@@ -148,7 +152,7 @@ class Tree:
         branch.append(node)
         while id!=1:
             id = int(str(id)[:-1])
-            branch.append(self.get_labelled_formula_from_id(self.root,id))
+            branch.append(self.get_node_from_id(self.root,id))
         return branch
 
     def print_tree(self, root, space):
@@ -161,7 +165,7 @@ class Tree:
         for i in range(COUNT[0], space):
             print(end = " ")
         # print(root.id, end = " ")
-        print(root.get_labelled_formula())
+        print(root.get_labelled_formula_string())
         self.print_tree(root.left, space)
 
     def print_label_tree(self, node, space):
@@ -178,6 +182,13 @@ class Tree:
 
 class Branch(list):
     def is_close(self):
-        print("hello world")
+        flag = False
+        for a,b in itertools.combinations(self,2): 
+            if a.get_labelled_formula().get_contradiction(b.get_labelled_formula()):
+                return True
+        return False
+    def print_branch(self):
+        for i in self:
+            print(i.get_labelled_formula())
 
 

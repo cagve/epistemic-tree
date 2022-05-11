@@ -41,7 +41,7 @@ def neg_know_rule(node: eptree.Node, tree: eptree.Tree):
         return
 
     for leaf in tree.get_leafs(node):
-        id = str(leaf.id)+str(1)
+        id = int(str(leaf.id)+str(1))
         lbranch = get_label_branch(tree.get_branch(leaf)) # Conjunto de etiquetas de la rama, en este caso node = leaf CUIDADO
 
         simple_branch = [] # Lista para despuéß simplificar la rama. 
