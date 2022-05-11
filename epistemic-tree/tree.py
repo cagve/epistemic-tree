@@ -140,6 +140,35 @@ class Tree:
                 self.preorder(node.left)
                 self.preorder(node.right)
 
+    def dot_id(self,node,file):
+        if node:
+            if(node != None):
+                if(node.left != None):
+                    file.write(str(node.id)+' -> '+str(node.left.id)+';\n')
+                if(node.right != None):
+                    file.write(str(node.id)+' -> '+str(node.right.id)+';\n')
+                self.dot_id(node.left,file)
+                self.dot_id(node.right,file)
+
+    def dot_formula(self,node,file):
+        if node:
+            if(node != None):
+                file.write(str(node.id)+'[label = "'+node.get_labelled_formula_string()+'"];\n')
+                self.dot_formula(node.left,file)
+                self.dot_formula(node.right,file)
+
+    def print_dot(self,node):
+        file = open("lib/dots/graph_test.dot", 'w')
+        style = '''
+        node [shape=plain];
+        '''
+        file.write("digraph G {\n")
+        file.write(style)
+        self.dot_formula(node,file)
+        self.dot_id(node, file)
+        file.write("}")
+        file.close
+
     def get_node_from_id(self, node, id):
         if(node != None):
             if id == node.id:
@@ -167,8 +196,6 @@ class Tree:
                 ava_branchs.append(branch)
                 ava_leafs.append(leaf)
         return ava_leafs
-
-                # print("Branch of " + leaf.get_labelled_formula_string() + " is available")
 
     def print_tree(self, root, space):
         if (root == None):

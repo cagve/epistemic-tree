@@ -19,10 +19,7 @@ def deny():
     rl.implication_rule(tree.root, tree)
     rl.implication_rule(tree.root.left, tree)
 
-    tree.print_tree(tree.root,2)
-    tree.tree_to_dot(tree.root)
-    tree.get_pairs(tree.root)
-
+    tree.print_dot(tree.root)
 
 def main():
     deny()
