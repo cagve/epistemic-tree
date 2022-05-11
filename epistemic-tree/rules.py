@@ -19,12 +19,9 @@ def neg_conjuntion_rule(node: eptree.Node, tree: eptree.Tree):
     if neg_formula.get_formula_type() != "not":
         #TODO: Error handling
         print("ERROR")
-
     formula = neg_formula.get_terms()[0]
-
     denied_formula1 = formula.get_terms()[0].deny_formula()
     denied_formula2 = formula.get_terms()[1].deny_formula()
-
     labelled_formula1 = parser.LabelledFormula(node.get_label(), denied_formula1)
     labelled_formula2 = parser.LabelledFormula(node.get_label(), denied_formula2)
     tree.double_extension(labelled_formula1,labelled_formula2)

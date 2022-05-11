@@ -1,7 +1,3 @@
-import parser 
-import rules as rl
-import tree as eptree
-
 
 
 def main():
