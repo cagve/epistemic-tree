@@ -256,8 +256,6 @@ class LabelledFormula:
     def get_contradiction(self, lab_formula) -> bool:
         deny_formula = self.formula.deny_formula().simplify_formula()
         formula = lab_formula.formula.simplify_formula()
-        print(deny_formula.formula)
-        print(formula.formula)
         if deny_formula.formula == formula.formula:
             return True
         return False
