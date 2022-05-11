@@ -2,6 +2,7 @@ import parser
 import rules as rl
 import tree as t
 def deny():
+
     label = parser.Label("1")
     f1 = parser.Formula("p=>q")
     f2 = parser.Formula("r=>-q")
@@ -19,6 +20,8 @@ def deny():
     rl.implication_rule(tree.root.left, tree)
 
     tree.print_tree(tree.root,2)
+    tree.tree_to_dot(tree.root)
+    tree.get_pairs(tree.root)
 
 
 def main():
