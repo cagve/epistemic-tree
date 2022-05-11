@@ -155,6 +155,21 @@ class Tree:
             branch.append(self.get_node_from_id(self.root,id))
         return branch
 
+    def get_available_leafs(self, node):
+        ava_branchs = []
+        ava_leafs = []
+        leafs = self.get_leafs(node)
+        for leaf in leafs:
+            branch = self.get_branch(leaf)
+            if branch.is_close():
+                print("Branch of " + leaf.get_labelled_formula_string() + " is close")
+            else: 
+                ava_branchs.append(branch)
+                ava_leafs.append(leaf)
+        return ava_leafs
+
+                # print("Branch of " + leaf.get_labelled_formula_string() + " is available")
+
     def print_tree(self, root, space):
         if (root == None):
             return False
@@ -182,13 +197,12 @@ class Tree:
 
 class Branch(list):
     def is_close(self):
-        flag = False
         for a,b in itertools.combinations(self,2): 
             if a.get_labelled_formula().get_contradiction(b.get_labelled_formula()):
                 return True
         return False
     def print_branch(self):
         for i in self:
-            print(i.get_labelled_formula())
+            print(i.get_labelled_formula_string())
 
 
