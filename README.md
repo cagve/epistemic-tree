@@ -1,3 +1,4 @@
+<<<<<<< .merge_file_7Ef7Cb
 # Epistemic tree (DEV BRANCH)
 ## Índice
 * [Introducción](#introducción)
@@ -58,3 +59,7 @@ El conjunto de átomos se define como [p-z] y el conjunto de átomos a1,a2,...,a
 * Parent – The parent of a node is the node that is one level upward of the node.
 * Child – The children of a node are the nodes that are one level downward of the node.
 
+=======
+# Epistemic tree
+Proyecto en desarrollo. Consultar rama dev.
+>>>>>>> .merge_file_uReX9T
