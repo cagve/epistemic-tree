@@ -214,13 +214,11 @@ class Label():
         else:
             label1_list = []
             label2_list = []
-            for number in self.label:
-                if number.isdigit():
-                    label1_list.append(int(number))
+            for member in self.label:
+                label1_list.append(member)
 
-            for number in label.label:
-                if number.isdigit():
-                    label2_list.append(int(number))
+            for member in label.label:
+                label2_list.append(member)
 
             i = 0
             for digit in label1_list:
@@ -228,6 +226,12 @@ class Label():
                     return False
                 i +=1
             return True
+
+    def is_simple_extension(self,label)-> bool:
+        len1 = self.len()
+        len2 = label.len()+2
+        return label.is_sublabel(self) and len1==len2
+
 
     def append(self, agent, world):
         new_label = self.label +"."+agent+"."+world

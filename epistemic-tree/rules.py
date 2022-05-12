@@ -33,6 +33,7 @@ def neg_conjunction_rule(node: eptree.Node, tree: eptree.Tree):
         #TODO: Error handling
         print("ERROR NEG CON")
 
+>>>>>>> 1d12e07 ([FEAT] Prop. Rules)
     formula = neg_formula.get_terms()[0]
 
     denied_formula1 = formula.get_terms()[0].deny_formula().simplify_formula()

@@ -1,4 +1,5 @@
 digraph G {
+<<<<<<< HEAD
 
         node [shape=plain];
         1[label = "1 p=>q"];
