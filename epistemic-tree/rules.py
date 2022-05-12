@@ -132,7 +132,7 @@ def know_rule(node: eptree.Node, tree: eptree.Tree):
         return
     # VOY HASTA LA HOJA
     for leaf in tree.get_available_leafs(node):
-        id = int(str(leaf.id)+str(1))
+        id = int(leaf.id)
         #COJO LA RAMA DESDE LA HOJA
         branch = tree.get_branch(leaf)
         labels = branch.get_label_branch()

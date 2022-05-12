@@ -19,6 +19,19 @@ def know():
     tree.print_dot(tree.root)
     tree.print_tree(tree.root,2)
 
+def entrada():
+
+    f1 = parser.Formula("Ka(p=>r)")
+    f2 = parser.Formula("Ka(p=>q)&&Ka(q=>r)")
+    premises = [f2]
+    tree = t.Tree()
+    tree.create_tree(premises,f1)
+    rl.conjuntion_rule(tree.root.left,tree)
+    rl.neg_know_rule(tree.root,tree)
+    rl.know_rule(tree.root.left.left,tree)
+    tree.print_tree(tree.root,2)
+    tree.print_label_tree(tree.root,2)
+    
 
 def deny():
 
@@ -42,7 +55,7 @@ def deny():
 
 
 def main():
-    know()
+    entrada()
 
 if __name__ == '__main__':
     main()

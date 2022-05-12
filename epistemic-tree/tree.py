@@ -79,7 +79,7 @@ class Node:
         return [self.left,self.right]
 
 class Tree:
-    def __init__(self, root, left = None, right = None):
+    def __init__(self, root = None, left = None, right = None):
         self.root = Node(root,1)
         self.left = left
         self.right = right
@@ -100,6 +100,14 @@ class Tree:
             id1 = int(str(node.id)+str(1))
             id2 = int(str(node.id)+str(2))
             node.add_two_childs(data1,data2,id1,id2)
+
+    def create_tree(self, premises:list, conclusion:parser.Formula):
+        label = parser.Label('1')
+        conclusion_node= Node(parser.LabelledFormula(label,conclusion.deny_formula().simplify_formula()),1)
+        self.root=conclusion_node
+        for formula in premises:
+            lformula = parser.LabelledFormula(label,formula)
+            self.simple_extension(lformula)
 
     def get_leafs(self, node: Node, leafs=None) -> list:
         """
@@ -153,19 +161,25 @@ class Tree:
     def dot_formula(self,node,file):
         if node:
             if(node != None):
-                file.write(str(node.id)+'[label = "'+node.get_labelled_formula_string()+'"];\n')
+                # file.write(str(node.id)+'[xlabel="'+str(node.id)+'" label = "'+node.get_labelled_formula_string()+'"];\n')
+                # file.write(str(node.id)+'[label="'+str(node.id)+'\n'+node.get_labelled_formula_string()+'"];\n')
+                # file.write(str(node.id)+'[label= <<FONT POINT-SIZE="20">'+str(node.id)+'</FONT><FONT POINT-SIZE="10">'+node.get_labelled_formula_string()+'</FONT>>"];\n')
+                # file.write(str(node.id)+'[label=< <FONT POINT-SIZE="20">Bigger</FONT> and <FONT POINT-SIZE="10">Smaller</FONT> >];')
+                formula = node.get_labelled_formula_string().replace('=>','→').replace('&&','∧').replace('||','∨')
+                file.write(str(node.id)+'[label=< <FONT POINT-SIZE="10">'+str(node.id)+'<BR/></FONT><FONT POINT-SIZE="20">'+formula+'</FONT> >];\n')
                 self.dot_formula(node.left,file)
                 self.dot_formula(node.right,file)
 
     def print_dot(self,node):
         file = open("/home/karu/epistemic-tree/lib/dots/graph_test.dot", 'w')
         file.write("digraph G {\n")
+        file.write('node[shape = none]\n')
         self.dot_formula(node,file)
         self.dot_id(node, file)
         file.write("}")
         file.close
 
-    def get_node_from_id(self, node, id):
+    def get_node_from_id(self, node:Node, id:int):
         if(node != None):
             if id == node.id:
                 return node 
