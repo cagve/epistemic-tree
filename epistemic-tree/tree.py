@@ -225,20 +225,23 @@ class Branch(list):
             if a.get_labelled_formula().get_contradiction(b.get_labelled_formula()):
                 return True
         return False
+
     def print_branch(self):
         for i in self:
             print(i.get_labelled_formula_string())
 
-    # TOO: Pasar a branch class
-    def get_label_branch(self,branch):
+    def get_label_branch(self):
         labels = []
-        for node in branch:
+        for node in self:
             labels.append(node.get_label())
         return set(labels)
 
-    def get_simple_extensions(self,labelled_branch, filter):
+    def get_simple_extensions(self,  filter, label_branch=None,):
         extensions = []
-        for label in labelled_branch:
+        if label_branch==None:
+            label_branch = self.get_label_branch()
+
+        for label in label_branch:
             if label.is_simple_extension(filter):
                 extensions.append(label)
         if len(extensions)==0:

@@ -148,8 +148,6 @@ class TestUnit(unittest.TestCase):
         self.assertEqual(lab_formula3.get_contradiction(lab_formulac),True)
         self.assertEqual(lab_formula4.get_contradiction(lab_formulad),True)
 
-
-
 if __name__ == '__main__':
     unittest.main() 
 

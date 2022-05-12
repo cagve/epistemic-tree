@@ -1,6 +1,25 @@
 import parser 
 import rules as rl
 import tree as t
+
+def know():
+    label = parser.Label("1")
+    f1 = parser.Formula("-Kap&&Kaq")
+    f2 = parser.Formula("-Kar")
+
+    lf1 = parser.LabelledFormula(label, f1 )
+    lf2 = parser.LabelledFormula(label, f2 )
+    tree = t.Tree(lf1)
+    tree.simple_extension(lf2)
+    rl.conjuntion_rule(tree.root, tree)
+    rl.neg_know_rule(tree.root.left,tree)
+    rl.neg_know_rule(tree.root.left.left,tree)
+    rl.know_rule(tree.root.left.left.left,tree)
+
+    tree.print_dot(tree.root)
+    tree.print_tree(tree.root,2)
+
+
 def deny():
 
     label = parser.Label("1")
@@ -21,8 +40,9 @@ def deny():
 
     tree.print_dot(tree.root)
 
+
 def main():
-    deny()
+    know()
 
 if __name__ == '__main__':
     main()

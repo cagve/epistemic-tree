@@ -1,4 +1,4 @@
-from functools import singledispatch
+from os import wait
 import tree as eptree
 import parser
 
@@ -33,7 +33,6 @@ def neg_conjunction_rule(node: eptree.Node, tree: eptree.Tree):
         #TODO: Error handling
         print("ERROR NEG CON")
 
->>>>>>> 1d12e07 ([FEAT] Prop. Rules)
     formula = neg_formula.get_terms()[0]
 
     denied_formula1 = formula.get_terms()[0].deny_formula().simplify_formula()
@@ -103,6 +102,7 @@ def neg_know_rule(node: eptree.Node, tree: eptree.Tree):
         id = int(str(leaf.id)+str(1))
         lbranch = get_label_branch(tree.get_branch(leaf)) # Conjunto de etiquetas de la rama, en este caso node = leaf CUIDADO
 
+
         simple_branch = [] # Lista para despuéß simplificar la rama. 
         currentlabel = node.get_label() # Etiqueta del nodo al que vamos a aplicar la regla
         count = 1 # Contador para crear la nueva etiqueta
@@ -119,6 +119,34 @@ def neg_know_rule(node: eptree.Node, tree: eptree.Tree):
                 count += 1
         formula = parser.LabelledFormula(new_label,result_formula)
         leaf.add_one_child(formula, id)
+
+def know_rule(node: eptree.Node, tree: eptree.Tree):
+    formula = node.get_formula()
+    term = formula.get_terms()[0]
+    agent = node.get_formula().get_agent()
+    label = node.get_label()
+    extensions = []
+    if (formula.get_formula_type() != "know"):
+        #TODO: Error handling
+        print("ERROR K")
+        return
+    # VOY HASTA LA HOJA
+    for leaf in tree.get_available_leafs(node):
+        id = int(str(leaf.id)+str(1))
+        #COJO LA RAMA DESDE LA HOJA
+        branch = tree.get_branch(leaf)
+        labels = branch.get_label_branch()
+        # COJO LOS LABELS Y LAS FILTRO
+        extensions = branch.get_simple_extensions(label,labels)
+        # ITERO LAS LABELS
+        for label in extensions:
+            id = int(str(id)+str(1))
+            lformula = parser.LabelledFormula(label,term)
+            leaf.add_one_child(lformula,id)
+    return extensions
+
+
+
 
 def get_label_branch(branch: list) -> list:
     labelbranchlist = []
