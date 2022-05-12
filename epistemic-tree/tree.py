@@ -230,4 +230,22 @@ class Branch(list):
         for i in self:
             print(i.get_labelled_formula_string())
 
+    # TOO: Pasar a branch class
+    def get_label_branch(self,branch):
+        labels = []
+        for node in branch:
+            labels.append(node.get_label())
+        return set(labels)
+
+    def get_simple_extensions(self,labelled_branch, filter):
+        extensions = []
+        for label in labelled_branch:
+            if label.is_simple_extension(filter):
+                extensions.append(label)
+        if len(extensions)==0:
+            return None
+        else:
+            return extensions
+            
+
 
