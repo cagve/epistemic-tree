@@ -121,6 +121,13 @@ class TestUnit(unittest.TestCase):
         self.assertEqual(parser.Formula("(Kap&&(r=>r))=>-p").parse(),True)
         self.assertEqual(parser.Formula("p(&&q)").parse(),False)
 
+    def test_type(self):
+        self.assertEqual(parser.Formula("p").get_formula_type(),'atom')
+        self.assertEqual(parser.Formula("-(p&&q)").get_formula_type(),'not_and')
+        self.assertEqual(parser.Formula("-(p=>p)").get_formula_type(),'not_iff')
+        self.assertEqual(parser.Formula("-(Kap&&(r=>r))=>-p").get_formula_type(),'iff')
+        self.assertEqual(parser.Formula("-Kap)").get_formula_type(),'not_know')
+
     def test_neg(self):
         label1 = parser.Label("1")
         label2 = parser.Label("2")

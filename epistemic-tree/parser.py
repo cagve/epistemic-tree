@@ -90,6 +90,10 @@ class Formula:
         operator=node.child_by_field_name('operator')
         if(operator == None):
             return "atom"
+        elif(operator.type == 'not'): 
+            formula = Formula(self.ts.get_node_text(node.child_by_field_name('term')))
+            second_operator = formula.get_formula_type()
+            return operator.type+"_"+second_operator
         else:
             return operator.type
 
@@ -99,7 +103,7 @@ class Formula:
         term_list = []
         if(type=="atom"):
             term_list.append(self)
-        elif(type=="not" or type=="know"):
+        elif("not" in type or type=="know"):
             term=node.child_by_field_name('term')
             formula=Formula(self.ts.get_node_text(term))
             term_list.append(formula)
@@ -161,32 +165,18 @@ class Formula:
             print("No es una fórmula de conocimiento")
             return ""
 
+    # TODO: Poner la negación por casos -> Literales y Demás(matiz conocimiento)
     def deny_formula(self):
-        return Formula("-("+self.formula+")")
+        if 'not' in self.get_formula_type() or self.get_formula_type() == 'atom' or self.get_formula_type() == 'know':
+            return Formula("-"+self.formula)
+        else: 
+            return Formula("-("+self.formula+")")
 
     def delete_negation(self):
-        if self.get_formula_type() != 'not':
+        if self.get_formula_type() != 'not_not':
             return self
-        elif self.get_terms()[0].get_formula_type() == 'not': 
+        else:
             return self.get_terms()[0].get_terms()[0].delete_negation()
-        else:
-            return self
-
-
-    def simplify_formula(self):
-        if self.get_formula_type() == 'not':
-            # Simplifica las negaciones:  ---p => -p
-            if self.get_terms()[0].get_formula_type() == 'not':
-                return self.delete_negation()
-            # Simplifica los parentesis de la negación -(p) --> -p
-            elif self.get_terms()[0].get_formula_type() == 'atom' or self.get_terms()[0].get_formula_type() == 'know':
-                return Formula("-"+self.get_terms()[0].formula) 
-            else: 
-                return self
-        else:
-            return self
-
-
 
 class Label(): 
     # TODO: [improve] Mirar que herede los métodos de lista
@@ -258,8 +248,8 @@ class LabelledFormula:
         self.formula = formula
 
     def get_contradiction(self, lab_formula) -> bool:
-        deny_formula = self.formula.deny_formula().simplify_formula()
-        formula = lab_formula.formula.simplify_formula()
+        deny_formula = self.formula.deny_formula().delete_negation()
+        formula = lab_formula.formula.delete_negation()
         if deny_formula.formula == formula.formula:
             return True
         return False

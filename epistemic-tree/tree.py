@@ -83,6 +83,11 @@ class Tree:
         self.root = Node(root,1)
         self.left = left
         self.right = right
+        self.alpha_group = []
+        self.beta_group = []
+        self.nu_group = []
+        self.pi_group = []
+
 
     def simple_extension(self, data):
         """
@@ -103,7 +108,7 @@ class Tree:
 
     def create_tree(self, premises:list, conclusion:parser.Formula):
         label = parser.Label('1')
-        conclusion_node= Node(parser.LabelledFormula(label,conclusion.deny_formula().simplify_formula()),1)
+        conclusion_node= Node(parser.LabelledFormula(label,conclusion.deny_formula().delete_negation()),1)
         self.root=conclusion_node
         for formula in premises:
             lformula = parser.LabelledFormula(label,formula)

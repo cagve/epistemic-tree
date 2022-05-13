@@ -2,6 +2,17 @@ from os import wait
 import tree as eptree
 import parser
 
+type_rules = {
+        'and':'alpha', 
+        'disjunction_rule':'beta', 
+        'implication_rule':'beta',
+        'know_rule':'nu',
+        'neg_conjunction_rule':'beta',
+        'neg_disjunction_rule':'alpha',
+        'neg_implication_rule':'alpha',
+        'neg_know_rule':'pi'
+    }
+
 def alpha_rule(node: eptree.Node, tree: eptree.Tree, term1: parser.LabelledFormula, term2: parser.LabelledFormula):
     leafs = tree.get_available_leafs(node)
     for leaf in leafs:
@@ -23,20 +34,20 @@ def conjuntion_rule(node: eptree.Node, tree: eptree.Tree):
     if formula.get_formula_type() != "and":
         #TODO: Error handling
         print("ERROR CON ")
-    labelled_formula1 = parser.LabelledFormula(node.get_label(), formula.get_terms()[0].simplify_formula())
-    labelled_formula2 = parser.LabelledFormula(node.get_label(), formula.get_terms()[1].simplify_formula())
+    labelled_formula1 = parser.LabelledFormula(node.get_label(), formula.get_terms()[0].delete_negation())
+    labelled_formula2 = parser.LabelledFormula(node.get_label(), formula.get_terms()[1].delete_negation())
     alpha_rule(node, tree, labelled_formula1, labelled_formula2)
 
 def neg_conjunction_rule(node: eptree.Node, tree: eptree.Tree):    
     neg_formula = node.get_formula()
-    if neg_formula.get_formula_type() != "not" or neg_formula.get_terms()[0].get_formula_type() !="and":
+    if neg_formula.get_formula_type() != "not_and":
         #TODO: Error handling
         print("ERROR NEG CON")
 
     formula = neg_formula.get_terms()[0]
 
-    denied_formula1 = formula.get_terms()[0].deny_formula().simplify_formula()
-    denied_formula2 = formula.get_terms()[1].deny_formula().simplify_formula()
+    denied_formula1 = formula.get_terms()[0].deny_formula().delete_negation()
+    denied_formula2 = formula.get_terms()[1].deny_formula().delete_negation()
 
     labelled_formula1 = parser.LabelledFormula(node.get_label(), denied_formula1)
     labelled_formula2 = parser.LabelledFormula(node.get_label(), denied_formula2)
@@ -46,42 +57,42 @@ def disjunction_rule(node: eptree.Node, tree: eptree.Tree):
     formula = node.get_formula()
     if formula.get_formula_type() != "or":
         print("ERROR DIS")
-    labelled_formula1 = parser.LabelledFormula(node.get_label(), formula.get_terms()[0].simplify_formula())
-    labelled_formula2 = parser.LabelledFormula(node.get_label(), formula.get_terms()[1].simplify_formula())
+    labelled_formula1 = parser.LabelledFormula(node.get_label(), formula.get_terms()[0].delete_negation())
+    labelled_formula2 = parser.LabelledFormula(node.get_label(), formula.get_terms()[1].delete_negation())
     beta_rule(node, tree, labelled_formula1, labelled_formula2)
 
 def neg_disjunction_rule(node: eptree.Node, tree: eptree.Tree):
     neg_formula = node.get_formula()
-    if neg_formula.get_formula_type() != "not" or neg_formula.get_terms()[0].get_formula_type() != "or":
+    if neg_formula.get_formula_type() != "not_or":
         #TODO: Error handling
         print("ERROR NEG DIS")
     formula = neg_formula.get_terms()[0]
 
-    denied_formula1 = formula.get_terms()[0].deny_formula().simplify_formula()
-    denied_formula2 = formula.get_terms()[1].deny_formula().simplify_formula()
+    denied_formula1 = formula.get_terms()[0].deny_formula().delete_negation()
+    denied_formula2 = formula.get_terms()[1].deny_formula().delete_negation()
     labelled_formula1 = parser.LabelledFormula(node.get_label(), denied_formula1)
     labelled_formula2 = parser.LabelledFormula(node.get_label(), denied_formula2)
     alpha_rule(node, tree, labelled_formula1, labelled_formula2)
 
 def implication_rule(node: eptree.Node, tree: eptree.Tree):
     formula = node.get_formula()
-    if formula.get_formula_type() != "imp":
+    if formula.get_formula_type() != "iff":
         print("ERROR IMP")
-    denied_formula1 = formula.get_terms()[0].deny_formula().simplify_formula()
-    formula2 = formula.get_terms()[1].simplify_formula()
+    denied_formula1 = formula.get_terms()[0].deny_formula().delete_negation()
+    formula2 = formula.get_terms()[1].delete_negation()
     labelled_formula1 = parser.LabelledFormula(node.get_label(), denied_formula1)
     labelled_formula2 = parser.LabelledFormula(node.get_label(), formula2)
     beta_rule(node,tree,labelled_formula1, labelled_formula2)
 
 def neg_implication_rule(node: eptree.Node, tree: eptree.Tree):
     neg_formula = node.get_formula()
-    if neg_formula.get_formula_type() != "not" or neg_formula.get_terms()[0].get_formula_type() != "iff":
+    if neg_formula.get_formula_type() != "not_iff":
         #TODO: Error handling
         print("ERROR NEG IMP")
     formula = neg_formula.get_terms()[0]
 
-    formula1 = formula.get_terms()[0].simplify_formula()
-    denied_formula2 = formula.get_terms()[1].deny_formula().simplify_formula()
+    formula1 = formula.get_terms()[0].delete_negation()
+    denied_formula2 = formula.get_terms()[1].deny_formula().delete_negation()
     labelled_formula1 = parser.LabelledFormula(node.get_label(), formula1)
     labelled_formula2 = parser.LabelledFormula(node.get_label(), denied_formula2)
     alpha_rule(node, tree, labelled_formula1, labelled_formula2)
@@ -90,10 +101,10 @@ def neg_implication_rule(node: eptree.Node, tree: eptree.Tree):
 def neg_know_rule(node: eptree.Node, tree: eptree.Tree):
     neg_formula = node.get_formula() #~Ka(A)
     component = node.get_formula().get_terms()[0] #Ka(A)
-    result_formula = component.get_terms()[0].deny_formula().simplify_formula()#~A
+    result_formula = component.get_terms()[0].deny_formula().delete_negation()#~A
     agent = component.get_agent() #a
 
-    if ((neg_formula.get_formula_type() != "not") or (neg_formula.get_terms()[0].get_formula_type() != "know")):
+    if ((neg_formula.get_formula_type() != "not_know")):
         #TODO: Error handling
         print("ERROR neg K")
         return
@@ -125,7 +136,7 @@ def know_rule(node: eptree.Node, tree: eptree.Tree):
     term = formula.get_terms()[0]
     agent = node.get_formula().get_agent()
     label = node.get_label()
-    extensions = []
+    extensions =[]
     if (formula.get_formula_type() != "know"):
         #TODO: Error handling
         print("ERROR K")
@@ -138,11 +149,19 @@ def know_rule(node: eptree.Node, tree: eptree.Tree):
         labels = branch.get_label_branch()
         # COJO LOS LABELS Y LAS FILTRO
         extensions = branch.get_simple_extensions(label,labels)
-        # ITERO LAS LABELS
-        for label in extensions:
-            id = int(str(id)+str(1))
-            lformula = parser.LabelledFormula(label,term)
-            leaf.add_one_child(lformula,id)
+        if extensions != None:
+            for extlabel in extensions:
+                # COMPRUEBO QU EL A EXTENSIÓN SEA LA DEL AGENTE DE LA FORMULA
+                if extlabel.label[-3]==agent:
+                    id = int(str(id)+str(1))
+                    lformula = parser.LabelledFormula(extlabel,term)
+                    leaf.add_one_child(lformula,id)
+                else:
+                    print("ERROR")
+        else:
+            #TODO: Error handling
+            print("ERROR K")
+            return
     return extensions
 
 
