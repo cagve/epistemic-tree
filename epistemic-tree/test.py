@@ -114,6 +114,21 @@ def check_label_methods():
         print("No es válida")
 
 class TestUnit(unittest.TestCase):
+    def test_rules(self):
+        label1 = parser.Label("1")
+
+        formula1 = parser.Formula("p&&q")
+        formula2 = parser.Formula("-Kap")
+        formula3 = parser.Formula("-(Ka(p => Kbr))")
+        formula4 = parser.Formula("(Kap&&(r=>r))=>-p")
+
+        lab_formula1 = parser.LabelledFormula(label1,formula1)
+        lab_formula2 = parser.LabelledFormula(label1,formula2)
+        lab_formula3 = parser.LabelledFormula(label1,formula3)
+        lab_formula4 = parser.LabelledFormula(label1,formula4)
+        self.assertEqual(rl.get_formula_rule(lab_formula1),'conjunction_rule')
+        self.assertEqual(rl.get_formula_rule(lab_formula2),'not_know_rule')
+
     def test_paser(self):
         self.assertEqual(parser.Formula("p").parse(),True)
         self.assertEqual(parser.Formula("p&&q").parse(),True)
@@ -151,9 +166,33 @@ class TestUnit(unittest.TestCase):
         lab_formulad = parser.LabelledFormula(label1,formulad)
 
         self.assertEqual(lab_formula1.get_contradiction(lab_formulaa),False)
-        self.assertEqual(lab_formula2.get_contradiction(lab_formulab),True)
+        self.assertEqual(lab_formula2.get_contradiction(lab_formulab),False)
         self.assertEqual(lab_formula3.get_contradiction(lab_formulac),True)
         self.assertEqual(lab_formula4.get_contradiction(lab_formulad),True)
+
+    def rule_type(self):
+        label1 = parser.Label("1")
+        label2 = parser.Label("2")
+
+        formula1 = parser.Formula("p&&q")
+        formula2 = parser.Formula("-(Kap&&Kbq)")
+        formula3 = parser.Formula("-Kap")
+        formula4 = parser.Formula("Ka(p => Kbr)")
+        formula4 = parser.Formula("(Kap&&(r=>r))=>-p")
+        lab_formula1 = parser.LabelledFormula(label1,formula1)
+        lab_formula2 = parser.LabelledFormula(label1,formula2)
+        lab_formula3 = parser.LabelledFormula(label1,formula3)
+        lab_formula4 = parser.LabelledFormula(label1,formula4)
+
+        n1 = t.Node(lab_formula1,1)
+        n2 = t.Node(lab_formula2,1)
+        n3 = t.Node(lab_formula3,1)
+        n4 = t.Node(lab_formula4,1)
+
+        self.assertEqual(n1.get_rule_type(),'alpha')
+        self.assertEqual(n2.get_rule_type(),'beta')
+        self.assertEqual(n3.get_rule_type(),'pi')
+        self.assertEqual(n4.get_rule_type(),'beta')
 
 if __name__ == '__main__':
     unittest.main() 

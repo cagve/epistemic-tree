@@ -1,4 +1,5 @@
 import itertools
+import rules
 import parser
 
 COUNT = [10]
@@ -78,12 +79,28 @@ class Node:
         """Return a list wich contains the children of the node."""
         return [self.left,self.right]
 
+    def get_rule(self):
+        type = self.get_formula().get_formula_type()
+        return rules.formula_rules[type]
+
+    def get_rule_type(self):
+        rule = self.get_rule()
+        return rules.type_rules.get(rule)
+
+    def apply_rule(self, tree):
+        tree.add_knows_to_group(tree.root,tree)
+        type = self.get_formula().get_formula_type()
+        rules.formula_functions[type](self, tree)
+
+
+
 class Tree:
     def __init__(self, root = None, left = None, right = None):
         self.root = Node(root,1)
         self.left = left
         self.right = right
         self.alpha_group = []
+        self.label_group = []
         self.beta_group = []
         self.nu_group = []
         self.pi_group = []
@@ -96,6 +113,7 @@ class Tree:
         for node in self.get_leafs(self.root):
             newid = int(str(node.id)+str(1))
             node.add_one_child(data, newid)
+            self.add_node_to_group(node.left)
 
     def double_extension(self,data1,data2):
         """
@@ -106,13 +124,16 @@ class Tree:
             id2 = int(str(node.id)+str(2))
             node.add_two_childs(data1,data2,id1,id2)
 
-    def create_tree(self, premises:list, conclusion:parser.Formula):
+    def create_tree(self,  conclusion:parser.Formula, premises=None):
         label = parser.Label('1')
         conclusion_node= Node(parser.LabelledFormula(label,conclusion.deny_formula().delete_negation()),1)
         self.root=conclusion_node
-        for formula in premises:
-            lformula = parser.LabelledFormula(label,formula)
-            self.simple_extension(lformula)
+        self.add_node_to_group(self.root)
+        if premises !=None:
+            for formula in premises:
+                lformula = parser.LabelledFormula(label,formula)
+                self.simple_extension(lformula)
+
 
     def get_leafs(self, node: Node, leafs=None) -> list:
         """
@@ -190,6 +211,15 @@ class Tree:
                 return node 
             return self.get_node_from_id(node.left, id) or self.get_node_from_id(node.right, id)
 
+    def get_full_branch(self,node) -> list:
+        ''' Obtiene todas las ramas de un nodo'''
+        leafs = self.get_leafs(node)
+        extension = []
+        for leaf in leafs:
+            branch = self.get_branch(leaf)
+            extension.append(branch)
+        return extension
+
     def get_branch(self,node):
         branch = Branch()
         id = node.id
@@ -238,6 +268,65 @@ class Tree:
         print(node.id)
         self.print_label_tree(node.left, space)
 
+    def check_node_know_alive(self,node, tree):
+        available = []
+        if node.get_rule_type() == 'nu':
+            agent = node.get_formula().get_agent()
+            branchs = self.get_full_branch(node)
+            # AÑADE LAS EXTENSIONES SIMPLES
+            for branch in branchs: 
+                agent_extensions = branch.get_extensions_agent(agent,node.get_label()) 
+                if agent_extensions is not None:
+                    for extension in agent_extensions:
+                        formula = parser.LabelledFormula(extension,node.get_formula().get_terms()[0])
+                        if not branch.formula_in_branch(formula):
+                            available.append(extension)
+            if available:
+                return True
+            else:
+                return False
+
+    def add_knows_to_group(self,node, tree, nu_group=None):
+        if nu_group == None:
+            nu_group = []
+
+        if node:
+            if(node != None):
+                if self.check_node_know_alive(node, tree):
+                    nu_group.append(node)
+                self.add_knows_to_group(node.left,tree,nu_group)
+                self.add_knows_to_group(node.right,tree,nu_group)
+        self.nu_group = nu_group
+
+
+    def add_node_to_group(self,node: Node):
+        self.add_knows_to_group(self.root, self)
+        if node.get_rule_type() == 'alpha':
+            self.alpha_group.append(node)
+        elif node.get_rule_type() == 'beta':
+            self.beta_group.append(node)
+        elif node.get_rule_type() == 'pi':
+            self.pi_group.append(node)
+        # elif node.get_rule_type() =='literal':
+        #     print("Es un literal")
+        # else:
+            # print("error add_node_from_group")
+
+    def remove_node_from_group(self, node:Node):
+        if node.get_rule_type() == 'alpha':
+            self.alpha_group.remove(node)
+        elif node.get_rule_type() == 'beta':
+            self.beta_group.remove(node)
+        # elif node.get_rule_type() == 'nu':
+        #     self.nu_group.remove(node)
+        elif node.get_rule_type() == 'pi':
+            self.pi_group.remove(node)
+        elif node.get_rule_type() =='literal':
+            print("Es un literal")
+        else:
+            print("error remove_node_from_group")
+
+
 class Branch(list):
     def is_close(self):
         for a,b in itertools.combinations(self,2): 
@@ -255,18 +344,31 @@ class Branch(list):
             labels.append(node.get_label())
         return set(labels)
 
-    def get_simple_extensions(self,  filter, label_branch=None,):
+    # TODO AÑADIR IR A HOJA
+    def get_simple_extensions(self,  label_filter, label_branch=None,):
         extensions = []
         if label_branch==None:
             label_branch = self.get_label_branch()
 
         for label in label_branch:
-            if label.is_simple_extension(filter):
+            if label.is_simple_extension(label_filter):
                 extensions.append(label)
+
         if len(extensions)==0:
             return None
         else:
             return extensions
             
+    def get_extensions_agent(self, agent, label_filter, label_branch=None):
+        extensions = self.get_simple_extensions(label_filter)
+        if extensions != None:
+            for extension in extensions:
+                if extension.label[-3] != agent:
+                    extensions.remove(extension)
+        return extensions
 
-
+    def formula_in_branch(self, formula: parser.LabelledFormula):
+        for node in self:
+            if node.get_labelled_formula_string() == formula.to_string():
+                return True
+        return False 

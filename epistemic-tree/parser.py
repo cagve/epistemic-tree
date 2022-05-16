@@ -162,21 +162,24 @@ class Formula:
             return self.ts.get_node_text(agent)
         else: 
             # Crear un tipo de error para esto
-            print("No es una fórmula de conocimiento")
-            return ""
+            # print("No es una fórmula de conocimiento")
+            return 
 
     # TODO: Poner la negación por casos -> Literales y Demás(matiz conocimiento)
     def deny_formula(self):
         if 'not' in self.get_formula_type() or self.get_formula_type() == 'atom' or self.get_formula_type() == 'know':
-            return Formula("-"+self.formula)
+            return Formula("-"+self.formula).delete_negation()
         else: 
-            return Formula("-("+self.formula+")")
+            return Formula("-("+self.formula+")").delete_negation()
 
     def delete_negation(self):
-        if self.get_formula_type() != 'not_not':
+        if 'not_not' not in self.get_formula_type():
             return self
         else:
             return self.get_terms()[0].get_terms()[0].delete_negation()
+
+    # def check_availabel_nodes(self):
+        
 
 class Label(): 
     # TODO: [improve] Mirar que herede los métodos de lista
@@ -220,7 +223,7 @@ class Label():
     def is_simple_extension(self,label)-> bool:
         len1 = self.len()
         len2 = label.len()+2
-        return label.is_sublabel(self) and len1==len2
+        return label.is_sublabel(self) and len1==len2 
 
 
     def append(self, agent, world):
@@ -234,6 +237,17 @@ class Label():
             if number.isdigit():
                 label_num = label_num+number
         return int(label_num)
+    
+    def get_formulas(self,node, formulas = None):
+        if formulas == None:
+            formulas = []
+        if node:
+            if(node != None):
+                if node.get_label().label == self.label:
+                    formulas.append(node.get_formula())
+                self.get_formulas(node.left, formulas)
+                self.get_formulas(node.right, formulas)
+                return formulas
 
 
 
@@ -248,7 +262,9 @@ class LabelledFormula:
         self.formula = formula
 
     def get_contradiction(self, lab_formula) -> bool:
-        deny_formula = self.formula.deny_formula().delete_negation()
+        if self.label != lab_formula.label:
+            return False
+        deny_formula = self.formula.deny_formula()
         formula = lab_formula.formula.delete_negation()
         if deny_formula.formula == formula.formula:
             return True

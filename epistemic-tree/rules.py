@@ -3,33 +3,64 @@ import tree as eptree
 import parser
 
 type_rules = {
-        'and':'alpha', 
+        'conjunction_rule':'alpha', 
         'disjunction_rule':'beta', 
         'implication_rule':'beta',
         'know_rule':'nu',
-        'neg_conjunction_rule':'beta',
-        'neg_disjunction_rule':'alpha',
-        'neg_implication_rule':'alpha',
-        'neg_know_rule':'pi'
+        'not_conjunction_rule':'beta',
+        'not_disjunction_rule':'alpha',
+        'not_implication_rule':'alpha',
+        'not_know_rule':'pi',
+        'literal': 'literal'
+
     }
+
+formula_rules = {
+        'and':'conjunction_rule',
+        'or':'disjunction_rule', 
+        'iff':'implication_rule',
+        'know':'know_rule',
+        'not_and':'not_conjunction_rule',
+        'not_or':'not_disjunction_rule',
+        'not_iff':'not_implication_rule',
+        'not_know':'not_know_rule',
+        'atom':'literal',
+        'not_atom':'literal'
+    }
+
+
+def testing():
+    print("hello world")
+
+def get_formula_rule(formula: parser.LabelledFormula):
+    type = formula.formula.get_formula_type()
+    return formula_rules.get(type)
+
+    
 
 def alpha_rule(node: eptree.Node, tree: eptree.Tree, term1: parser.LabelledFormula, term2: parser.LabelledFormula):
     leafs = tree.get_available_leafs(node)
+    tree.remove_node_from_group(node)
     for leaf in leafs:
         id1 = int(str(leaf.id)+str(1))
         id2 = int(str(leaf.id)+str(11))
         leaf.add_one_child(term1,id1)
         leaf.left.add_one_child(term2,id2)
+        tree.add_node_to_group(leaf.left)
+        tree.add_node_to_group(leaf.left.left)
 
 def beta_rule(node: eptree.Node, tree: eptree.Tree, term1: parser.LabelledFormula, term2: parser.LabelledFormula):
     leafs = tree.get_available_leafs(node)
+    tree.remove_node_from_group(node)
     for leaf in leafs:
         id1 = int(str(leaf.id)+str(1))
         id2 = int(str(leaf.id)+str(2))
         leaf.add_two_childs(term1, term2,id1,id2)
+        tree.add_node_to_group(leaf.left)
+        tree.add_node_to_group(leaf.right)
 
 # ALPHA RULES
-def conjuntion_rule(node: eptree.Node, tree: eptree.Tree):
+def conjunction_rule(node: eptree.Node, tree: eptree.Tree):
     formula = node.get_formula()
     if formula.get_formula_type() != "and":
         #TODO: Error handling
@@ -38,7 +69,7 @@ def conjuntion_rule(node: eptree.Node, tree: eptree.Tree):
     labelled_formula2 = parser.LabelledFormula(node.get_label(), formula.get_terms()[1].delete_negation())
     alpha_rule(node, tree, labelled_formula1, labelled_formula2)
 
-def neg_conjunction_rule(node: eptree.Node, tree: eptree.Tree):    
+def not_conjunction_rule(node: eptree.Node, tree: eptree.Tree):    
     neg_formula = node.get_formula()
     if neg_formula.get_formula_type() != "not_and":
         #TODO: Error handling
@@ -61,7 +92,7 @@ def disjunction_rule(node: eptree.Node, tree: eptree.Tree):
     labelled_formula2 = parser.LabelledFormula(node.get_label(), formula.get_terms()[1].delete_negation())
     beta_rule(node, tree, labelled_formula1, labelled_formula2)
 
-def neg_disjunction_rule(node: eptree.Node, tree: eptree.Tree):
+def not_disjunction_rule(node: eptree.Node, tree: eptree.Tree):
     neg_formula = node.get_formula()
     if neg_formula.get_formula_type() != "not_or":
         #TODO: Error handling
@@ -84,7 +115,7 @@ def implication_rule(node: eptree.Node, tree: eptree.Tree):
     labelled_formula2 = parser.LabelledFormula(node.get_label(), formula2)
     beta_rule(node,tree,labelled_formula1, labelled_formula2)
 
-def neg_implication_rule(node: eptree.Node, tree: eptree.Tree):
+def not_implication_rule(node: eptree.Node, tree: eptree.Tree):
     neg_formula = node.get_formula()
     if neg_formula.get_formula_type() != "not_iff":
         #TODO: Error handling
@@ -98,11 +129,12 @@ def neg_implication_rule(node: eptree.Node, tree: eptree.Tree):
     alpha_rule(node, tree, labelled_formula1, labelled_formula2)
 
 
-def neg_know_rule(node: eptree.Node, tree: eptree.Tree):
+def not_know_rule(node: eptree.Node, tree: eptree.Tree):
     neg_formula = node.get_formula() #~Ka(A)
     component = node.get_formula().get_terms()[0] #Ka(A)
     result_formula = component.get_terms()[0].deny_formula().delete_negation()#~A
     agent = component.get_agent() #a
+    tree.remove_node_from_group(node)
 
     if ((neg_formula.get_formula_type() != "not_know")):
         #TODO: Error handling
@@ -130,6 +162,7 @@ def neg_know_rule(node: eptree.Node, tree: eptree.Tree):
                 count += 1
         formula = parser.LabelledFormula(new_label,result_formula)
         leaf.add_one_child(formula, id)
+        tree.add_node_to_group(leaf.left)
 
 def know_rule(node: eptree.Node, tree: eptree.Tree):
     formula = node.get_formula()
@@ -137,6 +170,7 @@ def know_rule(node: eptree.Node, tree: eptree.Tree):
     agent = node.get_formula().get_agent()
     label = node.get_label()
     extensions =[]
+    tree.remove_node_from_group(node)
     if (formula.get_formula_type() != "know"):
         #TODO: Error handling
         print("ERROR K")
@@ -156,16 +190,36 @@ def know_rule(node: eptree.Node, tree: eptree.Tree):
                     id = int(str(id)+str(1))
                     lformula = parser.LabelledFormula(extlabel,term)
                     leaf.add_one_child(lformula,id)
+                    # tree.add_node_to_group(leaf.left)
                 else:
                     print("ERROR")
         else:
             #TODO: Error handling
             print("ERROR K")
             return
+    tree.add_knows_to_group(tree.root, tree)
+    # node.apply_rule(tree)
     return extensions
 
-
-
+def rule_algorithm(tree: eptree.Tree):
+    while True:
+        if tree.alpha_group:
+            # print('alpha rule apply')
+            tree.alpha_group[0].apply_rule(tree) 
+        elif tree.beta_group: 
+            # print('beta rule apply')
+            tree.beta_group[0].apply_rule(tree) 
+        elif tree.pi_group:
+            # print('pi rule apply')
+            tree.pi_group[0].apply_rule(tree) 
+        elif tree.nu_group:
+            # print('nu rule apply')
+            tree.nu_group[0].apply_rule(tree) 
+        else:
+            return False
+        return rule_algorithm(tree)
+    print("SE ACABÓ")
+    
 
 def get_label_branch(branch: list) -> list:
     labelbranchlist = []
@@ -175,5 +229,15 @@ def get_label_branch(branch: list) -> list:
     return labelbranchlist
 
 
+formula_functions = {
+        'and':conjunction_rule,
+        'or':disjunction_rule, 
+        'iff':implication_rule,
+        'know':know_rule,
+        'not_and':not_conjunction_rule,
+        'not_or':not_disjunction_rule,
+        'not_iff':not_implication_rule,
+        'not_know':not_know_rule
+    }
 
 
