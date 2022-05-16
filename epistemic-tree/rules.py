@@ -190,9 +190,7 @@ def know_rule(node: eptree.Node, tree: eptree.Tree):
                     id = int(str(id)+str(1))
                     lformula = parser.LabelledFormula(extlabel,term)
                     leaf.add_one_child(lformula,id)
-                    # tree.add_node_to_group(leaf.left)
-                else:
-                    print("ERROR")
+                    tree.add_node_to_group(leaf.left)
         else:
             #TODO: Error handling
             print("ERROR K")

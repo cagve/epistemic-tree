@@ -187,12 +187,9 @@ class Tree:
     def dot_formula(self,node,file):
         if node:
             if(node != None):
-                # file.write(str(node.id)+'[xlabel="'+str(node.id)+'" label = "'+node.get_labelled_formula_string()+'"];\n')
-                # file.write(str(node.id)+'[label="'+str(node.id)+'\n'+node.get_labelled_formula_string()+'"];\n')
-                # file.write(str(node.id)+'[label= <<FONT POINT-SIZE="20">'+str(node.id)+'</FONT><FONT POINT-SIZE="10">'+node.get_labelled_formula_string()+'</FONT>>"];\n')
-                # file.write(str(node.id)+'[label=< <FONT POINT-SIZE="20">Bigger</FONT> and <FONT POINT-SIZE="10">Smaller</FONT> >];')
                 formula = node.get_labelled_formula_string().replace('=>','→').replace('&&','∧').replace('||','∨')
-                file.write(str(node.id)+'[label=< <FONT POINT-SIZE="10">'+str(node.id)+'<BR/></FONT><FONT POINT-SIZE="20">'+formula+'</FONT> >];\n')
+                # file.write(str(node.id)+'[label=< <FONT POINT-SIZE="10">'+str(node.id)+'<BR/></FONT><FONT POINT-SIZE="20">'+formula+'</FONT> >];\n')
+                file.write(str(node.id)+'[label="'+formula+'"];\n')
                 self.dot_formula(node.left,file)
                 self.dot_formula(node.right,file)
 
@@ -322,9 +319,21 @@ class Tree:
         elif node.get_rule_type() == 'pi':
             self.pi_group.remove(node)
         elif node.get_rule_type() =='literal':
-            print("Es un literal")
+            return 
         else:
-            print("error remove_node_from_group")
+            return 
+
+
+    def get_open_branchs(self) -> list:
+        open_branchs = self.get_full_branch(self.root)
+        for branch in open_branchs:
+            if branch.is_close():
+                open_branchs.remove(branch)
+        return open_branchs
+    
+    def is_theorem(self):
+        return len(self.get_open_branchs()) == 0
+
 
 
 class Branch(list):
@@ -372,3 +381,4 @@ class Branch(list):
             if node.get_labelled_formula_string() == formula.to_string():
                 return True
         return False 
+
