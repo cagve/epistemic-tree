@@ -1,0 +1,20 @@
+{
+	"tree1":[
+		{
+		"id": "1",
+		"premisas": [ "Kap", "Ka(q&&r)" ],
+		"conclusion": "Kbp",
+		"value":"True"
+		}
+	],
+	"tree2":[
+		{
+		"id": "2",
+		"premisas": [
+			"p=>q",
+			"q=>r"
+		  ],
+		"conclusion": "p=>r"
+		}
+	]
+}

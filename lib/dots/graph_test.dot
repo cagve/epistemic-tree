@@ -1,10 +1,10 @@
 digraph G {
 node[shape = none]
-1[label="1 -(Kap∧q)"];
-11[label="1 -Kap"];
-111[label="1.a.1 -p"];
-12[label="1 -q"];
+1[label="1 -Kap"];
+11[label="1 Kap∧Kaq"];
+111[label="1 Kap"];
+1111[label="1 Kaq"];
 1 -> 11;
-1 -> 12;
 11 -> 111;
+111 -> 1111;
 }

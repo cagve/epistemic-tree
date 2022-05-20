@@ -1,34 +1,69 @@
 # Conjunto de funciones para trababajar con tree-sitter. 
-from types import new_class
 from tree_sitter import Parser as TSParser 
 from tree_sitter import Language as TSLanguage
+import tree_sitter
 
 LP_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'ep')
 LABEL_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'label')
 
 class Parser():
-    """Class to handle treesitter lib"""
-    def __init__(self,cadena,language):
+    """
+    A class to handle Tree-sitter parser
+
+    Attributes
+    ----------
+    formula: str
+       The sring containing the formula 
+    language: TSLanguage
+        Grammar for treesitter
+
+    Methods
+    -------
+    get_formula()
+    get_node_text(node)
+    get_parser() 
+    get_root_node(self) 
+    get_tree(self)
+    """
+
+    def __init__(self,cadena:str, language:TSLanguage):
         self.cadena=cadena
         self.language = language
 
-    def get_parser(self):
+    def get_parser(self) -> tree_sitter.Parser:
+        """
+        Return the parser class.
+        """
         parser = TSParser()
         parser.set_language(self.language)
         return parser
 
-    def get_tree(self):
+    def get_tree(self) -> tree_sitter.Tree: 
+        """
+        Return the tree of the parser tree.
+        """
         cadena=self.cadena.replace(" ","")
         cadena_bytes=bytes(cadena,'utf-8')
         tree = self.get_parser().parse(cadena_bytes)
         return tree
 
-    def get_root_node(self):
+    def get_root_node(self) -> tree_sitter.Node:
+        """
+        Return the root node of the parser tree.
+        """
         tree = self.get_tree()
         root = tree.root_node
         return root
 
-    def get_node_text(self,node):
+    def get_node_text(self, node:tree_sitter.Node):
+        """
+        Return the text of the given node.
+        
+        Parameters
+        -----------
+        node : tree_sitter.Node
+            The node from which the text is extracted
+        """
         source_code_bytes=bytes(self.cadena,'utf-8')
         byte_text = source_code_bytes[node.start_byte:node.end_byte]
         node_text = byte_text.decode('utf-8')
@@ -36,9 +71,33 @@ class Parser():
 
 
 class Formula:
-    # ?? ESTA ESTO BIEN PUESTO AQUÍ???????
-    """Class for formula managment"""
-    def __init__(self, formula):
+    """
+    A class representing an epistemic formula
+
+    Attributes
+    ----------
+    formula : str
+        The sring containing the formula.
+    ts : tree_sitter.Parser
+        The parser of the given formula, it uses the LABEL_LANGUAGE
+    tree: tree_sitter.Tree
+        The tree parser of the formula.
+    node: tree_sitter.Node
+        The root node of the tree parser.
+
+    Methods
+    -------
+    delete_negation():
+    deny_formula():
+    get_agent():
+    get_formula_type():
+    get_len():
+    get_subformulas():
+    get_terms():
+    parse():
+    simplify_par():
+    """
+    def __init__(self, formula:str ):
         if(formula[0]=='(' and formula[-1]==')'): # ESTE IF ELIMINA LOS PARÉNTESIS EXTERIORES
             self.formula=formula[1:-1].replace(" ","")
         else:
@@ -47,7 +106,11 @@ class Formula:
         self.tree = self.ts.get_tree()
         self.node = self.ts.get_root_node()
 
-    def get_subformulas(self):
+    def get_subformulas(self) -> list:
+        """
+        Return the subformula function.
+
+        """
         fbf_query = LP_LANGUAGE.query("""
                 (formula
                     operator:(or))@or_formula
@@ -85,7 +148,10 @@ class Formula:
                     subformulas[j], subformulas[j + 1] = subformulas[j + 1], subformulas[j]
         return subformulas
 
-    def get_formula_type(self):
+    def get_formula_type(self) -> str:
+        """
+        Return formula type.
+        """
         node = self.node
         operator=node.child_by_field_name('operator')
         if(operator == None):
@@ -98,6 +164,10 @@ class Formula:
             return operator.type
 
     def get_terms(self) -> list:
+        """
+        Return terms list of the formula. For binary operators(&&,=>,||) return
+        list with two members. For monary operators(Ka,-) return list with one member.
+        """
         node=self.node
         type=self.get_formula_type()
         term_list = []
@@ -116,12 +186,17 @@ class Formula:
             term_list.append(second_formula)
         return term_list
     
-    # Elimina los paréntesis exteriores. Pensar
     def simplify_par(self):
+        """
+        [Useless] Remove external parenthesis.
+        """
         if(self.formula[0]=='('):
                 self.formula=self.formula[1:-1]
 
-    def get_len(self): # FALLO para los operadores negadores
+    def get_len(self) -> int: 
+        """"
+        Return the size of the formula.
+        """
         type=self.get_formula_type()
         len=0
         if(type=="atom"):
@@ -132,7 +207,10 @@ class Formula:
                 len=len+i.get_len()
         return len
 
-    def parse(self):
+    def parse(self) -> bool:
+        """
+        Return true if the formula is valid; false if it is not.
+        """
         fbf_query = LP_LANGUAGE.query("""
                 (ERROR)@error
                 """)
@@ -153,6 +231,9 @@ class Formula:
         return flag and len(fbf)==0
 
     def get_agent(self):
+        """
+        Return the agent of the knowledge formula. 
+        """
         cursor = self.tree.walk()
         if(self.get_formula_type()=="know"): # Por el árbol que te genera para acceder al agente tenemos que ir a hijo e hijo y hermano
             assert cursor.goto_first_child()
@@ -167,41 +248,86 @@ class Formula:
 
     # TODO: Poner la negación por casos -> Literales y Demás(matiz conocimiento)
     def deny_formula(self):
+        """
+        Return the deny formula. If the formula is a negation, an atom or a
+        knowledge one, return the negation without parenthesis. In other case,
+        sourrund te formula with ().
+        """
         if 'not' in self.get_formula_type() or self.get_formula_type() == 'atom' or self.get_formula_type() == 'know':
             return Formula("-"+self.formula).delete_negation()
         else: 
             return Formula("-("+self.formula+")").delete_negation()
 
     def delete_negation(self):
+        """
+        Return the formula with out repeatd negations.
+        --p  ====> p
+        ---p ====> -p
+        """
         if 'not_not' not in self.get_formula_type():
             return self
         else:
             return self.get_terms()[0].get_terms()[0].delete_negation()
-
-    # def check_availabel_nodes(self):
         
 
 class Label(): 
-    # TODO: [improve] Mirar que herede los métodos de lista
+    """
+    A class representing a label
+
+    Attributes
+    ----------
+    label:str
+        The sring containing the label.
+    ts: tree_sitter.Parser
+        The parser of the given formula, it uses the LABEL_LANGUAGE
+    tree: tree_sitter.Tree
+        The tree parser of the formula.
+    node: tree_sitter.Node
+        The root node of the tree parser.
+
+    Methods
+    -------
+    delete_negation():
+    deny_formula():
+    get_agent():
+    get_formula_type():
+    get_len():
+    get_subformulas():
+    get_terms():
+    parse():
+    simplify_par():
+    """
     def __init__(self,label):
         self.label = label
         self.ts = Parser(self.label,LABEL_LANGUAGE)
         self.tree = self.ts.get_tree()
         self.node = self.ts.get_root_node()
 
-    def parse(self):
+    def parse(self) -> bool:
+        """
+        Return true if the label is valid; false if it is not.
+        """
         fbf_query = LP_LANGUAGE.query("""
                 (ERROR)@error
                 """)
         fbf = fbf_query.captures(self.node)
         return len(fbf)==0
 
-    def len(self):
-       return len(self.label.replace('.',''))
+    def len(self) -> int:
+        """
+        Return size of label.
+        """
+        return len(self.label.replace('.',''))
 
-    def is_sublabel(self,label)-> bool:
-        """label1.is_subset(label2) => """
-        # label2 = parser.Label(label)
+    def is_sublabel(self, label)-> bool:
+        """
+        Return true if the current label is a sublabel of the given label.
+
+        Attributes
+        -----------
+        label: Label
+            The label to compare with the current label.
+        """
         if self.len() > label.len():
             return False
         else:
@@ -221,24 +347,46 @@ class Label():
             return True
 
     def is_simple_extension(self,label)-> bool:
+        """
+        Return true if the current label is a simple extension of the given label.
+
+        Attributes
+        -----------
+        label: Label
+            The label to compare with the current label.
+        """
         len1 = self.len()
         len2 = label.len()+2
         return label.is_sublabel(self) and len1==len2 
 
 
-    def append(self, agent, world):
+    def append(self, agent:str, world:str):
+        """
+        Return new label with the agent and the world.
+
+        Attributes
+        -----------
+        agent: str
+            
+        world: str
+        """
         new_label = self.label +"."+agent+"."+world
         return Label(new_label)
 
     def simplify_label(self) -> int:
-        """ Devuelve el núímero de la etiqueta 1.a.2.b.3 -> 123"""
+        """ 
+        Return the label as an int with out the agent.
+        """
         label_num  = ""
         for number in self.label:
             if number.isdigit():
                 label_num = label_num+number
         return int(label_num)
     
-    def get_formulas(self,node, formulas = None):
+    def get_formulas(self, node, formulas = None):
+        """ 
+        Return the set of formulas that are true in the label. It uses preorder algorithm.
+        """
         if formulas == None:
             formulas = []
         if node:
@@ -250,18 +398,35 @@ class Label():
                 return formulas
 
 
-
-    # TODO: [fun] label.to_list() -> list: label en forma de lista
-    # TODO: [fun] label.len() -> int:  longitud de la etiqueta
-    # TODO: [fun] label1.relation(label2) -> string: non-proper extension o proper extension.
-    # TODO: [fun] label.append(agent,world) -> Incluye en la etiqueta la extensión "agent.world"
-
 class LabelledFormula:
-    def __init__(self, label, formula) -> None:
+    """
+    A class representing a labelled formula
+
+    Attributes
+    ----------
+    label: Label
+        The label of the labelled formula.
+    formula: Formula
+        The formula of the labelled formula.
+        
+    Methods
+    -------
+    get_contradiction(lab_formula)
+    to_string()
+    """
+    def __init__(self, label:Label, formula:Formula) -> None:
         self.label = label
         self.formula = formula
 
     def get_contradiction(self, lab_formula) -> bool:
+        """
+        Return true if the given formula and the current formular are contradictories;
+
+        Parameters
+        -----------
+        lab_formula: LabelledFormula
+            The formula for compare
+        """
         if self.label != lab_formula.label:
             return False
         deny_formula = self.formula.deny_formula()
@@ -273,4 +438,3 @@ class LabelledFormula:
     def to_string(self):
         return self.label.label+" "+self.formula.formula
 
-    # TODO: [fun] label.from(str) -> LabelledFormula: Devuelve una fórmula creada a partir de una string completa 1.a.2.3-Kap (estudiar como separarlo)

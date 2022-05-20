@@ -1,9 +1,9 @@
-import sys
 import rules as rl
-import tree as t
+import eptree as t
 import parser
 import __init__ as init
 import unittest
+
 
 # Arbol = [conclusion, premisas, solución]
 trees = {

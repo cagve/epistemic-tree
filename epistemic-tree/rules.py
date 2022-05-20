@@ -1,5 +1,4 @@
-from os import wait
-import tree as eptree
+import eptree as eptree
 import parser
 
 type_rules = {
