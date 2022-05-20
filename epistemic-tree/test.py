@@ -7,8 +7,9 @@ import unittest
 
 # Arbol = [conclusion, premisas, solución]
 trees = {
-    'tree1':['Kap&&q', None , False],
-    'tree2':['Kap&&q', ['-q']  , False],
+    'tree1':['Ka(p&&q) => (Kap && Kaq)', None , False], # Se cierran todas las ramas
+    'tree2':['Ka(p||q) => Kap', None, True],  # No se cierra la rama de la derecha
+    'tree3':['Ka(p=>q)=>(Kap=>Kaq)', None, False]  # No se cierra la rama de la derecha
         }
 
 class TestUnit(unittest.TestCase):
@@ -99,4 +100,3 @@ class TestUnit(unittest.TestCase):
     
 if __name__ == '__main__':
     unittest.main() 
-

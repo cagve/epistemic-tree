@@ -427,7 +427,7 @@ class LabelledFormula:
         lab_formula: LabelledFormula
             The formula for compare
         """
-        if self.label != lab_formula.label:
+        if self.label.label != lab_formula.label.label:
             return False
         deny_formula = self.formula.deny_formula()
         formula = lab_formula.formula.delete_negation()

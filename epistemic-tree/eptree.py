@@ -92,15 +92,13 @@ class Node:
         type = self.get_formula().get_formula_type()
         rules.formula_functions[type](self, tree)
 
-
-
 class Tree:
     def __init__(self, root = None, left = None, right = None):
         self.root = Node(root,1)
         self.left = left
         self.right = right
-        self.alpha_group = []
         self.label_group = []
+        self.alpha_group = []
         self.beta_group = []
         self.nu_group = []
         self.pi_group = []
@@ -323,23 +321,20 @@ class Tree:
         else:
             return 
 
-
     def get_open_branchs(self) -> list:
-        open_branchs = self.get_full_branch(self.root)
-        for branch in open_branchs:
-            if branch.is_close():
-                open_branchs.remove(branch)
+        banchs = self.get_full_branch(self.root)
+        open_branchs = list(filter(lambda branch: not branch.is_close(), banchs))
         return open_branchs
     
-    def is_theorem(self):
-        return len(self.get_open_branchs()) == 0
+    def open_branch(self):
+        return len(self.get_open_branchs()) != 0
 
 
 
 class Branch(list):
     def is_close(self):
         for a,b in itertools.combinations(self,2): 
-            if a.get_labelled_formula().get_contradiction(b.get_labelled_formula()):
+            if a.get_labelled_formula().get_contradiction(b.get_labelled_formula()) or b.get_labelled_formula().get_contradiction(a.get_labelled_formula()):
                 return True
         return False
 

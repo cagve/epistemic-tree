@@ -35,8 +35,6 @@ def get_formula_rule(formula: parser.LabelledFormula):
     type = formula.formula.get_formula_type()
     return formula_rules.get(type)
 
-    
-
 def alpha_rule(node: eptree.Node, tree: eptree.Tree, term1: parser.LabelledFormula, term2: parser.LabelledFormula):
     leafs = tree.get_available_leafs(node)
     tree.remove_node_from_group(node)
@@ -44,9 +42,11 @@ def alpha_rule(node: eptree.Node, tree: eptree.Tree, term1: parser.LabelledFormu
         id1 = int(str(leaf.id)+str(1))
         id2 = int(str(leaf.id)+str(11))
         leaf.add_one_child(term1,id1)
-        leaf.left.add_one_child(term2,id2)
         tree.add_node_to_group(leaf.left)
-        tree.add_node_to_group(leaf.left.left)
+        if not tree.get_branch(leaf.left).is_close():
+            leaf.left.add_one_child(term2,id2)
+            tree.add_node_to_group(leaf.left.left)
+
 
 def beta_rule(node: eptree.Node, tree: eptree.Tree, term1: parser.LabelledFormula, term2: parser.LabelledFormula):
     leafs = tree.get_available_leafs(node)
@@ -203,19 +203,18 @@ def rule_algorithm(tree: eptree.Tree):
         if tree.alpha_group:
             # print('alpha rule apply')
             tree.alpha_group[0].apply_rule(tree) 
-        elif tree.beta_group: 
-            # print('beta rule apply')
-            tree.beta_group[0].apply_rule(tree) 
         elif tree.pi_group:
             # print('pi rule apply')
             tree.pi_group[0].apply_rule(tree) 
         elif tree.nu_group:
             # print('nu rule apply')
             tree.nu_group[0].apply_rule(tree) 
+        elif tree.beta_group: 
+            # print('beta rule apply')
+            tree.beta_group[0].apply_rule(tree) 
         else:
             return False
         return rule_algorithm(tree)
-    print("SE ACABÓ")
     
 
 def get_label_branch(branch: list) -> list:

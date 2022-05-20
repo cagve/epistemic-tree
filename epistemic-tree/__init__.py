@@ -36,32 +36,7 @@ def arbol4():
     tree.create_tree(f1)
     rl.rule_algorithm(tree)
     tree.print_dot(tree.root)
-    print(tree.is_theorem())
-
-def cli():
-    premisas=[]
-    try:
-        while True:
-            entrada = input("Introduzca premisa: ")  
-            if entrada == 'exit':
-                break
-            formula = parser.Formula(entrada)
-            if not formula.parse():
-                print("Error")
-            else:
-                premisas.append(formula)
-    except KeyboardInterrupt:
-        pass
-    print()
-    conclusion = parser.Formula(input('Introduzca conclusión: '))
-    tree = t.Tree()
-    tree.create_tree(conclusion,premisas)
-    rl.rule_algorithm(tree)
-    tree.print_dot(tree.root)
-    os.system('dot -Tpng ~/epistemic-tree/lib/dots/graph_test.dot > ~/test.png')
-    os.system('notify-send "'+str(tree.is_theorem())+'"')
-    os.system('feh ~/test.png')
-
+    # print(tree.is_theorem())
 
 def test_theorem(conclusion, premisas):
     tree = t.Tree()
@@ -74,7 +49,7 @@ def test_theorem(conclusion, premisas):
     formula = parser.Formula(conclusion)
     tree.create_tree(formula,lista_premisas)
     rl.rule_algorithm(tree)
-    return tree.is_theorem()
+    return(tree.open_branch())
 
 def cli():
     premisas=[]
@@ -94,8 +69,7 @@ def cli():
     tree.create_tree(conclusion,premisas)
     rl.rule_algorithm(tree)
     tree.print_dot(tree.root)
-    tree.print_tree(tree.root,2)
-    print(tree.is_theorem())
+    print(tree.open_branch())
     os.system('dot -Tpng ~/epistemic-tree/lib/dots/graph_test.dot > ~/test.png')
     os.system('feh ~/test.png')
 
