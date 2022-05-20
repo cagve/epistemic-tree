@@ -237,6 +237,27 @@ class Tree:
                 ava_leafs.append(leaf)
         return ava_leafs
 
+    def print_open_close_branchs(self):
+        branchs = self.get_full_branch(self.root)
+        close_branchs = list(filter(lambda branch: branch.is_close(), branchs))
+        open_branchs = list(filter(lambda branch: not branch.is_close(), branchs))
+        for branch in close_branchs:
+            formula = parser.Formula('')
+            label = parser.Label('')
+            lf = parser.LabelledFormula(label,formula)
+            leaf = branch[0]
+            id = int(str(leaf.id)+str(1))
+            leaf.add_one_child(lf,id)
+
+
+        for branch in open_branchs:
+            formula = parser.Formula('')
+            label = parser.Label('')
+            lf = parser.LabelledFormula(label,formula)
+            leaf = branch[0]
+            id = int(str(leaf.id)+str(1))
+            leaf.add_one_child(lf,id)
+
                 # print("Branch of " + leaf.get_labelled_formula_string() + " is available")
     def print_tree(self, root, space):
         if (root == None):
@@ -322,8 +343,8 @@ class Tree:
             return 
 
     def get_open_branchs(self) -> list:
-        banchs = self.get_full_branch(self.root)
-        open_branchs = list(filter(lambda branch: not branch.is_close(), banchs))
+        branchs = self.get_full_branch(self.root)
+        open_branchs = list(filter(lambda branch: not branch.is_close(), branchs))
         return open_branchs
     
     def open_branch(self):

@@ -4,40 +4,6 @@ import rules as rl
 import eptree as t
 import test 
 
-def arbol1():
-    f1 = parser.Formula("Kap&&Kbr")
-    f3 = parser.Formula("Kbq")
-    premises = [f3]
-    tree = t.Tree()
-    tree.create_tree(f1,premises)
-    rl.rule_algorithm(tree)
-    tree.print_dot(tree.root)
-    print(tree.is_theorem())
-
-def arbol2():
-    f1 = parser.Formula("Ka(p=>q)=>(Kap=>Kaq)")
-    tree = t.Tree()
-    tree.create_tree(f1)
-    rl.rule_algorithm(tree)
-    tree.print_dot(tree.root)
-    print(tree.is_theorem())
-
-def arbol3():
-    f1 = parser.Formula("Ka(p||q) => Kap")
-    tree = t.Tree()
-    tree.create_tree(f1)
-    rl.rule_algorithm(tree)
-    tree.print_dot(tree.root)
-    print(tree.get_open_branchs())
-
-def arbol4():
-    f1 = parser.Formula("Kap&&q")
-    tree = t.Tree()
-    tree.create_tree(f1)
-    rl.rule_algorithm(tree)
-    tree.print_dot(tree.root)
-    # print(tree.is_theorem())
-
 def test_theorem(conclusion, premisas):
     tree = t.Tree()
     lista_premisas = []
@@ -68,8 +34,9 @@ def cli():
     tree = t.Tree()
     tree.create_tree(conclusion,premisas)
     rl.rule_algorithm(tree)
-    tree.print_dot(tree.root)
     print(tree.open_branch())
+    tree.print_open_close_branchs()
+    tree.print_dot(tree.root)
     os.system('dot -Tpng ~/epistemic-tree/lib/dots/graph_test.dot > ~/test.png')
     os.system('feh ~/test.png')
 
