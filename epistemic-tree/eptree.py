@@ -1,4 +1,5 @@
 import itertools
+import epmodel
 import rules
 import parser
 
@@ -349,6 +350,33 @@ class Tree:
     
     def open_branch(self):
         return len(self.get_open_branchs()) != 0
+
+    def create_counter_model(self):
+        counter_models = []
+        if not self.open_branch():
+            print("Closed tree")
+            return
+
+        open_branchs = self.get_open_branchs()
+
+        for branch in open_branchs:
+            labelbranch = branch.get_label_branch()
+            modelo = epmodel.Model()
+            for label in labelbranch:
+                modelo.add_world(epmodel.World(str(label.simplify_label())))
+                # ADD EVALUATION
+                world = epmodel.World(str(label.simplify_label()))
+                world.add_true_formula_list(filter(lambda x: x.is_literal(), label.get_formulas(tree.root)))
+                modelo.add_world(world)
+                if branch.get_simple_extensions(label) !=None:
+                    for ext in branch.get_simple_extensions(label):
+                        agent=ext.get_agent()
+                        world1 = epmodel.World(str(label.simplify_label()))
+                        world2 = epmodel.World(str(ext.simplify_label()))
+                        relation = epmodel.Relation(world1,world2,agent) 
+                        modelo.add_relation(relation)
+            counter_models.append(modelo)
+        return counter_models
 
 
 

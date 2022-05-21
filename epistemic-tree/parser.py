@@ -106,6 +106,9 @@ class Formula:
         self.tree = self.ts.get_tree()
         self.node = self.ts.get_root_node()
 
+    def to_string(self):
+        return self.formula
+
     def get_subformulas(self) -> list:
         """
         Return the subformula function.
@@ -269,6 +272,11 @@ class Formula:
         else:
             return self.get_terms()[0].get_terms()[0].delete_negation()
         
+    def is_literal(self):
+        if self.get_formula_type()=='atom' or self.get_formula_type()=='not_atom':
+            return True
+        else:
+            return False
 
 class Label(): 
     """
@@ -312,6 +320,12 @@ class Label():
                 """)
         fbf = fbf_query.captures(self.node)
         return len(fbf)==0
+
+    def get_agent(self):
+        if len(self.label)>1:
+            return self.label[-3]
+        else: 
+            return None
 
     def len(self) -> int:
         """

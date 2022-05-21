@@ -1,8 +1,16 @@
 digraph G {
 node[shape = none]
-1[label="1 -p"];
-11[label="1 Kap"];
-111[label=" "];
+1[label="1 -(Kap∧Kbr)"];
+11[label="1 Kbq"];
+111[label="1 -Kap"];
+1111[label="1.a.1 -p"];
+112[label="1 -Kbr"];
+1121[label="1.b.1 -r"];
+11211[label="1.b.1 q"];
 1 -> 11;
 11 -> 111;
+11 -> 112;
+111 -> 1111;
+112 -> 1121;
+1121 -> 11211;
 }

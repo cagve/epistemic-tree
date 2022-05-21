@@ -1,0 +1,7 @@
+digraph G {
+1[label="1 \n "];
+12[label="12 \n q"];
+11[label="11 \n -p"];
+1 -> 12[label="a"];
+1 -> 11[label="a"];
+}
