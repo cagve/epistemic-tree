@@ -250,7 +250,6 @@ class Tree:
             id = int(str(leaf.id)+str(1))
             leaf.add_one_child(lf,id)
 
-
         for branch in open_branchs:
             formula = parser.Formula('')
             label = parser.Label('')
@@ -259,7 +258,6 @@ class Tree:
             id = int(str(leaf.id)+str(1))
             leaf.add_one_child(lf,id)
 
-                # print("Branch of " + leaf.get_labelled_formula_string() + " is available")
     def print_tree(self, root, space):
         if (root == None):
             return False
@@ -364,9 +362,9 @@ class Tree:
             modelo = epmodel.Model()
             for label in labelbranch:
                 modelo.add_world(epmodel.World(str(label.simplify_label())))
-                # ADD EVALUATION
+                # ADD EVALUATION ONLY LITERAL
                 world = epmodel.World(str(label.simplify_label()))
-                world.add_true_formula_list(filter(lambda x: x.is_literal(), label.get_formulas(tree.root)))
+                world.add_true_formula_list(filter(lambda x: x.is_literal(), label.get_formulas(self.root)))
                 modelo.add_world(world)
                 if branch.get_simple_extensions(label) !=None:
                     for ext in branch.get_simple_extensions(label):

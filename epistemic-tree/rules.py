@@ -1,4 +1,6 @@
 import eptree as eptree
+import os
+import rules as rl
 import parser
 
 type_rules = {
@@ -223,6 +225,26 @@ def get_label_branch(branch: list) -> list:
         if (i.get_label().label not in labelbranchlist):
             labelbranchlist.append(i.get_label())
     return labelbranchlist
+
+def test_theorem(conclusion, premisas):
+    tree = eptree.Tree()
+    lista_premisas = []
+    if premisas:
+        for premisa in premisas:
+            formula = parser.Formula(premisa)
+            lista_premisas.append(formula)
+
+    formula = parser.Formula(conclusion)
+    tree.create_tree(formula,lista_premisas)
+    rl.rule_algorithm(tree)
+    if tree.open_branch():
+        model = tree.create_counter_model()
+        model[0].print_dot()
+        os.system('dot -Tpng ~/epistemic-tree/lib/dots/model.dot > ~/model.png')
+    tree.print_open_close_branchs()
+    tree.print_dot(tree.root)
+    os.system('dot -Tpng ~/epistemic-tree/lib/dots/graph_test.dot > ~/test.png')
+    return(tree.open_branch())
 
 
 formula_functions = {

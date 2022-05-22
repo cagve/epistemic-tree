@@ -93,4 +93,4 @@ class World():
                 formula_list = ev.formula
             else:
                 formula_list = formula_list+','+ev.formula
-        return formula_list
+        return "".join(set(formula_list))

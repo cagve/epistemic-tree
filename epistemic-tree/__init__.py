@@ -1,6 +1,7 @@
 import parser 
 import epmodel
 import os
+import tui
 import rules as rl
 import eptree as t
 import test 
@@ -81,7 +82,7 @@ def create_model():
     modelo.print_model()
     modelo.print_dot()
 def main():
-    create_model()
+    tui.main()
 
 if __name__ == '__main__':
     main()
