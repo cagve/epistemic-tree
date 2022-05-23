@@ -84,6 +84,9 @@ class World():
 
     def add_true_formula_list(self, formula_list):
         for formula in formula_list:
+            for f in self.evaluation:
+                if formula.formula == f.formula:
+                    return 
             self.evaluation.append(formula)
 
     def evaluation_to_string(self):
@@ -93,4 +96,4 @@ class World():
                 formula_list = ev.formula
             else:
                 formula_list = formula_list+','+ev.formula
-        return "".join(set(formula_list))
+        return formula_list
