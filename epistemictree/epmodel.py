@@ -43,7 +43,7 @@ class Model():
             print("}")
 
     def print_dot(self):
-        file = open("/home/karu/epistemic-tree/lib/dots/model.dot", 'w')
+        file = open("/home/karu/model.dot", 'w')
         file.write("digraph G {\n")
         for world in self.worlds:
             file.write(world.name+'[label="'+world.name+' \\n '+world.evaluation_to_string()+'"];\n')

@@ -1,4 +1,4 @@
 digraph G {
 1[label="1 \n "];
-1[label="1 \n p,-r"];
+1[label="1 \n -r"];
 }

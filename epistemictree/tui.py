@@ -8,7 +8,7 @@ from prompt_toolkit.layout.layout import Layout
 from prompt_toolkit.layout import FloatContainer, Float
 from prompt_toolkit.widgets import Dialog, Label, Button
 from prompt_toolkit.widgets import Frame, TextArea
-import rules as rl
+from epistemictree import rules as rl
 import os
 from PIL import Image
 
@@ -95,7 +95,7 @@ def accept_c(buff):
     premises = output_field_p.text.split()
     result =rl.test_theorem(output,premises)
     os.system('notify-send "'+str(result)+'"')
-    im1 = Image.open(r"/home/karu/test.png") 
+    im1 = Image.open(r"/home/karu/tree.png") 
     im1.show()
     if result:
         im2 = Image.open(r"/home/karu/model.png") 
@@ -108,5 +108,3 @@ def run():
     application.run()
 
 
-if __name__ == "__main__":
-    run() 

@@ -1,7 +1,7 @@
 import itertools
-import epmodel
-import rules
-import parser
+from epistemictree import epmodel
+from epistemictree import rules
+from epistemictree import parser
 
 COUNT = [10]
 COUNT2 = [10]
@@ -193,7 +193,7 @@ class Tree:
                 self.dot_formula(node.right,file)
 
     def print_dot(self,node):
-        file = open("/home/karu/epistemic-tree/lib/dots/graph_test.dot", 'w')
+        file = open("/home/karu/tree.dot", 'w')
         file.write("digraph G {\n")
         file.write('node[shape = none]\n')
         self.dot_formula(node,file)

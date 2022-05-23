@@ -1,7 +1,6 @@
-import eptree as eptree
+from epistemictree import parser
+from epistemictree import eptree 
 import os
-import rules as rl
-import parser
 
 type_rules = {
         'conjunction_rule':'alpha', 
@@ -28,10 +27,6 @@ formula_rules = {
         'atom':'literal',
         'not_atom':'literal'
     }
-
-
-def testing():
-    print("hello world")
 
 def get_formula_rule(formula: parser.LabelledFormula):
     type = formula.formula.get_formula_type()
@@ -236,14 +231,14 @@ def test_theorem(conclusion, premisas):
 
     formula = parser.Formula(conclusion)
     tree.create_tree(formula,lista_premisas)
-    rl.rule_algorithm(tree)
+    rule_algorithm(tree)
     if tree.open_branch():
         model = tree.create_counter_model()
         model[0].print_dot()
-        os.system('dot -Tpng ~/epistemic-tree/lib/dots/model.dot > ~/model.png')
+        os.system('dot -Tpng ~/model.dot > ~/model.png')
     tree.print_open_close_branchs()
     tree.print_dot(tree.root)
-    os.system('dot -Tpng ~/epistemic-tree/lib/dots/graph_test.dot > ~/test.png')
+    os.system('dot -Tpng ~/tree.dot > ~/tree.png')
     return(tree.open_branch())
 
 

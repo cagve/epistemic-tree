@@ -1,9 +1,8 @@
-import rules as rl
-import eptree as t
-import parser
-import __init__ as init
+from epistemictree import __app_name__, __version__
+from epistemictree import rules as rl
+from epistemictree import eptree as t
+from epistemictree import parser
 import unittest
-
 
 # Arbol = [conclusion, premisas, solución]
 trees = {
@@ -71,7 +70,6 @@ class TestUnit(unittest.TestCase):
 
     def test_rule_type(self):
         label1 = parser.Label("1")
-        label2 = parser.Label("2")
 
         formula1 = parser.Formula("p&&q")
         formula2 = parser.Formula("-(Kap&&Kbq)")
@@ -96,7 +94,7 @@ class TestUnit(unittest.TestCase):
     def test_trees(self):
         for key,value in trees.items():
             print("Test "+key)
-            self.assertEqual(init.test_theorem(value[0],value[1]),value[2])
+            self.assertEqual(rl.test_theorem(value[0],value[1]),value[2])
     
 if __name__ == '__main__':
     unittest.main() 
