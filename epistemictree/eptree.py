@@ -357,23 +357,41 @@ class Tree:
 
         open_branchs = self.get_open_branchs()
 
-        for branch in open_branchs:
-            labelbranch = branch.get_label_branch()
-            modelo = epmodel.Model()
-            for label in labelbranch:
-                modelo.add_world(epmodel.World(str(label.simplify_label())))
-                # ADD EVALUATION ONLY LITERAL
-                world = epmodel.World(str(label.simplify_label()))
-                world.add_true_formula_list(filter(lambda x: x.is_literal(), label.get_formulas(self.root)))
-                modelo.add_world(world)
-                if branch.get_simple_extensions(label) !=None:
-                    for ext in branch.get_simple_extensions(label):
-                        agent=ext.get_agent()
-                        world1 = epmodel.World(str(label.simplify_label()))
-                        world2 = epmodel.World(str(ext.simplify_label()))
-                        relation = epmodel.Relation(world1,world2,agent) 
-                        modelo.add_relation(relation)
-            counter_models.append(modelo)
+        branch = open_branchs[0]
+        labelbranch = branch.get_label_branch()
+        modelo = epmodel.Model()
+        for label in labelbranch:
+            modelo.add_world(epmodel.World(str(label.simplify_label())))
+            # ADD EVALUATION ONLY LITERAL
+            world = epmodel.World(str(label.simplify_label()))
+            world.add_true_formula_list(filter(lambda x: x.is_literal(), branch.get_formulas_label(label)))
+            modelo.add_world(world)
+            if branch.get_simple_extensions(label) !=None:
+                for ext in branch.get_simple_extensions(label):
+                    agent=ext.get_agent()
+                    world1 = epmodel.World(str(label.simplify_label()))
+                    world2 = epmodel.World(str(ext.simplify_label()))
+                    relation = epmodel.Relation(world1,world2,agent) 
+                    modelo.add_relation(relation)
+        counter_models.append(modelo)
+        # for branch in open_branchs:
+        #     branch = open_branchs[0]
+        #     labelbranch = branch.get_label_branch()
+        #     modelo = epmodel.Model()
+        #     for label in labelbranch:
+        #         modelo.add_world(epmodel.World(str(label.simplify_label())))
+        #         # ADD EVALUATION ONLY LITERAL
+        #         world = epmodel.World(str(label.simplify_label()))
+        #         world.add_true_formula_list(filter(lambda x: x.is_literal(), label.get_formulas(self.root)))
+        #         modelo.add_world(world)
+        #         if branch.get_simple_extensions(label) !=None:
+        #             for ext in branch.get_simple_extensions(label):
+        #                 agent=ext.get_agent()
+        #                 world1 = epmodel.World(str(label.simplify_label()))
+        #                 world2 = epmodel.World(str(ext.simplify_label()))
+        #                 relation = epmodel.Relation(world1,world2,agent) 
+        #                 modelo.add_relation(relation)
+        #     counter_models.append(modelo)
         return counter_models
 
 
@@ -394,6 +412,13 @@ class Branch(list):
         for node in self:
             labels.append(node.get_label())
         return set(labels)
+
+    def get_formulas_label(self, label):
+        formulas = []
+        for node in self:
+            if node.get_label().label == label.label:
+                formulas.append(node.get_formula())
+        return formulas
 
     # TODO AÑADIR IR A HOJA
     def get_simple_extensions(self,  label_filter, label_branch=None,):

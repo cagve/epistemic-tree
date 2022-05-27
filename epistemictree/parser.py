@@ -399,13 +399,14 @@ class Label():
     
     def get_formulas(self, node, formulas = None):
         """ 
-        Return the set of formulas that are true in the label. It uses preorder algorithm.
+        DEPRECATED Return the set of formulas that are true in the label. It uses preorder algorithm.
         """
         if formulas == None:
             formulas = []
         if node:
             if(node != None):
                 if node.get_label().label == self.label:
+                    print(node.get_labelled_formula_string())
                     formulas.append(node.get_formula())
                 self.get_formulas(node.left, formulas)
                 self.get_formulas(node.right, formulas)
