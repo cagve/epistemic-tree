@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+Epistemic_tableaux.egg-info/PKG-INFO
+Epistemic_tableaux.egg-info/SOURCES.txt
+Epistemic_tableaux.egg-info/dependency_links.txt
+Epistemic_tableaux.egg-info/top_level.txt
+epistemictree/__init__.py
+epistemictree/__main__.py
+epistemictree/epmodel.py
+epistemictree/eptree.py
+epistemictree/parser.py
+epistemictree/rules.py
+epistemictree/tui.py

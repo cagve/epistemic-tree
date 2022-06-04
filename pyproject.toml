@@ -1,0 +1,2 @@
+[build-system]
+requires = ["tree_sitter","os", "itertools"]
