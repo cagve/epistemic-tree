@@ -1,4 +1,3 @@
-import plac
 from epistemictree import rules as rl
 from epistemictree import tui as t
 from epistemictree.parser import Formula

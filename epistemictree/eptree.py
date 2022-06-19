@@ -233,6 +233,7 @@ class Tree:
             branch = self.get_branch(leaf)
             if branch.is_close():
                 print("Branch of " + leaf.get_labelled_formula_string() + " is close")
+                return 
             else: 
                 ava_branchs.append(branch)
                 ava_leafs.append(leaf)
@@ -322,6 +323,9 @@ class Tree:
             self.beta_group.append(node)
         elif node.get_rule_type() == 'pi':
             self.pi_group.append(node)
+        elif node.get_rule_type() == 'nu':
+            self.add_knows_to_group(node,self)
+            # self.pi_group.append(node)
         # elif node.get_rule_type() =='literal':
         #     print("Es un literal")
         # else:
