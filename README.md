@@ -12,11 +12,11 @@ Agiulera Ventura.
 | Símbolo | Fórmula      | Ejemplo |
 |---------|--------------|---------|
 | &&      | Conjunción   | p&&q    |
-| ||      | Disyunción   | p||q    |
+| \|\|      | Disyunción   | p\|\|q    |
 | =>      | Implicación  | p=>q    |
 | Ka      | Conocimiento | Kap     |
 
-El conjunto de átomos se define como [p-z] y el conjunto de átomos a1,a2,...,an.
+El conjunto de átomos se define como [p-z] y el conjunto de átomos [a-d].
 
 ## Interfaz
 ### Consola
