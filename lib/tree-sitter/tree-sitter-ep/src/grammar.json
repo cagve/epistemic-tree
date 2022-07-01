@@ -1,0 +1,210 @@
+{
+  "name": "ep",
+  "rules": {
+    "formula": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "atom"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_monary_expression"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_binary_expression"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_par_expression"
+        }
+      ]
+    },
+    "_monary_expression": {
+      "type": "PREC_LEFT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_monary_operator"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "term",
+            "content": {
+              "type": "SYMBOL",
+              "name": "formula"
+            }
+          }
+        ]
+      }
+    },
+    "_binary_expression": {
+      "type": "PREC_LEFT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "left_term",
+            "content": {
+              "type": "SYMBOL",
+              "name": "formula"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_binary_operator"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "right_term",
+            "content": {
+              "type": "SYMBOL",
+              "name": "formula"
+            }
+          }
+        ]
+      }
+    },
+    "_par_expression": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "SYMBOL",
+          "name": "formula"
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "_monary_operator": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "not"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "know"
+        }
+      ]
+    },
+    "_binary_operator": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "and"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "or"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "iff"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "eq"
+        }
+      ]
+    },
+    "not": {
+      "type": "STRING",
+      "value": "-"
+    },
+    "and": {
+      "type": "STRING",
+      "value": "&&"
+    },
+    "iff": {
+      "type": "STRING",
+      "value": "=>"
+    },
+    "eq": {
+      "type": "STRING",
+      "value": "<>"
+    },
+    "or": {
+      "type": "STRING",
+      "value": "||"
+    },
+    "know": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "K"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "agent"
+        }
+      ]
+    },
+    "atom": {
+      "type": "PATTERN",
+      "value": "[p-z]"
+    },
+    "agent": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[a-d]"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[a-d]\\d+"
+        }
+      ]
+    },
+    "digit": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "\\d"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\d+"
+        }
+      ]
+    }
+  },
+  "extras": [
+    {
+      "type": "PATTERN",
+      "value": "\\s"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [],
+  "inline": [],
+  "supertypes": []
+}
+
