@@ -93,7 +93,7 @@ def accept_p(buff):
 def accept_c(buff):
     output = input_field_c.text
     premises = output_field_p.text.split()
-    result =rl.test_theorem(output,premises)
+    result =rl.run_tableau(output,premises)
     os.system('notify-send "'+str(result)+'"')
     im1 = Image.open(r"/home/karu/tree.png") 
     im1.show()

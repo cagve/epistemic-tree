@@ -171,7 +171,7 @@ def know_rule(node: eptree.Node, tree: eptree.Tree):
         #TODO: Error handling
         print("ERROR K")
         return
-    # VOY HASTA LA HOJA
+
     for leaf in tree.get_available_leafs(node):
         id = int(leaf.id)
         #COJO LA RAMA DESDE LA HOJA
@@ -197,6 +197,8 @@ def know_rule(node: eptree.Node, tree: eptree.Tree):
 
 def rule_algorithm(tree: eptree.Tree):
     while True:
+        if not tree.get_available_leafs(tree.root):
+            return False
         if tree.alpha_group:
             # print('alpha rule apply')
             tree.alpha_group[0].apply_rule(tree) 
@@ -221,7 +223,7 @@ def get_label_branch(branch: list) -> list:
             labelbranchlist.append(i.get_label())
     return labelbranchlist
 
-def test_theorem(conclusion, premisas):
+def run_tableau(conclusion, premisas):
     tree = eptree.Tree()
     lista_premisas = []
     if premisas:

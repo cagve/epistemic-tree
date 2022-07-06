@@ -94,7 +94,7 @@ class TestUnit(unittest.TestCase):
     def test_trees(self):
         for key,value in trees.items():
             print("Test "+key)
-            self.assertEqual(rl.test_theorem(value[0],value[1]),value[2])
+            self.assertEqual(rl.run_tableau(value[0],value[1]),value[2])
     
 if __name__ == '__main__':
     unittest.main() 
