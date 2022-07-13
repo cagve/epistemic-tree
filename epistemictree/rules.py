@@ -28,6 +28,19 @@ formula_rules = {
         'not_atom':'literal'
     }
 
+def get_rule(node: eptree.Node):
+    type = node.get_formula().get_formula_type()
+    return formula_rules[type]
+
+def get_rule_type(node: eptree.Node):
+    rule = get_rule(node)
+    return type_rules.get(rule)
+
+def apply_rule(node: eptree.Node, tree):
+    tree.add_knows_to_group(tree.root,tree)
+    type = node.get_formula().get_formula_type()
+    formula_functions[type](node, tree)
+
 def get_formula_rule(formula: parser.LabelledFormula):
     type = formula.formula.get_formula_type()
     return formula_rules.get(type)
@@ -192,7 +205,6 @@ def know_rule(node: eptree.Node, tree: eptree.Tree):
             print("ERROR K")
             return
     tree.add_knows_to_group(tree.root, tree)
-    # node.apply_rule(tree)
     return extensions
 
 def rule_algorithm(tree: eptree.Tree):
@@ -200,17 +212,13 @@ def rule_algorithm(tree: eptree.Tree):
         if not tree.get_available_leafs(tree.root):
             return False
         if tree.alpha_group:
-            # print('alpha rule apply')
-            tree.alpha_group[0].apply_rule(tree) 
+            apply_rule(tree.alpha_group[0],tree)
         elif tree.pi_group:
-            # print('pi rule apply')
-            tree.pi_group[0].apply_rule(tree) 
+            apply_rule(tree.pi_group[0].apply_rule(tree) ,tree)
         elif tree.nu_group:
-            # print('nu rule apply')
-            tree.nu_group[0].apply_rule(tree) 
+            apply_rule(tree.nu_group[0].apply_rule(tree) ,tree)
         elif tree.beta_group: 
-            # print('beta rule apply')
-            tree.beta_group[0].apply_rule(tree) 
+            apply_rule(tree.beta_group[0].apply_rule(tree) ,tree)
         else:
             return False
         return rule_algorithm(tree)

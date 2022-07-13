@@ -1,6 +1,5 @@
 import itertools
 from epistemictree import epmodel
-from epistemictree import rules
 from epistemictree import parser
 
 COUNT = [10]
@@ -80,18 +79,6 @@ class Node:
         """Return a list wich contains the children of the node."""
         return [self.left,self.right]
 
-    def get_rule(self):
-        type = self.get_formula().get_formula_type()
-        return rules.formula_rules[type]
-
-    def get_rule_type(self):
-        rule = self.get_rule()
-        return rules.type_rules.get(rule)
-
-    def apply_rule(self, tree):
-        tree.add_knows_to_group(tree.root,tree)
-        type = self.get_formula().get_formula_type()
-        rules.formula_functions[type](self, tree)
 
 class Tree:
     def __init__(self, root = None, left = None, right = None):
