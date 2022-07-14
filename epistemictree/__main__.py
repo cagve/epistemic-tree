@@ -26,7 +26,5 @@ herzig = {
         'tree5' : ['-(-Ka-p)', ['Ka(p =>(-Ka-q))','-Kap']]
         }
 
-
-
 if __name__ == '__main__':
     main()

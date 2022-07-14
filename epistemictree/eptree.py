@@ -345,12 +345,13 @@ class Tree:
         return len(self.get_open_branchs()) != 0
 
     
-
     def loop_checking(self, model):
+        """
+        Method that add the superfluos relation of a given model.
+        """
         open_branchs = self.get_open_branchs()
         branch = open_branchs[0]
         labelbranch = branch.get_label_branch()
-        
         for label in labelbranch:
             originals = label.get_originals(branch)
             for original in originals:
@@ -359,10 +360,13 @@ class Tree:
                 for i in extensions:
                     agent = i.get_agent()
                     world2 = epmodel.World(str(i.simplify_label()))
-                    relation = epmodel.Relation(world1,world2,agent, "superfluo") 
+                    relation = epmodel.Relation(world1,world2,agent,"superfluo") 
                     model.add_relation(relation)
 
-    def create_counter_model_loop(self):
+    def create_counter_model(self):
+        """Method that create the set of models. For system with transitivity
+        you need to execute loop_checking after this method to complete the
+        system."""
         counter_models = []
         if not self.open_branch():
             print("Closed tree")
@@ -387,52 +391,6 @@ class Tree:
                     relation = epmodel.Relation(world1,world2,agent, "normal") 
                     modelo.add_relation(relation)
         counter_models.append(modelo)
-        return counter_models
-
-
-    def create_counter_model(self):
-        counter_models = []
-        if not self.open_branch():
-            print("Closed tree")
-            return
-
-        open_branchs = self.get_open_branchs()
-
-        branch = open_branchs[0]
-        labelbranch = branch.get_label_branch()
-        modelo = epmodel.Model()
-        for label in labelbranch:
-            modelo.add_world(epmodel.World(str(label.simplify_label())))
-            # ADD EVALUATION ONLY LITERAL
-            world = epmodel.World(str(label.simplify_label()))
-            world.add_true_formula_list(filter(lambda x: x.is_literal(), branch.get_base_set(label)))
-            modelo.add_world(world)
-            if branch.get_simple_extensions(label) !=None:
-                for ext in branch.get_simple_extensions(label):
-                    agent=ext.get_agent()
-                    world1 = epmodel.World(str(label.simplify_label()))
-                    world2 = epmodel.World(str(ext.simplify_label()))
-                    relation = epmodel.Relation(world1,world2,agent) 
-                    modelo.add_relation(relation)
-        counter_models.append(modelo)
-        # for branch in open_branchs:
-        #     branch = open_branchs[0]
-        #     labelbranch = branch.get_label_branch()
-        #     modelo = epmodel.Model()
-        #     for label in labelbranch:
-        #         modelo.add_world(epmodel.World(str(label.simplify_label())))
-        #         # ADD EVALUATION ONLY LITERAL
-        #         world = epmodel.World(str(label.simplify_label()))
-        #         world.add_true_formula_list(filter(lambda x: x.is_literal(), label.get_formulas(self.root)))
-        #         modelo.add_world(world)
-        #         if branch.get_simple_extensions(label) !=None:
-        #             for ext in branch.get_simple_extensions(label):
-        #                 agent=ext.get_agent()
-        #                 world1 = epmodel.World(str(label.simplify_label()))
-        #                 world2 = epmodel.World(str(ext.simplify_label()))
-        #                 relation = epmodel.Relation(world1,world2,agent) 
-        #                 modelo.add_relation(relation)
-        #     counter_models.append(modelo)
         return counter_models
 
 

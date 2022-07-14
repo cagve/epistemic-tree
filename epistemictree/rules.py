@@ -37,11 +37,6 @@ def get_rule_type(node: eptree.Node):
     rule = get_rule(node)
     return type_rules.get(rule)
 
-def apply_rule(node: eptree.Node, tree):
-    tree.add_knows_to_group(tree.root,tree)
-    type = node.get_formula().get_formula_type()
-    formula_functions[type](node, tree)
-
 def get_formula_rule(formula: parser.LabelledFormula):
     type = formula.formula.get_formula_type()
     return formula_rules.get(type)
@@ -286,46 +281,38 @@ def know_rule_4(node: eptree.Node, tree: eptree.Tree):
             return
     tree.add_knows_to_group(tree.root, tree)
     return extensions
-
-def rule_algorithm(tree: eptree.Tree):
+    
+# Ahora mismo satura primero las etiquetas y después divide ramas.
+def rule_algorithm(system,tree):
     while True:
         if not tree.get_available_leafs(tree.root):
             return False
         if tree.alpha_group:
-            apply_rule(tree.alpha_group[0],tree)
-        elif tree.pi_group:
-            apply_rule(tree.pi_group[0],tree)
+            apply_rule(system, tree.alpha_group[0],tree)
         elif tree.nu_group:
-            apply_rule(tree.nu_group[0],tree)
+            apply_rule(system, tree.nu_group[0],tree)
+        elif tree.pi_group:
+            apply_rule(system, tree.pi_group[0],tree)
         elif tree.beta_group: 
-            apply_rule(tree.beta_group[0],tree)
+            apply_rule(system, tree.beta_group[0],tree)
         else:
             return False
-        return rule_algorithm(tree)
+        return rule_algorithm(system, tree)
     
-def run_system(tree):
-    while True:
-        if tree.alpha_group:
-            apply_rule_c(tree.alpha_group[0],tree)
-        elif tree.nu_group:
-            apply_rule_c(tree.nu_group[0],tree)
-        elif tree.pi_group:
-            apply_rule_c(tree.pi_group[0],tree)
-        elif tree.beta_group: 
-            apply_rule_c(tree.beta_group[0],tree)
-        else:
-            return False
-        return run_system(tree)
-    
-def apply_rule_c(node: eptree.Node, tree):
-    print("Aplicando regla en nodo "+ str(node.id))
-    print(node.get_labelled_formula_string())
+def apply_rule(system, node: eptree.Node, tree):
+    print("Aplicando regla en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     tree.add_knows_to_group(tree.root,tree)
     type = node.get_formula().get_formula_type()
-    for i in formula_functions_k4[type]:
-        i(node, tree)
+    if system =="k4":
+        for i in formula_functions_k4[type]:
+            i(node, tree)
+    elif system == "k":
+        for i in formula_functions_k[type]:
+            i(node, tree)
+    else:
+        print("System not found")
 
-def run_tableau(conclusion, premisas):
+def run_tableau(system, conclusion, premisas):
     tree = eptree.Tree()
     lista_premisas = []
     if premisas:
@@ -335,19 +322,17 @@ def run_tableau(conclusion, premisas):
 
     formula = parser.Formula(conclusion)
     tree.create_tree(formula,lista_premisas)
-    rule_algorithm(tree)
-    if tree.open_branch():
-        model = tree.create_counter_model()
-        model[0].print_dot()
-        os.system('dot -Tpng ~/model.dot > ~/model.png')
-    tree.print_open_close_branchs()
+    rule_algorithm(system, tree)
     tree.print_dot(tree.root)
     os.system('dot -Tpng ~/tree.dot > ~/tree.png')
-    return(tree.open_branch())
-
-def know4_rule(node, i):
-    print("REGLA 4")
-
+    if tree.open_branch():
+        model = tree.create_counter_model()
+        if system == "k4" or system == "s4":
+            print("Aplicando loop checking")
+            tree.loop_checking(model[0])
+        model[0].print_dot()
+        os.system('dot -Tpng ~/model.dot > ~/model.png')
+    return(tree.open_branch(),tree)
 
     
 formula_functions_k4 = {
@@ -361,15 +346,15 @@ formula_functions_k4 = {
         'not_know':[not_know_rule_4]
         }
 
-formula_functions = {
-        'and':conjunction_rule,
-        'or':disjunction_rule, 
-        'iff':implication_rule,
-        'know':know_rule,
-        'not_and':not_conjunction_rule,
-        'not_or':not_disjunction_rule,
-        'not_iff':not_implication_rule,
-        'not_know':not_know_rule
+formula_functions_k = {
+        'and':[conjunction_rule],
+        'or':[disjunction_rule], 
+        'iff':[implication_rule],
+        'know':[know_rule],
+        'not_and':[not_conjunction_rule],
+        'not_or':[not_disjunction_rule],
+        'not_iff':[not_implication_rule],
+        'not_know':[not_know_rule]
     }
 
 
