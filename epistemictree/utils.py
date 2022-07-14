@@ -1,33 +1,15 @@
-from os import wait
+def dot_to_latex():
+    file = open("/home/karu/model.dot", 'r')
+    replaced_content = ""
+    for line in file:
+        line = line.strip()
+        new_line = line.replace("->", "@").replace('-','¬').replace('&&', '∧').replace('=>','→').replace('||','∨').replace('@','->')
+        replaced_content = replaced_content + new_line + "\n"
+    file.close()
+    file_write = open("/home/karu/model.dot",'w')
+    file_write.write(replaced_content)
+    file_write.close()
 
-
-def superfluo_test(branch, label1,label2):
-    base1 = branch.get_base_set(label1)
-    list1=[formula.formula for formula in base1]
-
-    base2 = branch.get_base_set(label2)
-    list2=[formula.formula for formula in base2]
-
-    flag=False
-    for i in list1:
-        flag = False;
-        for j in list2:
-            if i==j:
-                flag = True
-                break ;
-    if flag:
-        return (list1, list2)
-    else:
-        for i in list2:
-            flag = False;
-            for j in list1:
-                if i==j:
-                    flag = True
-                    break ;
-        if flag: 
-            return(list2,list1)
-        else:
-            return None
 
 def superfluo(branch, label1, label2):
     # Etiqueta la misma return false

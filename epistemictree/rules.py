@@ -315,6 +315,7 @@ def apply_rule(system, node: eptree.Node, tree):
 def run_tableau(system, conclusion, premisas):
     tree = eptree.Tree()
     lista_premisas = []
+    model = None
     if premisas:
         for premisa in premisas:
             formula = parser.Formula(premisa)
@@ -332,7 +333,7 @@ def run_tableau(system, conclusion, premisas):
             tree.loop_checking(model[0])
         model[0].print_dot()
         os.system('dot -Tpng ~/model.dot > ~/model.png')
-    return(tree.open_branch(),tree)
+    return(tree.open_branch(),tree, model[0])
 
     
 formula_functions_k4 = {

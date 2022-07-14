@@ -1,7 +1,3 @@
-from epistemictree.__main__ import parser
-from epistemictree.tui import Label
-
-
 class Model():
     def __init__(self, worlds = None, relations = None):
         if worlds == None:
@@ -49,8 +45,14 @@ class Model():
     def print_dot(self):
         file = open("/home/karu/model.dot", 'w')
         file.write("digraph G {\n")
+        file.write("node[shape=record]\n")
         for world in self.worlds:
-            file.write(world.name+'[label="'+world.name+' \\n '+world.evaluation_to_string()+'"];\n')
+            evaluation = world.evaluation_to_string().replace(',','\\n')
+            if world.is_superfluo(self):
+                print(world.name + " es superfluo ")
+                file.write(world.name+'[style=dashed, color=blue, label="'+world.name+' | '+evaluation+'"];\n')
+            else:
+                file.write(world.name+'[label="'+world.name+' | '+evaluation+'"];\n')
         for relation in self.relations:
             if relation.type == "normal":
                 file.write(relation.world1.name+' -> '+relation.world2.name+'[label="'+relation.agent+'"];\n')
@@ -106,3 +108,45 @@ class World():
             else:
                 formula_list = formula_list+', '+ev.formula
         return formula_list
+
+
+    def evaluation_to_list(self):
+        formula_list  = []
+        for ev in self.evaluation:
+                formula_list.append(ev.formula)
+        return formula_list
+
+    def get_originals(self, model):
+        originals=[]
+        worlds = model.worlds
+        for world in worlds:
+            if self.is_subworld(world) and self.name!=world.name:
+                originals.append(world)
+        return originals 
+
+
+    def is_subworld(self, world) -> bool:
+        count=0
+        flag=True
+        if self.name == world.name:
+            flag = False
+        evaluation1 = self.evaluation_to_list()
+        evaluation2 = world.evaluation_to_list()
+
+        while flag and count < len(evaluation1):
+            for i in evaluation1:
+                if i not in evaluation2:
+                    flag = False
+                count = count+1
+        if flag and len(set(evaluation1)) == len(set(evaluation2)):
+            if int(world.name)<int(self.name):
+                return True
+            else:
+                return False
+        return flag
+
+    def is_superfluo(self, model):
+        if(self.get_originals(model)):
+            return True
+        return False
+        
