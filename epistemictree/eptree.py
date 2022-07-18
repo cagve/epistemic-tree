@@ -252,7 +252,6 @@ class Tree:
     def print_tree(self, root, space):
         if (root == None):
             return False
-
         space += COUNT[0]
         self.print_tree(root.right, space)
         print()
@@ -359,9 +358,11 @@ class Tree:
                 world1 = epmodel.World(str(label.simplify_label()))
                 for i in extensions:
                     agent = i.get_agent()
+                    model.get_world_by_name(str(i.simplify_label()))
                     world2 = epmodel.World(str(i.simplify_label()))
                     relation = epmodel.Relation(world1,world2,agent,"superfluo") 
-                    model.add_relation(relation)
+                    if not model.contain_relation(relation):
+                        model.add_relation(relation)
 
     def create_counter_model(self):
         #FIX duplica mundos
@@ -382,14 +383,16 @@ class Tree:
             # ADD EVALUATION ONLY LITERAL
             world = epmodel.World(str(label.simplify_label()))
             world.add_true_formula_list(branch.get_base_set(label))
-            modelo.add_world(world)
+            if not modelo.contain_world(world):
+                modelo.add_world(world)
             if branch.get_simple_extensions(label) !=None:
                 for ext in branch.get_simple_extensions(label):
                     agent=ext.get_agent()
                     world1 = epmodel.World(str(label.simplify_label()))
                     world2 = epmodel.World(str(ext.simplify_label()))
                     relation = epmodel.Relation(world1,world2,agent, "normal") 
-                    modelo.add_relation(relation)
+                    if not modelo.contain_relation(relation):
+                        modelo.add_relation(relation)
         counter_models.append(modelo)
         return counter_models
 

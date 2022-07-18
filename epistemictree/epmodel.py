@@ -1,3 +1,5 @@
+
+
 class Model():
     def __init__(self, worlds = None, relations = None):
         if worlds == None:
@@ -12,6 +14,20 @@ class Model():
     def add_world(self, world):
         self.worlds.append(world)
 
+    def get_agents(self):
+        agents = []
+        for relation in self.relations:
+            agents.append(relation.agent)
+        return set(agents)
+
+    def get_relations_by_agent(self, agent):
+        """Return tuples for an agent"""
+        relations = []
+        for relation in self.relations:
+            if relation.agent == agent:
+                relations.append(relation.to_tuple())
+        return relations
+
     def print_worlds(self):
         for i in self.worlds:
             print(i.to_string(), end=", ")
@@ -22,6 +38,18 @@ class Model():
 
     def add_relation(self, relation):
         self.relations.append(relation)
+
+    def contain_world(self, world):
+        for r in self.worlds:
+            if r.name == world.name:
+                return True
+        return False
+
+    def contain_relation(self, relation):
+        for r in self.relations:
+            if r.world1.name == relation.world1.name and r.world2.name == relation.world2.name and r.agent == relation.agent:
+                return True
+        return False
 
     def get_world_by_name(self, name:str):
         for world in self.worlds:
@@ -56,13 +84,32 @@ class Model():
         for relation in self.relations:
             if relation.type == "normal":
                 file.write(relation.world1.name+' -> '+relation.world2.name+'[label="'+relation.agent+'"];\n')
-            else:
+            elif relation.type == "superfluo":
                 file.write(relation.world1.name+' -> '+relation.world2.name+'[style=dashed,color=blue, label="'+relation.agent+'"];\n')
+            else:
+                file.write(relation.world1.name+' -> '+relation.world2.name+'[ color=red, label="'+relation.agent+'"];\n')
 
         file.write("}")
         file.close
 
-
+    def transitive_closure(self,agent):
+        """Method to make the model transitive. Only attends to the relation of the agent."""
+        # TODO Método para que sea transitivo en todos los agentes
+        closure = set(self.get_relations_by_agent(agent))
+        while True:
+            new_relations = set((x,w) for x,y in closure for q,w in closure if q == y)
+            for i in new_relations:
+                world1 = World(str(i[0]))
+                world2 = World(str(i[1]))
+                relation = Relation( world1, world2,agent, "closure")
+                if not self.contain_relation(relation):
+                    print(relation.to_string()+" not in model")
+                    self.add_relation(relation)
+            closure_until_now = closure | new_relations
+            if closure_until_now == closure:
+                break
+            closure = closure_until_now
+        return closure
 
 class Relation():
     def __init__(self, world1, world2, agent, type):
@@ -73,6 +120,9 @@ class Relation():
 
     def to_string(self):
         return '<'+self.world1.name+self.agent+self.world2.name+'>'
+
+    def to_tuple(self):
+        return(int(self.world1.name),int(self.world2.name))
 
 
 class World():
