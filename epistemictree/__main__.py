@@ -3,7 +3,6 @@ from epistemictree import tui as tui
 from epistemictree import utils
 
 def main():
-    # k = rl.run_tableau('k','-(-Ka-Ka-p && Ka-p)', None)[0]
     tree = herzig['tree5']
     print("SISTEMA K4")
     value = rl.run_tableau('k4',tree[0],tree[1])
@@ -15,6 +14,7 @@ def main():
     # for i in value[2].transitive_closure('a'):
     #     print(str(i[0])+"-"+str(i[1]))
     utils.dot_to_latex()
+    print(model)
 
 
 herzig = {

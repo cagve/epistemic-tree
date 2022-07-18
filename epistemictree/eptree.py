@@ -379,7 +379,6 @@ class Tree:
         labelbranch = branch.get_label_branch()
         modelo = epmodel.Model()
         for label in labelbranch:
-            # modelo.add_world(epmodel.World(str(label.simplify_label())))
             # ADD EVALUATION ONLY LITERAL
             world = epmodel.World(str(label.simplify_label()))
             world.add_true_formula_list(branch.get_base_set(label))
