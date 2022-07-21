@@ -1,14 +1,13 @@
 from epistemictree import __app_name__, __version__
 from epistemictree import rules as rl
 from epistemictree import eptree as t
-from epistemictree import utils as u
 from epistemictree import parser
 import unittest
 
 # Arbol = [conclusion, premisas, solución]
 trees = {
-    'tree1':['Ka(p&&q)=>(Kap&&Kaq)', None , False], # Se cierran todas las ramas
-    'tree2':['Ka(p||q)=>Kap', None, True],  # No se cierra la rama de la derecha
+    'tree1':['Ka(p&&q) => (Kap && Kaq)', None , False], # Se cierran todas las ramas
+    'tree2':['Ka(p||q) => Kap', None, True],  # No se cierra la rama de la derecha
     'tree3':['Ka(p=>q)=>(Kap=>Kaq)', None, False]  # No se cierra la rama de la derecha
         }
 
@@ -92,22 +91,22 @@ class TestUnit(unittest.TestCase):
         self.assertEqual(rl.get_rule_type(n3),'pi')
         self.assertEqual(rl.get_rule_type(n4),'beta')
 
-    def test_sup(self):
-        list1=['p','-q','Kap']
-        list2=['p','-q','Kap']
+#     def test_base_formula(self):
+#         for key,value in trees.items():
+#             print("Test "+key)
+#             tree = rl.testing(value[0],value[1])[1]
+#             leaf = tree.get_leafs(tree.root)[0]
+#             branch = tree.get_branch(leaf)
+#             label = parser.Label('1.a.1')
+#             base = branch.get_base_set(label)
+#             for i in base:
+#                 print(i.formula)
+#         self.assertEqual(2,2)
 
-
-    def test_base_formula(self):
+    def test_trees(self):
         for key,value in trees.items():
             print("Test "+key)
-<<<<<<< HEAD
-            self.assertEqual(rl.run_tableau(value[0],value[1]),value[2])
-=======
-            out = rl.testing(value[0],value[1])[0]
-            print(out)
-            self.assertEqual(out, value[2])
-
->>>>>>> cdf2d9b (K4)
+            self.assertEqual(rl.testing(value[0],value[1])[0],value[2])
     
 if __name__ == '__main__':
     unittest.main() 

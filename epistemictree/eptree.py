@@ -1,6 +1,9 @@
 import itertools
+from os import wait
 from epistemictree import epmodel
+from epistemictree import utils as u
 from epistemictree import parser
+from epistemictree import rules
 
 COUNT = [10]
 COUNT2 = [10]
@@ -273,7 +276,7 @@ class Tree:
 
     def check_node_know_alive(self,node, tree):
         available = []
-        if node.get_rule_type() == 'nu':
+        if rules.get_rule_type(node) == 'nu':
             agent = node.get_formula().get_agent()
             branchs = self.get_full_branch(node)
             # AÑADE LAS EXTENSIONES SIMPLES
@@ -302,15 +305,16 @@ class Tree:
         self.nu_group = nu_group
 
 
+    # Puede dar error
     def add_node_to_group(self,node: Node):
         self.add_knows_to_group(self.root, self)
-        if node.get_rule_type() == 'alpha':
+        if rules.get_rule_type(node) == 'alpha':
             self.alpha_group.append(node)
-        elif node.get_rule_type() == 'beta':
+        elif rules.get_rule_type(node) == 'beta':
             self.beta_group.append(node)
-        elif node.get_rule_type() == 'pi':
+        elif rules.get_rule_type(node) == 'pi':
             self.pi_group.append(node)
-        elif node.get_rule_type() == 'nu':
+        elif rules.get_rule_type(node) == 'nu':
             self.add_knows_to_group(node,self)
             # self.pi_group.append(node)
         # elif node.get_rule_type() =='literal':
@@ -319,15 +323,15 @@ class Tree:
             # print("error add_node_from_group")
 
     def remove_node_from_group(self, node:Node):
-        if node.get_rule_type() == 'alpha':
+        if rules.get_rule_type(node) == 'alpha':
             self.alpha_group.remove(node)
-        elif node.get_rule_type() == 'beta':
+        elif rules.get_rule_type(node) == 'beta':
             self.beta_group.remove(node)
-        # elif node.get_rule_type() == 'nu':
+        # elif node.get_rule_type() == 'nu': Este no es necesario, pues se actualiza de manera independiente.
         #     self.nu_group.remove(node)
-        elif node.get_rule_type() == 'pi':
+        elif rules.get_rule_type(node) == 'pi':
             self.pi_group.remove(node)
-        elif node.get_rule_type() =='literal':
+        elif rules.get_rule_type(node) =='literal':
             return 
         else:
             return 
@@ -339,6 +343,52 @@ class Tree:
     
     def open_branch(self):
         return len(self.get_open_branchs()) != 0
+
+    
+
+    def loop_checking(self, model):
+        open_branchs = self.get_open_branchs()
+        branch = open_branchs[0]
+        labelbranch = branch.get_label_branch()
+        
+        for label in labelbranch:
+            originals = label.get_originals(branch)
+            for original in originals:
+                extensions = original.get_simple_extensions(branch)
+                world1 = epmodel.World(str(label.simplify_label()))
+                for i in extensions:
+                    agent = i.get_agent()
+                    world2 = epmodel.World(str(i.simplify_label()))
+                    relation = epmodel.Relation(world1,world2,agent, "superfluo") 
+                    model.add_relation(relation)
+
+    def create_counter_model_loop(self):
+        counter_models = []
+        if not self.open_branch():
+            print("Closed tree")
+            return
+
+        open_branchs = self.get_open_branchs()
+
+        branch = open_branchs[0]
+        labelbranch = branch.get_label_branch()
+        modelo = epmodel.Model()
+        for label in labelbranch:
+            modelo.add_world(epmodel.World(str(label.simplify_label())))
+            # ADD EVALUATION ONLY LITERAL
+            world = epmodel.World(str(label.simplify_label()))
+            world.add_true_formula_list(branch.get_base_set(label))
+            modelo.add_world(world)
+            if branch.get_simple_extensions(label) !=None:
+                for ext in branch.get_simple_extensions(label):
+                    agent=ext.get_agent()
+                    world1 = epmodel.World(str(label.simplify_label()))
+                    world2 = epmodel.World(str(ext.simplify_label()))
+                    relation = epmodel.Relation(world1,world2,agent, "normal") 
+                    modelo.add_relation(relation)
+        counter_models.append(modelo)
+        return counter_models
+
 
     def create_counter_model(self):
         counter_models = []
@@ -355,7 +405,7 @@ class Tree:
             modelo.add_world(epmodel.World(str(label.simplify_label())))
             # ADD EVALUATION ONLY LITERAL
             world = epmodel.World(str(label.simplify_label()))
-            world.add_true_formula_list(filter(lambda x: x.is_literal(), branch.get_formulas_label(label)))
+            world.add_true_formula_list(filter(lambda x: x.is_literal(), branch.get_base_set(label)))
             modelo.add_world(world)
             if branch.get_simple_extensions(label) !=None:
                 for ext in branch.get_simple_extensions(label):
@@ -401,15 +451,17 @@ class Branch(list):
     def get_label_branch(self):
         labels = []
         for node in self:
-            labels.append(node.get_label())
-        return set(labels)
+            if node.get_label() not in labels:
+                labels.append(node.get_label())
+        return labels
 
-    def get_formulas_label(self, label):
-        formulas = []
-        for node in self:
-            if node.get_label().label == label.label:
-                formulas.append(node.get_formula())
-        return formulas
+    def label_in_branch(self, label):
+        lb = self.get_label_branch()
+        for l in lb:
+            if l.label == label.label:
+                return True
+        return False
+
 
     # TODO AÑADIR IR A HOJA
     def get_simple_extensions(self,  label_filter, label_branch=None,):
@@ -439,4 +491,21 @@ class Branch(list):
             if node.get_labelled_formula_string() == formula.to_string():
                 return True
         return False 
+
+    def get_base_set(self, label: parser.Label):
+        """Return the set of true formulas in sigma"""
+        # TODO: Devuleve fórmulas duplicadas
+        formulas = []
+        for node in self:
+            if node.get_label().label == label.label:
+                formulas.append(node.get_formula())
+        return set(formulas)
+
+    def debug_bases(self):
+        lb = self.get_label_branch()
+        for label in lb:
+            print("BASE OF "+label.label)
+            for formula in self.get_base_set(label):
+                print(formula.formula)
+
 

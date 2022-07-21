@@ -1,3 +1,7 @@
+from epistemictree.__main__ import parser
+from epistemictree.tui import Label
+
+
 class Model():
     def __init__(self, worlds = None, relations = None):
         if worlds == None:
@@ -48,17 +52,22 @@ class Model():
         for world in self.worlds:
             file.write(world.name+'[label="'+world.name+' \\n '+world.evaluation_to_string()+'"];\n')
         for relation in self.relations:
-            file.write(relation.world1.name+' -> '+relation.world2.name+'[label="'+relation.agent+'"];\n')
+            if relation.type == "normal":
+                file.write(relation.world1.name+' -> '+relation.world2.name+'[label="'+relation.agent+'"];\n')
+            else:
+                file.write(relation.world1.name+' -> '+relation.world2.name+'[style=dashed,color=blue, label="'+relation.agent+'"];\n')
+
         file.write("}")
         file.close
 
 
 
 class Relation():
-    def __init__(self, world1, world2, agent):
+    def __init__(self, world1, world2, agent, type):
         self.world1=world1
         self.world2 = world2
         self.agent = agent
+        self.type = type
 
     def to_string(self):
         return '<'+self.world1.name+self.agent+self.world2.name+'>'
@@ -95,5 +104,5 @@ class World():
             if formula_list=="":
                 formula_list = ev.formula
             else:
-                formula_list = formula_list+','+ev.formula
+                formula_list = formula_list+', '+ev.formula
         return formula_list

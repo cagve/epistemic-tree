@@ -2,6 +2,8 @@
 from tree_sitter import Parser as TSParser 
 from tree_sitter import Language as TSLanguage
 import tree_sitter
+from epistemictree import utils
+from epistemictree.utils import superfluo
 
 LP_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'ep')
 LABEL_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'label')
@@ -332,6 +334,34 @@ class Label():
         Return size of label.
         """
         return len(self.label.replace('.',''))
+
+    def get_simple_extensions(self,branch):
+        extensions = []
+        if not branch.label_in_branch(self):
+            print("Not in branch")
+            return extensions
+        lb = branch.get_label_branch()
+        for l in lb:
+            if l.is_simple_extension(self):
+                extensions.append(l)
+        return extensions
+
+    def get_originals(self, branch):
+        originals=[]
+        if not branch.label_in_branch(self):
+            print("Not in branch")
+            return originals
+        lb = branch.get_label_branch()
+        for l in lb:
+            if utils.superfluo(branch, self,l) and self.label!=l.label:
+                originals.append(l)
+        return originals 
+
+
+    def is_superfluo(self, branch) -> bool:
+        if(self.get_originals(branch)):
+            return True
+        return False
 
     def is_sublabel(self, label)-> bool:
         """
