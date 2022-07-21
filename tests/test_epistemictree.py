@@ -100,14 +100,10 @@ class TestUnit(unittest.TestCase):
     def test_base_formula(self):
         for key,value in trees.items():
             print("Test "+key)
-<<<<<<< HEAD
-            self.assertEqual(rl.run_tableau(value[0],value[1]),value[2])
-=======
             out = rl.testing(value[0],value[1])[0]
             print(out)
             self.assertEqual(out, value[2])
 
->>>>>>> cdf2d9b (K4)
     
 if __name__ == '__main__':
     unittest.main() 

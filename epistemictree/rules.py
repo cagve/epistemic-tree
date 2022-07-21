@@ -202,7 +202,10 @@ def know_rule(node: eptree.Node, tree: eptree.Tree, system):
         #TODO: Error handling
         print("ERROR K")
         return
-    for leaf in tree.get_available_leafs(node):
+    # VOY HASTA LA HOJA
+    tree.print_dot(tree.root)
+    leafs = tree.get_available_leafs(node)
+    for leaf in leafs:
         id = int(leaf.id)
         #COJO LA RAMA DESDE LA HOJA
         branch = tree.get_branch(leaf)
@@ -212,23 +215,26 @@ def know_rule(node: eptree.Node, tree: eptree.Tree, system):
         if extensions != None:
             for extlabel in extensions:
                 # COMPRUEBO QU EL A EXTENSIÓN SEA LA DEL AGENTE DE LA FORMULA
+                print(extlabel.label)
                 if extlabel.label[-3]==agent:
                     id = int(str(id)+str(1))
                     lformula = parser.LabelledFormula(extlabel,term)
                     leaf.add_one_child(lformula,id)
                     tree.add_node_to_group(leaf.left)
+                    if system == "k4":
+                        id = int(str(id)+str(1))
+                        kformula = parser.LabelledFormula(extlabel,formula)
+                        leaf.left.add_one_child(kformula,id)
+                        tree.add_node_to_group(leaf.left.left)
         else:
-            #TODO: Error handling
             print("ERROR K")
             return
-    tree.add_knows_to_group(tree.root, tree)
-    return extensions
-    # VOY HASTA LA HOJA
+        tree.add_knows_to_group(tree.root, tree)
+        return extensions
+
 # Ahora mismo satura primero las etiquetas y después divide ramas.
 def rule_algorithm(system,tree):
     while True:
-        if not tree.get_available_leafs(tree.root):
-            return False
         if tree.alpha_group:
             apply_rule(system, tree.alpha_group[0],tree)
         elif tree.nu_group:
@@ -247,6 +253,7 @@ def apply_rule(system, node: eptree.Node, tree):
     formula_functions[type](node, tree, system)
     # print("Aplicando regla "+str(formula_functions[type])+ " en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
      
+
 
 def run_tableau(system, conclusion, premisas):
     tree = eptree.Tree()

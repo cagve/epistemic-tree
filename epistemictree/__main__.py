@@ -1,4 +1,5 @@
 from epistemictree import rules as rl
+import os
 from epistemictree import tui as tui
 from epistemictree import utils
 
@@ -11,6 +12,9 @@ def main():
     value[1].print_label_tree(value[1].root, 2)
     print(value[0])
     value[2].print_model()
+    # value[2].transitive_closure('a')
+    # for i in value[2].transitive_closure('a'):
+    #     print(str(i[0])+"-"+str(i[1]))
     utils.dot_to_latex()
 
 
@@ -22,6 +26,8 @@ herzig = {
         'tree4' : ['-(Kap && (-Ka-q && -Ka-(r||-p)))', None ],
         'tree5' : ['-(-Ka-p)', ['Ka(p =>(-Ka-q))','-Kap']]
         }
+
+
 
 if __name__ == '__main__':
     main()
