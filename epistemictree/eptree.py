@@ -221,10 +221,10 @@ class Tree:
         leafs = self.get_leafs(node)
         for leaf in leafs:
             branch = self.get_branch(leaf)
-            branch.print_branch()
+            # branch.print_branch()
             if branch.is_close():
                 print("Branch of " + leaf.get_labelled_formula_string() + " is close")
-                return 
+                continue 
             else: 
                 ava_branchs.append(branch)
                 ava_leafs.append(leaf)
@@ -361,6 +361,7 @@ class Tree:
                     agent = i.get_agent()
                     model.get_world_by_name(str(i.simplify_label()))
                     world2 = epmodel.World(str(i.simplify_label()))
+                    # print("SUPERFLUO RELATION BETWEEN "+)
                     relation = epmodel.Relation(world1,world2,agent,"superfluo") 
                     if not model.contain_relation(relation):
                         model.add_relation(relation)
@@ -462,6 +463,14 @@ class Branch(list):
             if node.get_label().label == label.label:
                 formulas.append(node.get_formula())
         return set(formulas)
+
+    def formula_in_base_set(self,label: parser.Label, formula:parser.Formula):
+        base = self.get_base_set(label)
+        for f in base:
+            if f.formula == formula.formula:
+                print("Son iguales")
+                return True
+        return False
 
     def debug_bases(self):
         lb = self.get_label_branch()

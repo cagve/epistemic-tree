@@ -1,4 +1,5 @@
 from epistemictree import parser
+from time import sleep
 from epistemictree import eptree 
 import os
 
@@ -113,6 +114,7 @@ def not_disjunction_rule(node: eptree.Node, tree: eptree.Tree, system):
     alpha_rule(node, tree, labelled_formula1, labelled_formula2)
 
 def implication_rule(node: eptree.Node, tree: eptree.Tree, system):
+    print("Aplicando regla de imp en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     formula = node.get_formula()
     if formula.get_formula_type() != "iff":
         print("ERROR IMP")
@@ -123,6 +125,7 @@ def implication_rule(node: eptree.Node, tree: eptree.Tree, system):
     beta_rule(node,tree,labelled_formula1, labelled_formula2)
 
 def not_implication_rule(node: eptree.Node, tree: eptree.Tree):
+    print("Aplicando regla de not imp en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     neg_formula = node.get_formula()
     if neg_formula.get_formula_type() != "not_iff":
         print("ERROR NEG IMP")
@@ -153,8 +156,6 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
     else:
         for leaf in leafs:
             id = int(str(leaf.id)+str(1))
-            print("ID 1: "+str(leaf.id))
-            print("ID 2: "+str(id))
             branch = tree.get_branch(leaf)
             if (system == "k4" and node.get_label().is_superfluo(branch)):
                 print(system)
@@ -183,7 +184,6 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
                         count += 1
             if new_label:
                 formula = parser.LabelledFormula(new_label,result_formula)
-                print("Añadir "+str(id))
                 leaf.add_one_child(formula, id)
                 tree.add_node_to_group(leaf.left)
             else:
@@ -203,8 +203,10 @@ def know_rule(node: eptree.Node, tree: eptree.Tree, system):
         print("ERROR K")
         return
     # VOY HASTA LA HOJA
-    tree.print_dot(tree.root)
     leafs = tree.get_available_leafs(node)
+    if leafs == None:
+        print("No hojas libres")
+        return
     for leaf in leafs:
         id = int(leaf.id)
         #COJO LA RAMA DESDE LA HOJA
@@ -214,23 +216,27 @@ def know_rule(node: eptree.Node, tree: eptree.Tree, system):
         extensions = branch.get_simple_extensions(label,labels)
         if extensions != None:
             for extlabel in extensions:
-                # COMPRUEBO QU EL A EXTENSIÓN SEA LA DEL AGENTE DE LA FORMULA
-                print(extlabel.label)
                 if extlabel.label[-3]==agent:
                     id = int(str(id)+str(1))
                     lformula = parser.LabelledFormula(extlabel,term)
+                    if branch.formula_in_base_set(extlabel,term):
+                        print("ESTÁ DENTRO")
+                        continue
                     leaf.add_one_child(lformula,id)
                     tree.add_node_to_group(leaf.left)
                     if system == "k4":
                         id = int(str(id)+str(1))
                         kformula = parser.LabelledFormula(extlabel,formula)
+                        if branch.formula_in_base_set(extlabel,term):
+                            print("ESTÁ DENTRO")
+                            continue
                         leaf.left.add_one_child(kformula,id)
                         tree.add_node_to_group(leaf.left.left)
         else:
-            print("ERROR K")
-            return
-        tree.add_knows_to_group(tree.root, tree)
-        return extensions
+            print("Not extensions")
+            continue
+    tree.add_knows_to_group(tree.root, tree)
+    return extensions
 
 # Ahora mismo satura primero las etiquetas y después divide ramas.
 def rule_algorithm(system,tree):
