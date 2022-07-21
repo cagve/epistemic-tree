@@ -39,10 +39,10 @@ def alpha_rule(node: eptree.Node, tree: eptree.Tree, term1: parser.LabelledFormu
         id1 = int(str(leaf.id)+str(1))
         id2 = int(str(leaf.id)+str(11))
         leaf.add_one_child(term1,id1)
-        tree.add_node_to_group(leaf.left)
+        tree.add_node_to_group(system, leaf.left)
         if not tree.get_branch(leaf.left).is_close():
             leaf.left.add_one_child(term2,id2)
-            tree.add_node_to_group(leaf.left.left)
+            tree.add_node_to_group(system, leaf.left.left)
 
 
 def beta_rule(node: eptree.Node, tree: eptree.Tree, term1: parser.LabelledFormula, term2: parser.LabelledFormula):
@@ -52,8 +52,8 @@ def beta_rule(node: eptree.Node, tree: eptree.Tree, term1: parser.LabelledFormul
         id1 = int(str(leaf.id)+str(1))
         id2 = int(str(leaf.id)+str(2))
         leaf.add_two_childs(term1, term2,id1,id2)
-        tree.add_node_to_group(leaf.left)
-        tree.add_node_to_group(leaf.right)
+        tree.add_node_to_group(system, leaf.left)
+        tree.add_node_to_group(system, leaf.right)
 
 # ALPHA RULES
 def conjunction_rule(node: eptree.Node, tree: eptree.Tree):
@@ -158,9 +158,9 @@ def not_know_rule(node: eptree.Node, tree: eptree.Tree):
                 count += 1
         formula = parser.LabelledFormula(new_label,result_formula)
         leaf.add_one_child(formula, id)
-        tree.add_node_to_group(leaf.left)
+        tree.add_node_to_group(system, leaf.left)
 
-def know_rule(node: eptree.Node, tree: eptree.Tree):
+def know_rule(system, node: eptree.Node, tree: eptree.Tree):
     formula = node.get_formula()
     term = formula.get_terms()[0]
     agent = node.get_formula().get_agent()
@@ -186,7 +186,7 @@ def know_rule(node: eptree.Node, tree: eptree.Tree):
                     id = int(str(id)+str(1))
                     lformula = parser.LabelledFormula(extlabel,term)
                     leaf.add_one_child(lformula,id)
-                    tree.add_node_to_group(leaf.left)
+                    tree.add_node_to_group(system, leaf.left)
         else:
             #TODO: Error handling
             print("ERROR K")

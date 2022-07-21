@@ -125,7 +125,6 @@ class Tree:
         self.root = Node(root,1)
         self.left = left
         self.right = right
-        self.label_group = []
         self.alpha_group = []
         self.beta_group = []
         self.nu_group = []

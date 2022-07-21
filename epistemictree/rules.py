@@ -124,7 +124,7 @@ def implication_rule(node: eptree.Node, tree: eptree.Tree, system):
     labelled_formula2 = parser.LabelledFormula(node.get_label(), formula2)
     beta_rule(node,tree,labelled_formula1, labelled_formula2)
 
-def not_implication_rule(node: eptree.Node, tree: eptree.Tree):
+def not_implication_rule(node: eptree.Node, tree: eptree.Tree, system):
     print("Aplicando regla de not imp en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     neg_formula = node.get_formula()
     if neg_formula.get_formula_type() != "not_iff":
@@ -157,10 +157,11 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
         for leaf in leafs:
             id = int(str(leaf.id)+str(1))
             branch = tree.get_branch(leaf)
-            if (system == "k4" and node.get_label().is_superfluo(branch)):
+            if ("4" in system and node.get_label().is_superfluo(branch)):
                 print(system)
                 print("Es superfluo")
                 return 
+
             lbranch = branch.get_label_branch() # Conjunto de etiquetas de la rama, en este caso node = leaf CUIDADO
 
             simple_branch = [] # Lista para despuéß simplificar la rama. 
@@ -189,11 +190,10 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
             else:
                 print("Not new label")
 
-
 def know_rule(node: eptree.Node, tree: eptree.Tree, system):
     print("Aplicando regla de know en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     formula = node.get_formula()
-    term = formula.get_terms()[0]
+    term = formula.get_terms()[0].delete_negation()
     agent = node.get_formula().get_agent()
     label = node.get_label()
     extensions =[]
@@ -209,10 +209,22 @@ def know_rule(node: eptree.Node, tree: eptree.Tree, system):
         return
     for leaf in leafs:
         id = int(leaf.id)
+        print("ANALIZANDO"+leaf.get_labelled_formula_string())
         #COJO LA RAMA DESDE LA HOJA
         branch = tree.get_branch(leaf)
         labels = branch.get_label_branch()
-        # COJO LOS LABELS Y LAS FILTRO
+        # S4
+        if "t" in system:
+            print("Aplicando s4")
+            id = int(str(id)+str(1))
+            labelled_formula = parser.LabelledFormula(label, term)
+            if branch.formula_in_base_set(label ,term):
+                print("La fórmula "+term.formula+" está en el conjunto base "+label.label)
+            else:
+                leaf.add_one_child(labelled_formula,id)
+                tree.add_node_to_group(leaf.left)
+                leaf = leaf.left
+
         extensions = branch.get_simple_extensions(label,labels)
         if extensions != None:
             for extlabel in extensions:
@@ -223,24 +235,29 @@ def know_rule(node: eptree.Node, tree: eptree.Tree, system):
                         print("ESTÁ DENTRO")
                         continue
                     leaf.add_one_child(lformula,id)
-                    tree.add_node_to_group(leaf.left)
-                    if system == "k4":
+                    # tree.add_node_to_group(leaf.left)
+                    if "4" in system:
                         id = int(str(id)+str(1))
                         kformula = parser.LabelledFormula(extlabel,formula)
                         if branch.formula_in_base_set(extlabel,term):
                             print("ESTÁ DENTRO")
                             continue
                         leaf.left.add_one_child(kformula,id)
-                        tree.add_node_to_group(leaf.left.left)
+                        # tree.add_node_to_group(leaf.left.left)
         else:
             print("Not extensions")
             continue
-    tree.add_knows_to_group(tree.root, tree)
     return extensions
 
 # Ahora mismo satura primero las etiquetas y después divide ramas.
 def rule_algorithm(system,tree):
     while True:
+        tree.add_knows_to_group(tree.root,tree)
+        print("Nodos disponibles")
+        print(tree.alpha_group)
+        print(tree.nu_group)
+        print(tree.pi_group)
+        print(tree.beta_group)
         if tree.alpha_group:
             apply_rule(system, tree.alpha_group[0],tree)
         elif tree.nu_group:
@@ -277,7 +294,7 @@ def run_tableau(system, conclusion, premisas):
     os.system('dot -Tpng ~/tree.dot > ~/tree.png')
     if tree.open_branch():
         model = tree.create_counter_model()
-        if system == 'k4' or system == 's4':
+        if "4" in system:
             print("Aplicando loop checking")
             tree.loop_checking(model[0])
             model[0].transitive_closure('a')

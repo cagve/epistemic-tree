@@ -88,7 +88,6 @@ class Tree:
         self.root = Node(root,1)
         self.left = left
         self.right = right
-        self.label_group = []
         self.alpha_group = []
         self.beta_group = []
         self.nu_group = []
@@ -293,21 +292,16 @@ class Tree:
                 return False
 
     def add_knows_to_group(self,node, tree, nu_group=None):
-        if nu_group == None:
-            nu_group = []
-
         if node:
             if(node != None):
                 if self.check_node_know_alive(node, tree):
-                    nu_group.append(node)
+                    self.nu_group.append(node)
                 self.add_knows_to_group(node.left,tree,nu_group)
                 self.add_knows_to_group(node.right,tree,nu_group)
-        self.nu_group = nu_group
-
 
     # Puede dar error
-    def add_node_to_group(self,node: Node):
-        self.add_knows_to_group(self.root, self)
+    def add_node_to_group(self, node: Node):
+        self.add_knows_to_group(node, self)
         if rules.get_rule_type(node) == 'alpha':
             self.alpha_group.append(node)
         elif rules.get_rule_type(node) == 'beta':
@@ -315,20 +309,15 @@ class Tree:
         elif rules.get_rule_type(node) == 'pi':
             self.pi_group.append(node)
         elif rules.get_rule_type(node) == 'nu':
-            self.add_knows_to_group(node,self)
-            # self.pi_group.append(node)
-        # elif node.get_rule_type() =='literal':
-        #     print("Es un literal")
-        # else:
-            # print("error add_node_from_group")
+            self.nu_group.append(node)
 
     def remove_node_from_group(self, node:Node):
         if rules.get_rule_type(node) == 'alpha':
             self.alpha_group.remove(node)
         elif rules.get_rule_type(node) == 'beta':
             self.beta_group.remove(node)
-        # elif node.get_rule_type() == 'nu': Este no es necesario, pues se actualiza de manera independiente.
-        #     self.nu_group.remove(node)
+        elif rules.get_rule_type(node) == 'nu':
+            self.nu_group.remove(node)
         elif rules.get_rule_type(node) == 'pi':
             self.pi_group.remove(node)
         elif rules.get_rule_type(node) =='literal':
