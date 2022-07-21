@@ -221,6 +221,7 @@ class Tree:
         leafs = self.get_leafs(node)
         for leaf in leafs:
             branch = self.get_branch(leaf)
+            branch.print_branch()
             if branch.is_close():
                 print("Branch of " + leaf.get_labelled_formula_string() + " is close")
                 return 

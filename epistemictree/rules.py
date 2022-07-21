@@ -92,7 +92,7 @@ def not_conjunction_rule(node: eptree.Node, tree: eptree.Tree, system):
     labelled_formula2 = parser.LabelledFormula(node.get_label(), denied_formula2)
     beta_rule(node, tree, labelled_formula1, labelled_formula2)
 
-def disjunction_rule(node: eptree.Node, tree: eptree.Tree):
+def disjunction_rule(node: eptree.Node, tree: eptree.Tree,system):
     formula = node.get_formula()
     if formula.get_formula_type() != "or":
         print("ERROR DIS")
@@ -223,34 +223,7 @@ def know_rule(node: eptree.Node, tree: eptree.Tree, system):
             return
     tree.add_knows_to_group(tree.root, tree)
     return extensions
-    leafs = tree.get_available_leafs(node)
-    if leafs:
-        for leaf in leafs:
-            id = int(leaf.id)
-            #COJO LA RAMA DESDE LA HOJA
-            branch = tree.get_branch(leaf)
-            labels = branch.get_label_branch()
-            # COJO LOS LABELS Y LAS FILTRO
-            extensions = branch.get_simple_extensions(label,labels)
-            if extensions != None:
-                for extlabel in extensions:
-                    # COMPRUEBO QU EL A EXTENSIÓN SEA LA DEL AGENTE DE LA FORMULA
-                    if extlabel.label[-3]==agent:
-                        id = int(str(id)+str(1))
-                        lformula = parser.LabelledFormula(extlabel,term)
-                        leaf.add_one_child(lformula,id)
-                        tree.add_node_to_group(leaf.left)
-                        if system == "k4":
-                            id = int(str(id)+str(1))
-                            kformula = parser.LabelledFormula(extlabel,formula)
-                            leaf.left.add_one_child(kformula,id)
-                            tree.add_node_to_group(leaf.left.left)
-            else:
-                print("ERROR K")
-                return
-        tree.add_knows_to_group(tree.root, tree)
-        return extensions
-
+    # VOY HASTA LA HOJA
 # Ahora mismo satura primero las etiquetas y después divide ramas.
 def rule_algorithm(system,tree):
     while True:

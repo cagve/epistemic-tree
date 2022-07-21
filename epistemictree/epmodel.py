@@ -75,7 +75,7 @@ class Model():
         file.write("digraph G {\n")
         file.write("node[shape=record]\n")
         for world in self.worlds:
-            evaluation = world.evaluation_to_string().replace(',','\\n')
+            evaluation = world.evaluation_to_string().replace('||','v').replace(',','\\n')
             if world.is_superfluo(self):
                 print(world.name + " es superfluo ")
                 file.write(world.name+'[style=dashed, color=blue, label="'+world.name+' | '+evaluation+'"];\n')
