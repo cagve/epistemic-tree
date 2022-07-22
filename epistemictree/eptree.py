@@ -273,14 +273,14 @@ class Tree:
         print(node.id)
         self.print_label_tree(node.left, space)
 
-    def check_node_know_alive(self,node, tree):
+    def check_node_know_alive(self,node):
         available = []
         if rules.get_rule_type(node) == 'nu':
             agent = node.get_formula().get_agent()
             branchs = self.get_full_branch(node)
             # AÑADE LAS EXTENSIONES SIMPLES
             for branch in branchs: 
-                agent_extensions = branch.get_extensions_agent(agent,node.get_label()) 
+                agent_extensions = branch.get_extensions_agent(agent, node.get_label()) 
                 if agent_extensions is not None:
                     for extension in agent_extensions:
                         formula = parser.LabelledFormula(extension,node.get_formula().get_terms()[0])
@@ -291,24 +291,27 @@ class Tree:
             else:
                 return False
 
-    def add_knows_to_group(self,node, tree, nu_group=None):
+    def add_knows_to_group(self,node, nu_group=None):
         if node:
             if(node != None):
-                if self.check_node_know_alive(node, tree):
+                if self.check_node_know_alive(node):
                     self.nu_group.append(node)
-                self.add_knows_to_group(node.left,tree,nu_group)
-                self.add_knows_to_group(node.right,tree,nu_group)
+                self.add_knows_to_group(node.left,nu_group)
+                self.add_knows_to_group(node.right,nu_group)
 
     # Puede dar error
     def add_node_to_group(self, node: Node):
-        self.add_knows_to_group(node, self)
         if rules.get_rule_type(node) == 'alpha':
+            print("Añadir alpha node: "+ str(node.get_labelled_formula_string()))
             self.alpha_group.append(node)
         elif rules.get_rule_type(node) == 'beta':
+            print("Añadir alpha node: "+str(node.get_labelled_formula_string()))
             self.beta_group.append(node)
         elif rules.get_rule_type(node) == 'pi':
+            print("Añadir alpha node: "+str(node.get_labelled_formula_string()))
             self.pi_group.append(node)
         elif rules.get_rule_type(node) == 'nu':
+            print("Añadir alpha node: "+str(node.get_labelled_formula_string()))
             self.nu_group.append(node)
 
     def remove_node_from_group(self, node:Node):
@@ -403,8 +406,9 @@ class Branch(list):
     def get_label_branch(self):
         labels = []
         for node in self:
-            if node.get_label() not in labels:
-                labels.append(node.get_label())
+            label = node.get_label()
+            if label not in labels:
+                labels.append(label)
         return labels
 
     def label_in_branch(self, label):
@@ -424,7 +428,6 @@ class Branch(list):
         for label in label_branch:
             if label.is_simple_extension(label_filter):
                 extensions.append(label)
-
         if len(extensions)==0:
             return None
         else:

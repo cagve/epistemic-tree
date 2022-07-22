@@ -209,7 +209,6 @@ def know_rule(node: eptree.Node, tree: eptree.Tree, system):
         return
     for leaf in leafs:
         id = int(leaf.id)
-        print("ANALIZANDO"+leaf.get_labelled_formula_string())
         #COJO LA RAMA DESDE LA HOJA
         branch = tree.get_branch(leaf)
         labels = branch.get_label_branch()
@@ -222,6 +221,7 @@ def know_rule(node: eptree.Node, tree: eptree.Tree, system):
                 print("La fórmula "+term.formula+" está en el conjunto base "+label.label)
             else:
                 leaf.add_one_child(labelled_formula,id)
+                print("[New Node] " + leaf.left.get_labelled_formula_string())
                 tree.add_node_to_group(leaf.left)
                 leaf = leaf.left
 
@@ -235,29 +235,29 @@ def know_rule(node: eptree.Node, tree: eptree.Tree, system):
                         print("ESTÁ DENTRO")
                         continue
                     leaf.add_one_child(lformula,id)
-                    # tree.add_node_to_group(leaf.left)
+                    tree.add_node_to_group(leaf.left)
                     if "4" in system:
+                        print("Aplicando 4")
+                        print(leaf.get_labelled_formula_string())
                         id = int(str(id)+str(1))
                         kformula = parser.LabelledFormula(extlabel,formula)
                         if branch.formula_in_base_set(extlabel,term):
                             print("ESTÁ DENTRO")
                             continue
                         leaf.left.add_one_child(kformula,id)
-                        # tree.add_node_to_group(leaf.left.left)
+                        tree.add_node_to_group(leaf.left.left)
         else:
             print("Not extensions")
             continue
+    # tree.add_knows_to_group(tree.root)
     return extensions
 
 # Ahora mismo satura primero las etiquetas y después divide ramas.
 def rule_algorithm(system,tree):
     while True:
+        # tree.add_knows_to_group(tree.root,tree)
         tree.add_knows_to_group(tree.root,tree)
-        print("Nodos disponibles")
-        print(tree.alpha_group)
-        print(tree.nu_group)
-        print(tree.pi_group)
-        print(tree.beta_group)
+        print("-----------------------Paso---------------------")
         if tree.alpha_group:
             apply_rule(system, tree.alpha_group[0],tree)
         elif tree.nu_group:
@@ -271,7 +271,6 @@ def rule_algorithm(system,tree):
         return rule_algorithm(system, tree)
     
 def apply_rule(system, node: eptree.Node, tree):
-    tree.add_knows_to_group(tree.root,tree)
     type = node.get_formula().get_formula_type()
     formula_functions[type](node, tree, system)
     # print("Aplicando regla "+str(formula_functions[type])+ " en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
