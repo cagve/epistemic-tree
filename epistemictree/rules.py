@@ -69,7 +69,6 @@ def beta_rule(node: eptree.Node, tree: eptree.Tree, term1: parser.LabelledFormul
 
 # ALPHA RULES
 def conjunction_rule(node: eptree.Node, tree: eptree.Tree, system):
-    print("Aplicando regla de conjunción en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     formula = node.get_formula()
     if formula.get_formula_type() != "and":
         #TODO: Error handling
@@ -79,7 +78,6 @@ def conjunction_rule(node: eptree.Node, tree: eptree.Tree, system):
     alpha_rule(node, tree, labelled_formula1, labelled_formula2)
 
 def not_conjunction_rule(node: eptree.Node, tree: eptree.Tree, system):    
-    print("Aplicando regla de not conjunción en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     neg_formula = node.get_formula()
     if neg_formula.get_formula_type() != "not_and":
         print("ERROR NEG CON")
@@ -114,7 +112,6 @@ def not_disjunction_rule(node: eptree.Node, tree: eptree.Tree, system):
     alpha_rule(node, tree, labelled_formula1, labelled_formula2)
 
 def implication_rule(node: eptree.Node, tree: eptree.Tree, system):
-    print("Aplicando regla de imp en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     formula = node.get_formula()
     if formula.get_formula_type() != "iff":
         print("ERROR IMP")
@@ -125,7 +122,6 @@ def implication_rule(node: eptree.Node, tree: eptree.Tree, system):
     beta_rule(node,tree,labelled_formula1, labelled_formula2)
 
 def not_implication_rule(node: eptree.Node, tree: eptree.Tree, system):
-    print("Aplicando regla de not imp en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     neg_formula = node.get_formula()
     if neg_formula.get_formula_type() != "not_iff":
         print("ERROR NEG IMP")
@@ -138,7 +134,6 @@ def not_implication_rule(node: eptree.Node, tree: eptree.Tree, system):
     alpha_rule(node, tree, labelled_formula1, labelled_formula2)
 
 def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
-    print("Aplicando regla de not know en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     neg_formula = node.get_formula() #~Ka(A)
     component = node.get_formula().get_terms()[0] #Ka(A)
     result_formula = component.get_terms()[0].deny_formula().delete_negation()#~A
@@ -161,25 +156,22 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
                 print(system)
                 print("Es superfluo")
                 return 
-
             lbranch = branch.get_label_branch() # Conjunto de etiquetas de la rama, en este caso node = leaf CUIDADO
-
             simple_branch = [] # Lista para despuéß simplificar la rama. 
             currentlabel = node.get_label() # Etiqueta del nodo al que vamos a aplicar la regla
             count = 1 # Contador para crear la nueva etiqueta
             new_label = None # INICIALIZAR VARIABLE PARA QUE NO SE PETE
-
             ## Bucle para construir el conjunto de etiquetas simplificado (IDEA > CREAR CLASE RAMA CON ESTOS DATOS)
             for label in lbranch:
                 simple_branch.append(label.simplify_label())
-
-            #Bucle para crear la extensión de la hoja del árbol
+            simple_branch.sort()
             for num in simple_branch:            
                 new_label = currentlabel.append(agent,str(count))
                 # SYSTEM K4
-                if system == "k4":
+                if "4" in system:
                     if new_label.simplify_label() == num or new_label.is_superfluo(branch):
                         count += 1
+                        new_label = currentlabel.append(agent,str(count))
                 else:
                     if new_label.simplify_label() == num:
                         count += 1
@@ -191,73 +183,67 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
                 print("Not new label")
 
 def know_rule(node: eptree.Node, tree: eptree.Tree, system):
-    print("Aplicando regla de know en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     formula = node.get_formula()
     term = formula.get_terms()[0].delete_negation()
     agent = node.get_formula().get_agent()
     label = node.get_label()
+    current_leaf = None
     extensions =[]
     tree.remove_node_from_group(node)
     if (formula.get_formula_type() != "know"):
-        #TODO: Error handling
         print("ERROR K")
         return
-    # VOY HASTA LA HOJA
+
     leafs = tree.get_available_leafs(node)
     if leafs == None:
         print("No hojas libres")
         return
     for leaf in leafs:
-        id = int(leaf.id)
-        #COJO LA RAMA DESDE LA HOJA
         branch = tree.get_branch(leaf)
-        labels = branch.get_label_branch()
-        # S4
+        current_leaf = leaf
         if "t" in system:
-            print("Aplicando s4")
-            id = int(str(id)+str(1))
+            print("> Aplicando T")
+            id = int(str(current_leaf.id)+str(1))
             labelled_formula = parser.LabelledFormula(label, term)
             if branch.formula_in_base_set(label ,term):
                 print("La fórmula "+term.formula+" está en el conjunto base "+label.label)
             else:
-                leaf.add_one_child(labelled_formula,id)
-                print("[New Node] " + leaf.left.get_labelled_formula_string())
-                tree.add_node_to_group(leaf.left)
-                leaf = leaf.left
+                current_leaf.add_one_child(labelled_formula,id)
+                tree.add_node_to_group(current_leaf.left)
+                current_leaf = current_leaf.left
 
-        extensions = branch.get_simple_extensions(label,labels)
+        extensions = branch.get_simple_extensions(label)
         if extensions != None:
             for extlabel in extensions:
                 if extlabel.label[-3]==agent:
-                    id = int(str(id)+str(1))
+                    id = int(str(current_leaf.id)+str(1))
                     lformula = parser.LabelledFormula(extlabel,term)
                     if branch.formula_in_base_set(extlabel,term):
-                        print("ESTÁ DENTRO")
-                        continue
-                    leaf.add_one_child(lformula,id)
-                    tree.add_node_to_group(leaf.left)
+                        print("La fórmula "+term.formula+" está en el conjunto base "+label.label)
+                    else:
+                        current_leaf.add_one_child(lformula,id)
+                        print("> Aplicando K")
+                        tree.add_node_to_group(current_leaf.left)
+                        current_leaf = current_leaf.left
                     if "4" in system:
-                        print("Aplicando 4")
-                        print(leaf.get_labelled_formula_string())
-                        id = int(str(id)+str(1))
+                        print("> Aplicando 4")
+                        id = int(str(current_leaf.id)+str(1))
                         kformula = parser.LabelledFormula(extlabel,formula)
-                        if branch.formula_in_base_set(extlabel,term):
-                            print("ESTÁ DENTRO")
-                            continue
-                        leaf.left.add_one_child(kformula,id)
-                        tree.add_node_to_group(leaf.left.left)
+                        if branch.formula_in_base_set(extlabel,formula):
+                            print("La fórmula "+formula.formula+" está en el conjunto base "+extlabel.label)
+                        else:
+                            current_leaf.add_one_child(kformula,id)
+                            tree.add_node_to_group(current_leaf.left)
         else:
+            print("> Aplicando K y 4")
             print("Not extensions")
             continue
-    # tree.add_knows_to_group(tree.root)
     return extensions
 
 # Ahora mismo satura primero las etiquetas y después divide ramas.
-def rule_algorithm(system,tree):
-    while True:
-        # tree.add_knows_to_group(tree.root,tree)
-        tree.add_knows_to_group(tree.root,tree)
-        print("-----------------------Paso---------------------")
+def rule_algorithm(system,tree:eptree.Tree):
+    while True and len(tree.get_open_branchs())!=0:
+        print(tree.add_knows_to_group(tree.root))
         if tree.alpha_group:
             apply_rule(system, tree.alpha_group[0],tree)
         elif tree.nu_group:
@@ -270,24 +256,22 @@ def rule_algorithm(system,tree):
             return False
         return rule_algorithm(system, tree)
     
-def apply_rule(system, node: eptree.Node, tree):
+
+def apply_rule(system, node: eptree.Node, tree: eptree.Tree):
+    print(">> Aplicando regla nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     type = node.get_formula().get_formula_type()
     formula_functions[type](node, tree, system)
-    # print("Aplicando regla "+str(formula_functions[type])+ " en nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
-     
 
-
-def run_tableau(system, conclusion, premisas):
+def run_tableau(system, premisas):
     tree = eptree.Tree()
-    lista_premisas = []
+    lista_formulas = []
     model = None
     if premisas:
         for premisa in premisas:
             formula = parser.Formula(premisa)
-            lista_premisas.append(formula)
+            lista_formulas.append(formula)
 
-    formula = parser.Formula(conclusion)
-    tree.create_tree(formula,lista_premisas)
+    tree.create_tree(lista_formulas)
     rule_algorithm(system, tree)
     tree.print_dot(tree.root)
     os.system('dot -Tpng ~/tree.dot > ~/tree.png')
@@ -295,8 +279,9 @@ def run_tableau(system, conclusion, premisas):
         model = tree.create_counter_model()
         if "4" in system:
             print("Aplicando loop checking")
-            tree.loop_checking(model[0])
-            model[0].transitive_closure('a')
+            tree.loop_checking(model[0],system)
+            # model[0].transitive_closure(agent)
+            model[0].closures(system)
         else:
             print("No aplicar loop checking")
         model[0].print_dot()

@@ -1,7 +1,5 @@
 import itertools
-from os import wait
 from epistemictree import epmodel
-from epistemictree import utils as u
 from epistemictree import parser
 from epistemictree import rules
 
@@ -112,13 +110,14 @@ class Tree:
             id2 = int(str(node.id)+str(2))
             node.add_two_childs(data1,data2,id1,id2)
 
-    def create_tree(self,  conclusion:parser.Formula, premises=None):
+    def create_tree(self, formulas):
         label = parser.Label('1')
-        conclusion_node= Node(parser.LabelledFormula(label,conclusion.deny_formula().delete_negation()),1)
+        conclusion_node= Node(parser.LabelledFormula(label,formulas[0]),1)
+        formulas.pop(0)
         self.root=conclusion_node
         self.add_node_to_group(self.root)
-        if premises !=None:
-            for formula in premises:
+        if formulas !=None:
+            for formula in formulas:
                 lformula = parser.LabelledFormula(label,formula)
                 self.simple_extension(lformula)
 
@@ -273,14 +272,15 @@ class Tree:
         print(node.id)
         self.print_label_tree(node.left, space)
 
-    def check_node_know_alive(self,node):
+    def check_node_know_alive(self,node: Node):
         available = []
         if rules.get_rule_type(node) == 'nu':
             agent = node.get_formula().get_agent()
             branchs = self.get_full_branch(node)
             # AÑADE LAS EXTENSIONES SIMPLES
             for branch in branchs: 
-                agent_extensions = branch.get_extensions_agent(agent, node.get_label()) 
+                label = node.get_label()
+                agent_extensions = branch.get_extensions_agent(agent,label) 
                 if agent_extensions is not None:
                     for extension in agent_extensions:
                         formula = parser.LabelledFormula(extension,node.get_formula().get_terms()[0])
@@ -291,28 +291,33 @@ class Tree:
             else:
                 return False
 
-    def add_knows_to_group(self,node, nu_group=None):
+    def add_knows_to_group(self,node:Node, nu_group=None):
+        if nu_group == None:
+            nu_group = []
         if node:
             if(node != None):
                 if self.check_node_know_alive(node):
-                    self.nu_group.append(node)
+                    print("T: Añadir nu node: "+str(node.get_labelled_formula_string())+" ID "+ str(node.get_id()))
+                    nu_group.append(node)
                 self.add_knows_to_group(node.left,nu_group)
                 self.add_knows_to_group(node.right,nu_group)
+        self.nu_group = list(set(nu_group+self.nu_group))
+
+
 
     # Puede dar error
     def add_node_to_group(self, node: Node):
         if rules.get_rule_type(node) == 'alpha':
-            print("Añadir alpha node: "+ str(node.get_labelled_formula_string()))
             self.alpha_group.append(node)
         elif rules.get_rule_type(node) == 'beta':
-            print("Añadir alpha node: "+str(node.get_labelled_formula_string()))
-            self.beta_group.append(node)
+             self.beta_group.append(node)
         elif rules.get_rule_type(node) == 'pi':
-            print("Añadir alpha node: "+str(node.get_labelled_formula_string()))
             self.pi_group.append(node)
         elif rules.get_rule_type(node) == 'nu':
-            print("Añadir alpha node: "+str(node.get_labelled_formula_string()))
             self.nu_group.append(node)
+        elif rules.get_rule_type(node) =='literal':
+            return 
+        # self.add_knows_to_group(self.root)
 
     def remove_node_from_group(self, node:Node):
         if rules.get_rule_type(node) == 'alpha':
@@ -337,7 +342,7 @@ class Tree:
         return len(self.get_open_branchs()) != 0
 
     
-    def loop_checking(self, model):
+    def loop_checking(self, model, system):
         """
         Method that add the superfluos relation of a given model.
         """
@@ -347,16 +352,26 @@ class Tree:
         for label in labelbranch:
             originals = label.get_originals(branch)
             for original in originals:
-                extensions = original.get_simple_extensions(branch)
                 world1 = epmodel.World(str(label.simplify_label()))
-                for i in extensions:
-                    agent = i.get_agent()
-                    model.get_world_by_name(str(i.simplify_label()))
-                    world2 = epmodel.World(str(i.simplify_label()))
-                    # print("SUPERFLUO RELATION BETWEEN "+)
-                    relation = epmodel.Relation(world1,world2,agent,"superfluo") 
-                    if not model.contain_relation(relation):
-                        model.add_relation(relation)
+                if system =="kt4":
+                    # model.get_world_by_name(str(original.simplify_label()))
+                    agents = model.get_agents()
+                    world2 = epmodel.World(str(original.simplify_label()))
+                    for agent in agents:
+                        relation = epmodel.Relation(world1,world2,agent,"superfluo") 
+                        if not model.contain_relation(relation):
+                            model.add_relation(relation)
+                elif system =="k4":
+                    extensions = original.get_simple_extensions(branch)
+                    for i in extensions:
+                        agent = i.get_agent()
+                        model.get_world_by_name(str(i.simplify_label()))
+                        world2 = epmodel.World(str(i.simplify_label()))
+                        # print("SUPERFLUO RELATION BETWEEN "+)
+                        relation = epmodel.Relation(world1,world2,agent,"superfluo") 
+                        if not model.contain_relation(relation):
+                            model.add_relation(relation)
+
 
     def create_counter_model(self):
         #FIX duplica mundos
@@ -406,10 +421,10 @@ class Branch(list):
     def get_label_branch(self):
         labels = []
         for node in self:
-            label = node.get_label()
-            if label not in labels:
-                labels.append(label)
-        return labels
+            if node != None:
+            # print(type(node.get_label()))
+                labels.append(node.get_label())
+        return set(labels)
 
     def label_in_branch(self, label):
         lb = self.get_label_branch()
@@ -418,12 +433,10 @@ class Branch(list):
                 return True
         return False
 
-
     # TODO AÑADIR IR A HOJA
-    def get_simple_extensions(self,  label_filter, label_branch=None,):
+    def get_simple_extensions(self,  label_filter):
         extensions = []
-        if label_branch==None:
-            label_branch = self.get_label_branch()
+        label_branch = self.get_label_branch()
 
         for label in label_branch:
             if label.is_simple_extension(label_filter):
@@ -433,7 +446,7 @@ class Branch(list):
         else:
             return extensions
             
-    def get_extensions_agent(self, agent, label_filter, label_branch=None):
+    def get_extensions_agent(self, agent, label_filter):
         extensions = self.get_simple_extensions(label_filter)
         if extensions != None:
             for extension in extensions:
@@ -460,7 +473,6 @@ class Branch(list):
         base = self.get_base_set(label)
         for f in base:
             if f.formula == formula.formula:
-                print("Son iguales")
                 return True
         return False
 

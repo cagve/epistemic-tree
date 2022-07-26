@@ -92,9 +92,17 @@ class Model():
         file.write("}")
         file.close
 
+    def reflexive_closure(self, agent):
+        print("Añadiendo reflexive closure")
+        for world in self.worlds:
+            relation = Relation( world, world, agent, "closure")
+            if not self.contain_relation(relation):
+                print(relation.to_string()+" not in model")
+                self.add_relation(relation)
+
     def transitive_closure(self,agent):
         """Method to make the model transitive. Only attends to the relation of the agent."""
-        # TODO Método para que sea transitivo en todos los agentes
+        print("Añadiendo transitive closure")
         closure = set(self.get_relations_by_agent(agent))
         while True:
             new_relations = set((x,w) for x,y in closure for q,w in closure if q == y)
@@ -110,6 +118,16 @@ class Model():
                 break
             closure = closure_until_now
         return closure
+
+    def closures(self, system):
+        agents = self.get_agents()
+        for agent in agents:
+            if "t" in system:
+                self.reflexive_closure(agent)
+            if "4" in  system:
+                    self.transitive_closure(agent)
+
+
 
 class Relation():
     def __init__(self, world1, world2, agent, type):
