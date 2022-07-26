@@ -180,8 +180,8 @@ class Tree:
                 self.dot_formula(node.left,file)
                 self.dot_formula(node.right,file)
 
-    def print_dot(self,node):
-        file = open("/home/karu/tree.dot", 'w')
+    def print_dot(self,node, dot_file:str):
+        file = open(dot_file, 'w')
         file.write("digraph G {\n")
         file.write('node[shape = none]\n')
         self.dot_formula(node,file)
@@ -297,7 +297,6 @@ class Tree:
         if node:
             if(node != None):
                 if self.check_node_know_alive(node):
-                    print("T: Añadir nu node: "+str(node.get_labelled_formula_string())+" ID "+ str(node.get_id()))
                     nu_group.append(node)
                 self.add_knows_to_group(node.left,nu_group)
                 self.add_knows_to_group(node.right,nu_group)
@@ -373,7 +372,7 @@ class Tree:
                             model.add_relation(relation)
 
 
-    def create_counter_model(self):
+    def create_counter_model(self) -> list:
         #FIX duplica mundos
         """Method that create the set of models. For system with transitivity
         you need to execute loop_checking after this method to complete the
@@ -381,7 +380,7 @@ class Tree:
         counter_models = []
         if not self.open_branch():
             print("Closed tree")
-            return
+            return []
 
         open_branchs = self.get_open_branchs()
 

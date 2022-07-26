@@ -1,3 +1,6 @@
+from logging import exception
+from platform import win32_edition
+from prompt_toolkit.application import create_app_session_from_tty
 from epistemictree import parser
 from time import sleep
 from epistemictree import eptree 
@@ -258,9 +261,72 @@ def rule_algorithm(system,tree:eptree.Tree):
     
 
 def apply_rule(system, node: eptree.Node, tree: eptree.Tree):
-    print(">> Aplicando regla nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     type = node.get_formula().get_formula_type()
+    print(">> Aplicando regla tipo "+type+" nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     formula_functions[type](node, tree, system)
+
+def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool):
+    tree = eptree.Tree()
+    model = None
+    lista_formulas = []
+    if formulas:
+        for formula_str in formulas:
+            formula= parser.Formula(formula_str)
+            if formula.parse():
+                lista_formulas.append(formula)
+            else:
+                print("Error sintáctico en fórmula "+formula.formula)
+                return
+
+    tree.create_tree(lista_formulas)
+    rule_algorithm(system, tree)
+    if output == None:
+        print_result(tree.open_branch())
+    else:
+        # Printing tableau
+        dotfile = output+'/tree.dot'
+        tree.print_dot(tree.root, dotfile)
+        os.system('dot -Tpng '+output+'/tree.dot > '+output+'/tree.png')
+
+        if tree.open_branch():
+            model = tree.create_counter_model()
+            if "4" in system:
+                print("Aplicando loop checking")
+                tree.loop_checking(model[0],system)
+                if clousure:
+                    model[0].closures(system)
+            else:
+                print("No aplicar loop checking")
+            model[0].print_dot()
+            if output:
+                os.system('dot -Tpng '+output+'/model.dot > '+output+'/model.png')
+            tree.print_open_close_branchs()
+            print_result(True)
+            return(True,tree, model[0])
+        else: 
+            print("No model")
+            tree.print_open_close_branchs()
+            return(False, tree, None)
+
+def print_result(value:bool):
+    # local border_lines = { '╔' .. string.rep('═', win_width) .. '╗' }
+    # local middle_line = '║' .. string.rep(' ', win_width) .. '║'
+    border = ""
+    if bool:
+        cad = " > True: Existe modelo"
+        width = len(cad)+20
+        for i in range(width):
+            border = border +"━"
+    else:
+        cad = " > False: No existe modelo"
+        width = len(cad)+20
+        for i in range(width):
+            border = border +"━"
+
+    print(border)
+    print(cad)
+    print(border)
+
 
 def run_tableau(system, premisas):
     tree = eptree.Tree()
@@ -273,15 +339,15 @@ def run_tableau(system, premisas):
 
     tree.create_tree(lista_formulas)
     rule_algorithm(system, tree)
-    tree.print_dot(tree.root)
+    # tree.print_dot(tree.root)
     os.system('dot -Tpng ~/tree.dot > ~/tree.png')
     if tree.open_branch():
         model = tree.create_counter_model()
         if "4" in system:
             print("Aplicando loop checking")
-            tree.loop_checking(model[0],system)
+            # tree.loop_checking(model[0],system)
             # model[0].transitive_closure(agent)
-            model[0].closures(system)
+            # model[0].closures(system)
         else:
             print("No aplicar loop checking")
         model[0].print_dot()

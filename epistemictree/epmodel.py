@@ -74,6 +74,7 @@ class Model():
         file = open("/home/karu/model.dot", 'w')
         file.write("digraph G {\n")
         file.write("node[shape=record]\n")
+        print("Printing dot")
         for world in self.worlds:
             evaluation = world.evaluation_to_string().replace('||','v').replace(',','\\n')
             if world.is_superfluo(self):
@@ -196,7 +197,7 @@ class World():
     def is_subworld(self, world) -> bool:
         count=0
         flag=True
-        if self.name == world.name:
+        if self.name == world.name or len(self.name)<len(world.name):
             flag = False
         evaluation1 = self.evaluation_to_list()
         evaluation2 = world.evaluation_to_list()

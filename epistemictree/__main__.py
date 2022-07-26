@@ -1,14 +1,16 @@
 from epistemictree import rules as rl
 from epistemictree import utils
+from epistemictree import cli
 
 
 def main():
+    # cli.run()
     examples()
+    
 
 def examples():
-    tree = exe['ejemplo1']
+    tree = exe['ejemplo32']
     value = rl.run_tableau('kt4',tree[0])
-
     print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     print(" Existe contramodelo > "+ str(value[0]))
     print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
@@ -33,7 +35,8 @@ exe = {
         'axioma4' : [['Kap=>KaKap']], 
         'axioma5' : [['-Kap=>Ka-Kap']], 
         'axioma_multi4' : [['Kap=>KaKbp']], 
-        'ejemplo1':[['-Kc- -Kb- r','-Kb- (p&&-Kb- r)', '-Ka-(q&&-Kb-r)']]
+        'ejemplo1':[['-Kc- -Kb- r','-Kb- (p&&-Kb- r)', '-Ka-(q&&-Kb-r)']],
+        'ejemplo32':[['Ka-Ka-p','Ka-Kap']]
         }
 
 

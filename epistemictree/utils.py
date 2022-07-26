@@ -16,7 +16,7 @@ def dot_to_latex():
 
 def superfluo(branch, label1, label2):
     # Etiqueta la misma return false
-    if label1.label == label2.label:
+    if label1.label == label2.label or len(label2.label)>len(label1.label):
         return False
 
     base1 = branch.get_base_set(label1)
