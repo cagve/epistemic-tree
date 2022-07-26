@@ -309,10 +309,8 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool):
             return(False, tree, None)
 
 def print_result(value:bool):
-    # local border_lines = { '╔' .. string.rep('═', win_width) .. '╗' }
-    # local middle_line = '║' .. string.rep(' ', win_width) .. '║'
     border = ""
-    if bool:
+    if value:
         cad = " > True: Existe modelo"
         width = len(cad)+20
         for i in range(width):
