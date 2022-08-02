@@ -155,6 +155,11 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
         for leaf in leafs:
             id = int(str(leaf.id)+str(1))
             branch = tree.get_branch(leaf)
+            if not_know_satisfies(branch,node,system):
+                print("---------------")
+                print("Ya se satisface")
+                print("---------------")
+                continue
             if ("4" in system and node.get_label().is_superfluo(branch)):
                 print(system)
                 print("Es superfluo")
@@ -184,6 +189,30 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
                 tree.add_node_to_group(leaf.left)
             else:
                 print("Not new label")
+
+
+def not_know_satisfies(branch:eptree.Branch, node:eptree.Node, system):
+    # branchs = tree.get_full_branch(node)
+    term = node.get_formula().get_terms()[0].get_terms()[0].deny_formula().delete_negation()
+    extensions = branch.get_simple_extensions(node.get_label())
+    print("___________________________________")
+    print("Label = " +node.get_label().label + "  Formula= "+term.formula)
+    if "t" in system: 
+        if extensions == None:
+            extensions = []
+        extensions.append(node.get_label())
+    if extensions:
+        for label in extensions:
+            print("ANALIZANDO "+ label.label)
+            for f in branch.get_base_set(label):
+                print(f.formula)
+            if branch.formula_in_base_set(label, term):
+                print("Está dentro")
+                return True
+    else:
+        print("Not extensions")
+    print("___________________________________")
+    return False
 
 def know_rule(node: eptree.Node, tree: eptree.Tree, system):
     formula = node.get_formula()

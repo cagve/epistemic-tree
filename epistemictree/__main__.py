@@ -4,8 +4,7 @@ from epistemictree import cli
 
 
 def main():
-    # cli.run()
-    examples()
+    cli.run()
     
 
 def examples():

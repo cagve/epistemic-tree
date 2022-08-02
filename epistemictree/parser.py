@@ -3,10 +3,9 @@ from tree_sitter import Parser as TSParser
 from tree_sitter import Language as TSLanguage
 import tree_sitter
 from epistemictree import utils
-from epistemictree.utils import superfluo
 
-LP_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'ep')
-LABEL_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'label')
+LP_LANGUAGE = TSLanguage('./tree-sitter/build/my-languages.so', 'ep')
+LABEL_LANGUAGE = TSLanguage('./tree-sitter/build/my-languages.so', 'label')
 
 class Parser():
     """
