@@ -2,6 +2,7 @@
 from tree_sitter import Parser as TSParser 
 from tree_sitter import Language as TSLanguage
 import tree_sitter
+from epistemictree import utils
 
 LP_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'ep')
 LABEL_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'label')
@@ -261,6 +262,13 @@ class Formula:
         else: 
             return Formula("-("+self.formula+")").delete_negation()
 
+    def is_modal(self):
+        f_type = self.get_formula_type()
+        if f_type == "not_know" or f_type == "know":
+            return True
+        return False
+
+
     def delete_negation(self):
         """
         Return the formula with out repeatd negations.
@@ -332,6 +340,38 @@ class Label():
         Return size of label.
         """
         return len(self.label.replace('.',''))
+
+    def get_simple_extensions(self,branch):
+        extensions = []
+        if not branch.label_in_branch(self):
+            print("Not in branch")
+            return extensions
+        lb = branch.get_label_branch()
+        for l in lb:
+            if l.is_simple_extension(self):
+                extensions.append(l)
+        return extensions
+
+    def get_originals(self, branch):
+        originals=[]
+        if not branch.label_in_branch(self):
+            print("Not in branch")
+            return originals
+        lb = branch.get_label_branch()
+        for l in lb:
+            if utils.superfluo(branch, self,l) and self.label!=l.label:
+                originals.append(l)
+        return originals 
+
+
+    def is_superfluo(self, branch) -> bool:
+        if(self.get_originals(branch)):
+            return True
+        return False
+
+    def is_modal_superfluo(self, branch) -> bool:
+        filtered_branch = branch.filter_modal_formulas()
+        return self.is_superfluo(filtered_branch)
 
     def is_sublabel(self, label)-> bool:
         """
@@ -432,6 +472,9 @@ class LabelledFormula:
     def __init__(self, label:Label, formula:Formula) -> None:
         self.label = label
         self.formula = formula
+
+    def is_modal(self) -> bool:
+        return self.formula.is_modal()
 
     def get_contradiction(self, lab_formula) -> bool:
         """
