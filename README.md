@@ -4,6 +4,7 @@
 * [Lenguaje](#lenguaje)
 * [Interfaz](#Interfaz)
 
+
 ## Introducción
 Este proyecto es el resultado del trabajo fin de máster realizado por Carlos
 Agiulera Ventura.
@@ -17,6 +18,18 @@ Agiulera Ventura.
 | Ka      | Conocimiento | Kap     |
 
 El conjunto de átomos se define como [p-z] y el conjunto de átomos [a-d].
+
+## Ejecución
+1. `git clone https://github.com/cagve/epistemic-tree`
+2. `cd epistemic-tree/`
+3. `python3 -m epistemictree <args>` 
+
+### Args
+* [Req] `-s --system` > Qué restricciones tiene, opciones -> [k, kt, kt4, k4]
+* [Req] `-f --formula` > Lista de fórmulas, escrito entre comillas y separados por comas
+* `-o --output` > Si quieres cambiar el destino del output, por defecto $HOME
+* `-c` > Añade las clausuras
+
 
 ## Interfaz
 ### Consola
