@@ -4,8 +4,8 @@ from tree_sitter import Language as TSLanguage
 import tree_sitter
 from epistemictree import utils
 
-LP_LANGUAGE = TSLanguage('./tree-sitter/build/my-languages.so', 'ep')
-LABEL_LANGUAGE = TSLanguage('./tree-sitter/build/my-languages.so', 'label')
+LP_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'ep')
+LABEL_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'label')
 
 class Parser():
     """
@@ -262,6 +262,13 @@ class Formula:
         else: 
             return Formula("-("+self.formula+")").delete_negation()
 
+    def is_modal(self):
+        f_type = self.get_formula_type()
+        if f_type == "not_know" or f_type == "know":
+            return True
+        return False
+
+
     def delete_negation(self):
         """
         Return the formula with out repeatd negations.
@@ -362,6 +369,10 @@ class Label():
             return True
         return False
 
+    def is_modal_superfluo(self, branch) -> bool:
+        filtered_branch = branch.filter_modal_formulas()
+        return self.is_superfluo(filtered_branch)
+
     def is_sublabel(self, label)-> bool:
         """
         Return true if the current label is a sublabel of the given label.
@@ -461,6 +472,9 @@ class LabelledFormula:
     def __init__(self, label:Label, formula:Formula) -> None:
         self.label = label
         self.formula = formula
+
+    def is_modal(self) -> bool:
+        return self.formula.is_modal()
 
     def get_contradiction(self, lab_formula) -> bool:
         """

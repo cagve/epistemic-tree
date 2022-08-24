@@ -407,6 +407,12 @@ class Tree:
 
 
 class Branch(list):
+    def filter_modal_formulas(self):
+        for formula in self:
+            if not formula.is_modal():
+                self.remove(formula)
+        return self
+
     def is_close(self):
         for a,b in itertools.combinations(self,2): 
             if a.get_labelled_formula().get_contradiction(b.get_labelled_formula()) or b.get_labelled_formula().get_contradiction(a.get_labelled_formula()):
