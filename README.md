@@ -5,11 +5,8 @@
 * [Interfaz](#Interfaz)
 
 
-## Introducción
-Este proyecto es el resultado del trabajo fin de máster realizado por Carlos
-Agiulera Ventura.
-
 ## Lenguaje
+
 | Símbolo | Fórmula      | Ejemplo |
 |---------|--------------|---------|
 | &&      | Conjunción   | p&&q    |
@@ -25,11 +22,12 @@ El conjunto de átomos se define como [p-z] y el conjunto de átomos [a-d].
 3. `python3 -m epistemictree <args>` 
 
 ### Args
-* [Req] `-s --system` > Qué restricciones tiene, opciones -> [k, kt, kt4, k4]
+* [Req] `-s --system` > Sistema a utilizar. Opciones: [k, kt, kt4, k4]
 * [Req] `-f --formula` > Lista de fórmulas, escrito entre comillas y separados por comas
-* `-o --output` > Si quieres cambiar el destino del output, por defecto $HOME
+* `-o --output` > Output img
 * `-c` > Añade las clausuras
 
+Ejemplos: 
 
 ## Interfaz
 ### Consola

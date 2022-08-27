@@ -1,4 +1,5 @@
 from logging import exception
+from os.path import exists
 from platform import win32_edition
 from prompt_toolkit.application import create_app_session_from_tty
 from epistemictree import parser
@@ -315,7 +316,12 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool):
         # Printing tableau
         dotfile = output+'/tree.dot'
         tree.print_dot(tree.root, dotfile)
+        file_exists = exists(dotfile)
+        if not file_exists:
+            f = open(dotfile, "x")
+            f.close()
         os.system('dot -Tpng '+output+'/tree.dot > '+output+'/tree.png')
+        
 
         if tree.open_branch():
             model = tree.create_counter_model()
@@ -327,6 +333,11 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool):
             else:
                 print("No aplicar loop checking")
             model[0].print_dot()
+            model_file = output+'/model.dot'
+            file_exists = exists(model_file)
+            if not file_exists:
+                f = open(model_file, "x")
+                f.close()
             if output:
                 os.system('dot -Tpng '+output+'/model.dot > '+output+'/model.png')
             tree.print_open_close_branchs()
