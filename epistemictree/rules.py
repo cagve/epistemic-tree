@@ -328,12 +328,12 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool):
                     model[0].closures(system)
             else:
                 print("No aplicar loop checking")
-            model[0].print_dot()
             model_file = output+'/model.dot'
             file_exists = exists(model_file)
             if not file_exists:
                 f = open(model_file, "x")
                 f.close()
+            model[0].print_dot(model_file)
             if output:
                 os.system('dot -Tpng '+output+'/model.dot > '+output+'/model.png')
             tree.print_open_close_branchs()
