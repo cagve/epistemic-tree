@@ -1,9 +1,5 @@
-from logging import exception
 from os.path import exists
-from platform import win32_edition
-from prompt_toolkit.application import create_app_session_from_tty
 from epistemictree import parser
-from time import sleep
 from epistemictree import eptree 
 import os
 
