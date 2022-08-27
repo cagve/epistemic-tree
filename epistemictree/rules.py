@@ -160,7 +160,7 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
                 print("Ya se satisface")
                 print("---------------")
                 continue
-            if ("4" in system and node.get_label().is_superfluo(branch)): # CAMBIAR!!!
+            if ("4" in system and node.get_label().is_superfluo(branch)):
                 print(system)
                 print("Es superfluo")
                 return 
@@ -177,7 +177,7 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
                 new_label = currentlabel.append(agent,str(count))
                 # SYSTEM K4
                 if "4" in system:
-                    if new_label.simplify_label() == num or new_label.is_superfluo(branch):# CAMBIAR!!!
+                    if new_label.simplify_label() == num or new_label.is_superfluo(branch):
                         count += 1
                         new_label = currentlabel.append(agent,str(count))
                 else:

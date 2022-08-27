@@ -351,6 +351,8 @@ class Tree:
         for label in labelbranch:
             originals = label.get_originals(branch)
             for original in originals:
+                if original.is_superfluo(branch):
+                    continue
                 world1 = epmodel.World(str(label.simplify_label()))
                 if system =="kt4":
                     # model.get_world_by_name(str(original.simplify_label()))
@@ -408,9 +410,10 @@ class Tree:
 
 class Branch(list):
     def filter_modal_formulas(self):
-        for formula in self:
+        for node in self:
+            formula = node.get_formula()
             if not formula.is_modal():
-                self.remove(formula)
+                self.remove(node)
         return self
 
     def is_close(self):

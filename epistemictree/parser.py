@@ -365,7 +365,9 @@ class Label():
 
 
     def is_superfluo(self, branch) -> bool:
-        if(self.get_originals(branch)):
+        # filtered_branch = branch
+        filtered_branch = branch.filter_modal_formulas()
+        if(self.get_originals(filtered_branch)):
             return True
         return False
 

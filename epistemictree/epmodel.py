@@ -1,5 +1,3 @@
-
-
 class Model():
     def __init__(self, worlds = None, relations = None):
         if worlds == None:
@@ -152,6 +150,12 @@ class World():
             self.evaluation=evaluation
         self.name=name
         self.relations = relations
+    
+    def filter_modal_formulas(self):
+        for formula in self.evaluation:
+            if not formula.is_modal():
+                self.evaluation.remove(formula)
+        return self.evaluation
 
     def to_string(self):
         return self.name
@@ -199,6 +203,8 @@ class World():
         flag=True
         if self.name == world.name or len(self.name)<len(world.name):
             flag = False
+        self.filter_modal_formulas()
+        world.filter_modal_formulas()
         evaluation1 = self.evaluation_to_list()
         evaluation2 = world.evaluation_to_list()
 
@@ -207,6 +213,7 @@ class World():
                 if i not in evaluation2:
                     flag = False
                 count = count+1
+
         if flag and len(set(evaluation1)) == len(set(evaluation2)):
             if int(world.name)<int(self.name):
                 return True
