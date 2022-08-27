@@ -16,7 +16,13 @@
 
 El conjunto de átomos se define como [p-z] y el conjunto de átomos [a-d].
 
+
 ## Ejecución
+### Dependencias
+1. [Tree sitter](https://tree-sitter.github.io/tree-sitter/)
+`pip3 install tree-sitter`
+
+### Instalar y ejecutar
 1. `git clone https://github.com/cagve/epistemic-tree`
 2. `cd epistemic-tree/`
 3. `python3 -m epistemictree <args>` 
