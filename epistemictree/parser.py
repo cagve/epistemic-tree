@@ -373,6 +373,9 @@ class Label():
         base1 = list(map(lambda formula: formula.formula, base1))
         base2 = list(map(lambda formula: formula.formula, base2))
 
+        if len(base1) == 0:
+            return False
+
         count=0
         flag=True
         while flag and count < len(base1):

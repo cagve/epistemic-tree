@@ -13,30 +13,3 @@ def dot_to_latex():
     file_write.close()
     os.system('dot -Tpng ~/model.dot > ~/model.png')
 
-
-def superfluo(branch, label1, label2):
-    # Etiqueta la misma return false
-    if label1.label == label2.label or len(label2.label)>len(label1.label):
-        return False
-
-    base1 = label1.
-    list1=[node.get_formula() for node in base1]
-
-    base2 = branch.filter_modal_formulas()
-    list2=[node.get_formula() for node in base2]
-
-    count=0
-    flag=True
-    while flag and count < len(list1):
-        for i in list1:
-            if i not in list2:
-                flag = False
-            count = count+1
-
-    if flag and len(set(list1)) == len(set(list2)):
-        # Si son iguales
-        if label1.simplify_label()>label2.simplify_label():
-            return True
-        else:
-            return False
-    return flag
