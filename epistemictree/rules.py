@@ -1,8 +1,4 @@
-from logging import exception
-from platform import win32_edition
-from prompt_toolkit.application import create_app_session_from_tty
 from epistemictree import parser
-from time import sleep
 from epistemictree import eptree 
 import os
 
@@ -160,7 +156,7 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
                 print("Ya se satisface")
                 print("---------------")
                 continue
-            if ("4" in system and node.get_label().is_superfluo(branch)):
+            if ("4" in system and node.get_label().is_superfluo_in_branch(branch)):
                 print(system)
                 print("Es superfluo")
                 return 
@@ -177,7 +173,7 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
                 new_label = currentlabel.append(agent,str(count))
                 # SYSTEM K4
                 if "4" in system:
-                    if new_label.simplify_label() == num or new_label.is_superfluo(branch):
+                    if new_label.simplify_label() == num or new_label.is_superfluo_in_branch(branch):
                         count += 1
                         new_label = currentlabel.append(agent,str(count))
                 else:
@@ -316,7 +312,6 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool):
         dotfile = output+'/tree.dot'
         tree.print_dot(tree.root, dotfile)
         os.system('dot -Tpng '+output+'/tree.dot > '+output+'/tree.png')
-
         if tree.open_branch():
             model = tree.create_counter_model()
             if "4" in system:
@@ -331,6 +326,7 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool):
                 os.system('dot -Tpng '+output+'/model.dot > '+output+'/model.png')
             tree.print_open_close_branchs()
             print_result(True)
+            model[0].print_model()
             return(True,tree, model[0])
         else: 
             print("No model")

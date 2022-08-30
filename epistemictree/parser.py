@@ -2,7 +2,6 @@
 from tree_sitter import Parser as TSParser 
 from tree_sitter import Language as TSLanguage
 import tree_sitter
-from epistemictree import utils
 
 LP_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'ep')
 LABEL_LANGUAGE = TSLanguage('lib/tree-sitter/build/my-languages.so', 'label')
@@ -359,21 +358,43 @@ class Label():
             return originals
         lb = branch.get_label_branch()
         for l in lb:
-            if utils.superfluo(branch, self,l) and self.label!=l.label:
+            if self.is_superfluo_of(branch, l) and self.label!=l.label:
                 originals.append(l)
         return originals 
 
+    def is_superfluo_of(self, branch, label):
+        # Etiqueta la misma return false
+        if self.label == label.label or len(label.label)>len(self.label):
+            return False
 
-    def is_superfluo(self, branch) -> bool:
+        base1 = branch.get_modal_base_set(self)
+        base2 = branch.get_modal_base_set(label)
+
+        base1 = list(map(lambda formula: formula.formula, base1))
+        base2 = list(map(lambda formula: formula.formula, base2))
+
+        count=0
+        flag=True
+        while flag and count < len(base1):
+            for i in base1:
+                if i not in base2:
+                    flag = False
+                count = count+1
+
+        print(flag)
+
+        if flag and len(set(base1)) == len(set(base2)):
+            if self.simplify_label()>label.simplify_label():
+                return True
+            else:
+                return False
+        return flag
+
+    def is_superfluo_in_branch(self, branch) -> bool:
         # filtered_branch = branch
-        filtered_branch = branch.filter_modal_formulas()
-        if(self.get_originals(filtered_branch)):
+        if(self.get_originals(branch)):
             return True
         return False
-
-    def is_modal_superfluo(self, branch) -> bool:
-        filtered_branch = branch.filter_modal_formulas()
-        return self.is_superfluo(filtered_branch)
 
     def is_sublabel(self, label)-> bool:
         """

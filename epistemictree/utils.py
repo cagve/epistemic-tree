@@ -19,11 +19,11 @@ def superfluo(branch, label1, label2):
     if label1.label == label2.label or len(label2.label)>len(label1.label):
         return False
 
-    base1 = branch.get_base_set(label1)
-    list1=[formula.formula for formula in base1]
+    base1 = label1.
+    list1=[node.get_formula() for node in base1]
 
-    base2 = branch.get_base_set(label2)
-    list2=[formula.formula for formula in base2]
+    base2 = branch.filter_modal_formulas()
+    list2=[node.get_formula() for node in base2]
 
     count=0
     flag=True

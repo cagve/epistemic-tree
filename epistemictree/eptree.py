@@ -351,7 +351,7 @@ class Tree:
         for label in labelbranch:
             originals = label.get_originals(branch)
             for original in originals:
-                if original.is_superfluo(branch):
+                if original.is_superfluo_in_branch(branch):
                     continue
                 world1 = epmodel.World(str(label.simplify_label()))
                 if system =="kt4":
@@ -360,6 +360,8 @@ class Tree:
                     world2 = epmodel.World(str(original.simplify_label()))
                     for agent in agents:
                         relation = epmodel.Relation(world1,world2,agent,"superfluo") 
+                        print("REL")
+                        print(relation.to_string())
                         if not model.contain_relation(relation):
                             model.add_relation(relation)
                 elif system =="k4":
@@ -386,6 +388,7 @@ class Tree:
 
         open_branchs = self.get_open_branchs()
 
+        # TODO ITER OVER OPEN BRANCHS
         branch = open_branchs[0]
         labelbranch = branch.get_label_branch()
         modelo = epmodel.Model()
@@ -393,8 +396,12 @@ class Tree:
             # ADD EVALUATION ONLY LITERAL
             world = epmodel.World(str(label.simplify_label()))
             world.add_true_formula_list(branch.get_base_set(label))
+            print(world.evaluation)
             if not modelo.contain_world(world):
                 modelo.add_world(world)
+                if label.get_originals(branch) != None:
+                    for ori in label.get_originals(branch):
+                        world.add_original(epmodel.World(str(ori.simplify_label())))
             if branch.get_simple_extensions(label) !=None:
                 for ext in branch.get_simple_extensions(label):
                     agent=ext.get_agent()
@@ -409,13 +416,6 @@ class Tree:
 
 
 class Branch(list):
-    def filter_modal_formulas(self):
-        for node in self:
-            formula = node.get_formula()
-            if not formula.is_modal():
-                self.remove(node)
-        return self
-
     def is_close(self):
         for a,b in itertools.combinations(self,2): 
             if a.get_labelled_formula().get_contradiction(b.get_labelled_formula()) or b.get_labelled_formula().get_contradiction(a.get_labelled_formula()):
@@ -433,6 +433,13 @@ class Branch(list):
             # print(type(node.get_label()))
                 labels.append(node.get_label())
         return set(labels)
+
+    def get_modal_base_set(self, label: parser.Label) -> list:
+        formulas = list(self.get_base_set(label))
+        for formula in formulas:
+            if not formula.is_modal():
+                formulas.remove(formula)
+        return list(formulas)
 
     def label_in_branch(self, label):
         lb = self.get_label_branch()

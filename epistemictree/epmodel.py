@@ -75,8 +75,8 @@ class Model():
         print("Printing dot")
         for world in self.worlds:
             evaluation = world.evaluation_to_string().replace('||','v').replace(',','\\n')
-            if world.is_superfluo(self):
-                print(world.name + " es superfluo ")
+            if world.is_superfluo():
+                print(world.name +" is superfluo")
                 file.write(world.name+'[style=dashed, color=blue, label="'+world.name+' | '+evaluation+'"];\n')
             else:
                 file.write(world.name+'[label="'+world.name+' | '+evaluation+'"];\n')
@@ -143,19 +143,27 @@ class Relation():
 
 
 class World():
-    def __init__(self, name:str, relations = None, evaluation = None):
+    def __init__(self, name:str, relations = None, evaluation = None, originals = None):
         if evaluation == None:
             self.evaluation=[]
         else:
             self.evaluation=evaluation
         self.name=name
         self.relations = relations
+        if originals == None:
+            self.originals=[]
+        else:
+            self.originals=originals
+
+    def add_original(self, world):
+        self.originals.append(world)
     
-    def filter_modal_formulas(self):
+    def filter_modal_formulas(self) -> list:
+        formula_list = []
         for formula in self.evaluation:
-            if not formula.is_modal():
-                self.evaluation.remove(formula)
-        return self.evaluation
+            if formula.is_modal():
+                formula_list.append(formula)
+        return formula_list
 
     def to_string(self):
         return self.name
@@ -184,45 +192,17 @@ class World():
 
 
     def evaluation_to_list(self):
+        """LIST OF FORMULA IN STRING FORMAT"""
         formula_list  = []
         for ev in self.evaluation:
                 formula_list.append(ev.formula)
         return formula_list
 
-    def get_originals(self, model):
-        originals=[]
-        worlds = model.worlds
-        for world in worlds:
-            if self.is_subworld(world) and self.name!=world.name:
-                originals.append(world)
-        return originals 
+    def get_originals(self):
+        return self.originals
 
-
-    def is_subworld(self, world) -> bool:
-        count=0
-        flag=True
-        if self.name == world.name or len(self.name)<len(world.name):
-            flag = False
-        self.filter_modal_formulas()
-        world.filter_modal_formulas()
-        evaluation1 = self.evaluation_to_list()
-        evaluation2 = world.evaluation_to_list()
-
-        while flag and count < len(evaluation1):
-            for i in evaluation1:
-                if i not in evaluation2:
-                    flag = False
-                count = count+1
-
-        if flag and len(set(evaluation1)) == len(set(evaluation2)):
-            if int(world.name)<int(self.name):
-                return True
-            else:
-                return False
-        return flag
-
-    def is_superfluo(self, model):
-        if(self.get_originals(model)):
+    def is_superfluo(self):
+        if(self.get_originals()):
             return True
         return False
         
