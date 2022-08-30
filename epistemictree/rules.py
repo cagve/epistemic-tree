@@ -67,7 +67,7 @@ def beta_rule(node: eptree.Node, tree: eptree.Tree, term1: parser.LabelledFormul
             tree.add_node_to_group(leaf.right)
 
 # ALPHA RULES
-def conjunction_rule(node: eptree.Node, tree: eptree.Tree, system):
+def conjunction_rule(node: eptree.Node, tree: eptree.Tree, system, modal_superfluo):
     formula = node.get_formula()
     if formula.get_formula_type() != "and":
         #TODO: Error handling
@@ -76,7 +76,7 @@ def conjunction_rule(node: eptree.Node, tree: eptree.Tree, system):
     labelled_formula2 = parser.LabelledFormula(node.get_label(), formula.get_terms()[1].delete_negation())
     alpha_rule(node, tree, labelled_formula1, labelled_formula2)
 
-def not_conjunction_rule(node: eptree.Node, tree: eptree.Tree, system):    
+def not_conjunction_rule(node: eptree.Node, tree: eptree.Tree, system, modal_superfluo):    
     neg_formula = node.get_formula()
     if neg_formula.get_formula_type() != "not_and":
         print("ERROR NEG CON")
@@ -90,7 +90,7 @@ def not_conjunction_rule(node: eptree.Node, tree: eptree.Tree, system):
     labelled_formula2 = parser.LabelledFormula(node.get_label(), denied_formula2)
     beta_rule(node, tree, labelled_formula1, labelled_formula2)
 
-def disjunction_rule(node: eptree.Node, tree: eptree.Tree,system):
+def disjunction_rule(node: eptree.Node, tree: eptree.Tree,system, modal_superfluo):
     formula = node.get_formula()
     if formula.get_formula_type() != "or":
         print("ERROR DIS")
@@ -98,7 +98,7 @@ def disjunction_rule(node: eptree.Node, tree: eptree.Tree,system):
     labelled_formula2 = parser.LabelledFormula(node.get_label(), formula.get_terms()[1].delete_negation())
     beta_rule(node, tree, labelled_formula1, labelled_formula2)
 
-def not_disjunction_rule(node: eptree.Node, tree: eptree.Tree, system):
+def not_disjunction_rule(node: eptree.Node, tree: eptree.Tree, system, modal_superfluo):
     neg_formula = node.get_formula()
     if neg_formula.get_formula_type() != "not_or":
         print("ERROR NEG DIS")
@@ -110,7 +110,7 @@ def not_disjunction_rule(node: eptree.Node, tree: eptree.Tree, system):
     labelled_formula2 = parser.LabelledFormula(node.get_label(), denied_formula2)
     alpha_rule(node, tree, labelled_formula1, labelled_formula2)
 
-def implication_rule(node: eptree.Node, tree: eptree.Tree, system):
+def implication_rule(node: eptree.Node, tree: eptree.Tree, system, modal_superfluo):
     formula = node.get_formula()
     if formula.get_formula_type() != "iff":
         print("ERROR IMP")
@@ -120,7 +120,7 @@ def implication_rule(node: eptree.Node, tree: eptree.Tree, system):
     labelled_formula2 = parser.LabelledFormula(node.get_label(), formula2)
     beta_rule(node,tree,labelled_formula1, labelled_formula2)
 
-def not_implication_rule(node: eptree.Node, tree: eptree.Tree, system):
+def not_implication_rule(node: eptree.Node, tree: eptree.Tree, system, modal_superfluo):
     neg_formula = node.get_formula()
     if neg_formula.get_formula_type() != "not_iff":
         print("ERROR NEG IMP")
@@ -132,7 +132,7 @@ def not_implication_rule(node: eptree.Node, tree: eptree.Tree, system):
     labelled_formula2 = parser.LabelledFormula(node.get_label(), denied_formula2)
     alpha_rule(node, tree, labelled_formula1, labelled_formula2)
 
-def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
+def not_know_rule( node: eptree.Node, tree: eptree.Tree, system, modal_superfluo):
     neg_formula = node.get_formula() #~Ka(A)
     component = node.get_formula().get_terms()[0] #Ka(A)
     result_formula = component.get_terms()[0].deny_formula().delete_negation()#~A
@@ -156,7 +156,7 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
                 print("Ya se satisface")
                 print("---------------")
                 continue
-            if ("4" in system and node.get_label().is_superfluo_in_branch(branch)):
+            if ("4" in system and node.get_label().is_superfluo_in_branch(branch,modal_superfluo)):
                 print(system)
                 print("Es superfluo")
                 return 
@@ -173,7 +173,7 @@ def not_know_rule( node: eptree.Node, tree: eptree.Tree, system):
                 new_label = currentlabel.append(agent,str(count))
                 # SYSTEM K4
                 if "4" in system:
-                    if new_label.simplify_label() == num or new_label.is_superfluo_in_branch(branch):
+                    if new_label.simplify_label() == num or new_label.is_superfluo_in_branch(branch, modal_superfluo):
                         count += 1
                         new_label = currentlabel.append(agent,str(count))
                 else:
@@ -210,7 +210,7 @@ def not_know_satisfies(branch:eptree.Branch, node:eptree.Node, system):
     print("___________________________________")
     return False
 
-def know_rule(node: eptree.Node, tree: eptree.Tree, system):
+def know_rule(node: eptree.Node, tree: eptree.Tree, system, modal_superfluo):
     formula = node.get_formula()
     term = formula.get_terms()[0].delete_negation()
     agent = node.get_formula().get_agent()
@@ -269,28 +269,28 @@ def know_rule(node: eptree.Node, tree: eptree.Tree, system):
     return extensions
 
 # Ahora mismo satura primero las etiquetas y después divide ramas.
-def rule_algorithm(system,tree:eptree.Tree):
+def rule_algorithm(system,tree:eptree.Tree, modal_superfluo):
     while True and len(tree.get_open_branchs())!=0:
         print(tree.add_knows_to_group(tree.root))
         if tree.alpha_group:
-            apply_rule(system, tree.alpha_group[0],tree)
+            apply_rule(system, tree.alpha_group[0],tree, modal_superfluo)
         elif tree.nu_group:
-            apply_rule(system, tree.nu_group[0],tree)
+            apply_rule(system, tree.nu_group[0],tree, modal_superfluo)
         elif tree.pi_group:
-            apply_rule(system, tree.pi_group[0],tree)
+            apply_rule(system, tree.pi_group[0],tree, modal_superfluo)
         elif tree.beta_group: 
-            apply_rule(system, tree.beta_group[0],tree)
+            apply_rule(system, tree.beta_group[0],tree, modal_superfluo)
         else:
             return False
-        return rule_algorithm(system, tree)
+        return rule_algorithm(system, tree, modal_superfluo)
     
 
-def apply_rule(system, node: eptree.Node, tree: eptree.Tree):
+def apply_rule(system, node: eptree.Node, tree: eptree.Tree, modal_superfluo):
     type = node.get_formula().get_formula_type()
     print(">> Aplicando regla tipo "+type+" nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
-    formula_functions[type](node, tree, system)
+    formula_functions[type](node, tree, system, modal_superfluo)
 
-def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool):
+def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, modal_superfluo:bool):
     tree = eptree.Tree()
     model = None
     lista_formulas = []
@@ -304,7 +304,7 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool):
                 return
 
     tree.create_tree(lista_formulas)
-    rule_algorithm(system, tree)
+    rule_algorithm(system, tree, modal_superfluo)
     if output == None:
         print_result(tree.open_branch())
     else:
@@ -313,10 +313,10 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool):
         tree.print_dot(tree.root, dotfile)
         os.system('dot -Tpng '+output+'/tree.dot > '+output+'/tree.png')
         if tree.open_branch():
-            model = tree.create_counter_model()
+            model = tree.create_counter_model(modal_superfluo)
             if "4" in system:
                 print("Aplicando loop checking")
-                tree.loop_checking(model[0],system)
+                tree.loop_checking(model[0],system, modal_superfluo)
                 if clousure:
                     model[0].closures(system)
             else:
@@ -350,37 +350,6 @@ def print_result(value:bool):
     print(cad)
     print(border)
 
-
-def run_tableau(system, premisas):
-    tree = eptree.Tree()
-    lista_formulas = []
-    model = None
-    if premisas:
-        for premisa in premisas:
-            formula = parser.Formula(premisa)
-            lista_formulas.append(formula)
-
-    tree.create_tree(lista_formulas)
-    rule_algorithm(system, tree)
-    # tree.print_dot(tree.root)
-    os.system('dot -Tpng ~/tree.dot > ~/tree.png')
-    if tree.open_branch():
-        model = tree.create_counter_model()
-        if "4" in system:
-            print("Aplicando loop checking")
-            # tree.loop_checking(model[0],system)
-            # model[0].transitive_closure(agent)
-            # model[0].closures(system)
-        else:
-            print("No aplicar loop checking")
-        model[0].print_dot()
-        os.system('dot -Tpng ~/model.dot > ~/model.png')
-        tree.print_open_close_branchs()
-        return(True,tree, model[0])
-    else: 
-        print("No model")
-        tree.print_open_close_branchs()
-        return(False, tree, None)
 
 formula_functions = {
         'and':conjunction_rule,

@@ -1,4 +1,5 @@
 # Conjunto de funciones para trababajar con tree-sitter. 
+from ctypes import wstring_at
 from tree_sitter import Parser as TSParser 
 from tree_sitter import Language as TSLanguage
 import tree_sitter
@@ -351,31 +352,35 @@ class Label():
                 extensions.append(l)
         return extensions
 
-    def get_originals(self, branch):
+    def get_originals(self, branch, modal_superfluo):
         originals=[]
         if not branch.label_in_branch(self):
             print("Not in branch")
             return originals
         lb = branch.get_label_branch()
         for l in lb:
-            if self.is_superfluo_of(branch, l) and self.label!=l.label:
+            if self.is_superfluo_of(branch, l ,modal_superfluo) and self.label!=l.label:
                 originals.append(l)
         return originals 
 
-    def is_superfluo_of(self, branch, label):
+    def is_superfluo_of(self, branch, label, modal_superfluo):
         # Etiqueta la misma return false
         if self.label == label.label or len(label.label)>len(self.label):
             return False
 
-        base1 = branch.get_modal_base_set(self)
-        base2 = branch.get_modal_base_set(label)
+        if modal_superfluo:
+            base1 = branch.get_modal_base_set(self)
+            base2 = branch.get_modal_base_set(label)
+        else:
+            base1 = branch.get_base_set(self)
+            base2 = branch.get_base_set(label)
 
         base1 = list(map(lambda formula: formula.formula, base1))
         base2 = list(map(lambda formula: formula.formula, base2))
 
         if len(base1) == 0:
-            return False
 
+            return False
         count=0
         flag=True
         while flag and count < len(base1):
@@ -393,9 +398,9 @@ class Label():
                 return False
         return flag
 
-    def is_superfluo_in_branch(self, branch) -> bool:
+    def is_superfluo_in_branch(self, branch, modal_superfluo) -> bool:
         # filtered_branch = branch
-        if(self.get_originals(branch)):
+        if(self.get_originals(branch, modal_superfluo)):
             return True
         return False
 

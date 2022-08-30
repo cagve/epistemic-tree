@@ -341,7 +341,7 @@ class Tree:
         return len(self.get_open_branchs()) != 0
 
     
-    def loop_checking(self, model, system):
+    def loop_checking(self, model, system, modal_superfluo):
         """
         Method that add the superfluos relation of a given model.
         """
@@ -349,9 +349,9 @@ class Tree:
         branch = open_branchs[0]
         labelbranch = branch.get_label_branch()
         for label in labelbranch:
-            originals = label.get_originals(branch)
+            originals = label.get_originals(branch, modal_superfluo)
             for original in originals:
-                if original.is_superfluo_in_branch(branch):
+                if original.is_superfluo_in_branch(branch, modal_superfluo):
                     continue
                 world1 = epmodel.World(str(label.simplify_label()))
                 if system =="kt4":
@@ -376,7 +376,7 @@ class Tree:
                             model.add_relation(relation)
 
 
-    def create_counter_model(self) -> list:
+    def create_counter_model(self, modal_superfluo) -> list:
         #FIX duplica mundos
         """Method that create the set of models. For system with transitivity
         you need to execute loop_checking after this method to complete the
@@ -399,8 +399,8 @@ class Tree:
             print(world.evaluation)
             if not modelo.contain_world(world):
                 modelo.add_world(world)
-                if label.get_originals(branch) != None:
-                    for ori in label.get_originals(branch):
+                if label.get_originals(branch, modal_superfluo) != None:
+                    for ori in label.get_originals(branch, modal_superfluo):
                         world.add_original(epmodel.World(str(ori.simplify_label())))
             if branch.get_simple_extensions(label) !=None:
                 for ext in branch.get_simple_extensions(label):
