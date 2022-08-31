@@ -8,9 +8,10 @@ def run():
     parser.add_argument("-o", "--output", type=str, help="Path to save your imgs")
     parser.add_argument("-c", "--closure", help="Makes clousure", action='store_true')
     parser.add_argument("-m", "--modal_superfluo", help="Modal superfluo", action='store_true')
+    parser.add_argument("-b", "--bisimulation", help="Simulate", action='store_true')
     args = parser.parse_args()
 
     list_formulas = args.formula.split(',')
-    rules.epistemic_tableau(list_formulas, args.system, args.output, args.closure, args.modal_superfluo)
+    rules.epistemic_tableau(list_formulas, args.system, args.output, args.closure, args.modal_superfluo, args.bisimulation)
     print(args.modal_superfluo)
 

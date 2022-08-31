@@ -118,6 +118,29 @@ class Model():
             closure = closure_until_now
         return closure
 
+    def bisimulate(self):
+        print("Bisimulation...")
+        bisimulate_W = []
+        bisimulate_R = []
+        for world in self.worlds:
+            if not world.is_superfluo():
+                print(world.name+" no es superfluo, hay que incluirlo")
+                new_world = World(world.name)
+                new_world.add_true_formula_list(world.evaluation)
+                bisimulate_W.append(world)
+
+        bisimulate_Model = Model(bisimulate_W, None)
+        for relation in self.relations:
+            world1 = relation.world1
+            world2 = relation.world2
+            if bisimulate_Model.contain_world(world1) and bisimulate_Model.contain_world(world2):
+                bisimulate_Model.add_relation(relation)
+
+        return bisimulate_Model
+
+
+
+
     def closures(self, system):
         agents = self.get_agents()
         for agent in agents:

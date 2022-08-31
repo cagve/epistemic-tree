@@ -292,7 +292,7 @@ def apply_rule(system, node: eptree.Node, tree: eptree.Tree, modal_superfluo):
     print(">> Aplicando regla tipo "+type+" nodo "+ str(node.id)+ " > formula "+ str(node.get_labelled_formula_string()))
     formula_functions[type](node, tree, system, modal_superfluo)
 
-def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, modal_superfluo:bool):
+def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, modal_superfluo:bool, bisimulation:bool):
     tree = eptree.Tree()
     model = None
     lista_formulas = []
@@ -315,32 +315,24 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, mo
         tree.print_dot(tree.root, dotfile)
         os.system('dot -Tpng '+output+'/tree.dot > '+output+'/tree.png')
         if tree.open_branch():
-            model = tree.create_counter_model(modal_superfluo)
+            model = tree.create_counter_model(modal_superfluo)[0]
             if "4" in system:
                 print("Aplicando loop checking")
-                tree.loop_checking(model[0],system, modal_superfluo)
+                tree.loop_checking(model,system, modal_superfluo)
                 if clousure:
-                    model[0].closures(system)
+                    model.closures(system)
             else:
                 print("No aplicar loop checking")
-            model[0].print_dot()
+            if bisimulation and not modal_superfluo: 
+                model = model.bisimulate()
+
+            model.print_dot()
             if output:
                 os.system('dot -Tpng '+output+'/model.dot > '+output+'/model.png')
             # tree.print_open_close_branchs()
             print_result(True)
-            model[0].print_model()
-            b = tree.get_open_branchs()[0]
-            
-            #BORRAR
-            now = datetime.now()
-            dt_string = now.strftime("%H:%M:%S")
-            result = "TEST ["+dt_string+"]: "
-
-            for label in b.get_label_branch():
-                if label.is_superfluo_in_branch(b,modal_superfluo):
-                    result = result+" "+label.label
-            print(result)
-            return(True,tree, model[0])
+            model.print_model()
+            return(True,tree, model)
         else: 
             print("No model")
             tree.print_open_close_branchs()
