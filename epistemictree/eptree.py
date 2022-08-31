@@ -360,8 +360,6 @@ class Tree:
                     world2 = epmodel.World(str(original.simplify_label()))
                     for agent in agents:
                         relation = epmodel.Relation(world1,world2,agent,"superfluo") 
-                        print("REL")
-                        print(relation.to_string())
                         if not model.contain_relation(relation):
                             model.add_relation(relation)
                 elif system =="k4":
@@ -436,10 +434,11 @@ class Branch(list):
 
     def get_modal_base_set(self, label: parser.Label) -> list:
         formulas = list(self.get_base_set(label))
+        modal_formulas = []
         for formula in formulas:
-            if not formula.is_modal():
-                formulas.remove(formula)
-        return list(formulas)
+            if formula.is_modal():
+                modal_formulas.append(formula)
+        return modal_formulas
 
     def label_in_branch(self, label):
         lb = self.get_label_branch()
@@ -463,11 +462,12 @@ class Branch(list):
             
     def get_extensions_agent(self, agent, label_filter):
         extensions = self.get_simple_extensions(label_filter)
+        extension_agent = []
         if extensions != None:
             for extension in extensions:
-                if extension.label[-3] != agent:
-                    extensions.remove(extension)
-        return extensions
+                if extension.label[-3] == agent:
+                    extension_agent.append(extension)
+        return extension_agent
 
     def formula_in_branch(self, formula: parser.LabelledFormula):
         for node in self:

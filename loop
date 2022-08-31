@@ -1,0 +1,8 @@
+#/bin/bash
+for index in {1..10000000}
+do
+	python3 -m epistemictree -s kt4 -f "(-Ka-((Ka-Kb-q&&-Kb-p) && Kbq)), -Ka-(-Kb-(-Kb-p&&r)&&Kbq)" -o ~/ -m  | grep "TEST" >> test.txt
+done
+
+shutdown now
+

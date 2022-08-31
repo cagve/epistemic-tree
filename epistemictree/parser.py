@@ -1,5 +1,6 @@
 # Conjunto de funciones para trababajar con tree-sitter. 
 from ctypes import wstring_at
+from os import wait
 from tree_sitter import Parser as TSParser 
 from tree_sitter import Language as TSLanguage
 import tree_sitter
@@ -109,6 +110,9 @@ class Formula:
 
     def to_string(self):
         return self.formula
+
+    def __len__(self):
+        return len(self.formula)
 
     def get_subformulas(self) -> list:
         """
@@ -354,18 +358,18 @@ class Label():
 
     def get_originals(self, branch, modal_superfluo):
         originals=[]
-        if not branch.label_in_branch(self):
-            print("Not in branch")
-            return originals
         lb = branch.get_label_branch()
         for l in lb:
-            if self.is_superfluo_of(branch, l ,modal_superfluo) and self.label!=l.label:
+            if self.is_superfluo_of(branch, l ,modal_superfluo):
                 originals.append(l)
+                # print("================")
+            # else:
+                # print(self.label+" no es superfluo de "+l.label)
         return originals 
 
     def is_superfluo_of(self, branch, label, modal_superfluo):
         # Etiqueta la misma return false
-        if self.label == label.label or len(label.label)>len(self.label):
+        if self.label == label.label:
             return False
 
         if modal_superfluo:
@@ -375,21 +379,25 @@ class Label():
             base1 = branch.get_base_set(self)
             base2 = branch.get_base_set(label)
 
+
         base1 = list(map(lambda formula: formula.formula, base1))
         base2 = list(map(lambda formula: formula.formula, base2))
 
         if len(base1) == 0:
-
             return False
+
+
         count=0
         flag=True
+        if len(base1) > len(base2):
+            return False
+
         while flag and count < len(base1):
             for i in base1:
                 if i not in base2:
                     flag = False
+                    return False
                 count = count+1
-
-        print(flag)
 
         if flag and len(set(base1)) == len(set(base2)):
             if self.simplify_label()>label.simplify_label():

@@ -1,4 +1,6 @@
 from epistemictree import parser
+from datetime import datetime
+
 from epistemictree import eptree 
 import os
 
@@ -276,10 +278,10 @@ def rule_algorithm(system,tree:eptree.Tree, modal_superfluo):
             apply_rule(system, tree.alpha_group[0],tree, modal_superfluo)
         elif tree.nu_group:
             apply_rule(system, tree.nu_group[0],tree, modal_superfluo)
-        elif tree.pi_group:
-            apply_rule(system, tree.pi_group[0],tree, modal_superfluo)
         elif tree.beta_group: 
             apply_rule(system, tree.beta_group[0],tree, modal_superfluo)
+        elif tree.pi_group:
+            apply_rule(system, tree.pi_group[0],tree, modal_superfluo)
         else:
             return False
         return rule_algorithm(system, tree, modal_superfluo)
@@ -324,9 +326,20 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, mo
             model[0].print_dot()
             if output:
                 os.system('dot -Tpng '+output+'/model.dot > '+output+'/model.png')
-            tree.print_open_close_branchs()
+            # tree.print_open_close_branchs()
             print_result(True)
             model[0].print_model()
+            b = tree.get_open_branchs()[0]
+            
+            #BORRAR
+            now = datetime.now()
+            dt_string = now.strftime("%H:%M:%S")
+            result = "TEST ["+dt_string+"]: "
+
+            for label in b.get_label_branch():
+                if label.is_superfluo_in_branch(b,modal_superfluo):
+                    result = result+" "+label.label
+            print(result)
             return(True,tree, model[0])
         else: 
             print("No model")
