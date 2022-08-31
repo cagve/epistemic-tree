@@ -68,15 +68,14 @@ class Model():
                 print(literal.formula, end=", ")
             print("}")
 
-    def print_dot(self, filedot):
-        file = open("filedot", 'w')
+    def print_dot(self, filedot:str):
+        file = open(filedot, 'w')
         file.write("digraph G {\n")
         file.write("node[shape=record]\n")
-        print("Printing dot")
+        print("Printing model dot")
         for world in self.worlds:
             evaluation = world.evaluation_to_string().replace('||','v').replace(',','\\n')
             if world.is_superfluo():
-                print(world.name +" is superfluo")
                 file.write(world.name+'[style=dashed, color=blue, label="'+world.name+' | '+evaluation+'"];\n')
             else:
                 file.write(world.name+'[label="'+world.name+' | '+evaluation+'"];\n')
@@ -87,7 +86,6 @@ class Model():
                 file.write(relation.world1.name+' -> '+relation.world2.name+'[style=dashed,color=blue, label="'+relation.agent+'"];\n')
             else:
                 file.write(relation.world1.name+' -> '+relation.world2.name+'[ color=red, label="'+relation.agent+'"];\n')
-
         file.write("}")
         file.close
 

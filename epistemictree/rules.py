@@ -311,8 +311,9 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, mo
         print_result(tree.open_branch())
     else:
         # Printing tableau
-        dotfile = output+'/tree.dot'
-        tree.print_dot(tree.root, dotfile)
+        dottree = output+'/tree.dot'
+        dotmodel = output+'/model.dot'
+        tree.print_dot(tree.root, dottree)
         os.system('dot -Tpng '+output+'/tree.dot > '+output+'/tree.png')
         if tree.open_branch():
             model = tree.create_counter_model(modal_superfluo)[0]
@@ -326,10 +327,10 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, mo
             if bisimulation and not modal_superfluo: 
                 model = model.bisimulate()
 
-            model.print_dot(output+'/model.dot')
-            if output:
-                os.system('dot -Tpng '+output+'/model.dot > '+output+'/model.png')
-            # tree.print_open_close_branchs()
+            model.print_dot(dotmodel)
+            # if output:
+            #     os.system('dot -Tpng '+output+'/model.dot > '+output+'/model.png')
+            tree.print_open_close_branchs()
             print_result(True)
             model.print_model()
             return(True,tree, model)
