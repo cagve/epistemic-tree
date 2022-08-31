@@ -326,7 +326,7 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, mo
             if bisimulation and not modal_superfluo: 
                 model = model.bisimulate()
 
-            model.print_dot()
+            model.print_dot(output+'/model.dot')
             if output:
                 os.system('dot -Tpng '+output+'/model.dot > '+output+'/model.png')
             # tree.print_open_close_branchs()

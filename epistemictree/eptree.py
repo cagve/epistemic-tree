@@ -394,7 +394,6 @@ class Tree:
             # ADD EVALUATION ONLY LITERAL
             world = epmodel.World(str(label.simplify_label()))
             world.add_true_formula_list(branch.get_base_set(label))
-            print(world.evaluation)
             if not modelo.contain_world(world):
                 modelo.add_world(world)
                 if label.get_originals(branch, modal_superfluo) != None:

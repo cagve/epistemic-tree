@@ -13,5 +13,4 @@ def run():
 
     list_formulas = args.formula.split(',')
     rules.epistemic_tableau(list_formulas, args.system, args.output, args.closure, args.modal_superfluo, args.bisimulation)
-    print(args.modal_superfluo)
 

@@ -68,8 +68,8 @@ class Model():
                 print(literal.formula, end=", ")
             print("}")
 
-    def print_dot(self):
-        file = open("/home/karu/model.dot", 'w')
+    def print_dot(self, filedot):
+        file = open("filedot", 'w')
         file.write("digraph G {\n")
         file.write("node[shape=record]\n")
         print("Printing dot")

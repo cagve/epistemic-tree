@@ -1,0 +1,24 @@
+digraph G {
+node[shape=record]
+12[label="12 | -Kb-(-Kb-p&&r)&&Kbq\n -Kb-(-Kb-p&&r)\n Kbq\n q"];
+121[label="121 | q\n -Kb-p\n -Kb-p&&r\n r\n Kbq"];
+1[label="1 | -Ka-(-Kb-(-Kb-p&&r)&&Kbq)\n -Ka-((Ka-Kb-q&&-Kb-p)&&Kbq)"];
+111[label="111 | Kbq\n q\n p"];
+11[label="11 | Ka-Kb-q\n (Ka-Kb-q&&-Kb-p)&&Kbq\n -Kb-q\n q\n -Kb-p\n Kbq\n Ka-Kb-q&&-Kb-p"];
+12 -> 121[label="b"];
+1 -> 12[label="a"];
+1 -> 11[label="a"];
+11 -> 111[label="b"];
+12 -> 12[ color=red, label="a"];
+121 -> 121[ color=red, label="a"];
+1 -> 1[ color=red, label="a"];
+111 -> 111[ color=red, label="a"];
+11 -> 11[ color=red, label="a"];
+12 -> 12[ color=red, label="b"];
+121 -> 121[ color=red, label="b"];
+1 -> 1[ color=red, label="b"];
+111 -> 111[ color=red, label="b"];
+11 -> 11[ color=red, label="b"];
+121 -> 111[ color=red, label="b"];
+12 -> 111[ color=red, label="b"];
+}
