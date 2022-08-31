@@ -296,9 +296,13 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, mo
     tree = eptree.Tree()
     model = None
     lista_formulas = []
+    agents = []
     if formulas:
         for formula_str in formulas:
             formula= parser.Formula(formula_str)
+            if formula.is_modal():
+                print("Añadimos "+str(formula.get_agent()))
+                agents.append(formula.get_agent())
             if formula.parse():
                 lista_formulas.append(formula)
             else:
@@ -321,15 +325,15 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, mo
                 print("Aplicando loop checking")
                 tree.loop_checking(model,system, modal_superfluo)
                 if clousure:
-                    model.closures(system)
+                    model.closures(agents,system)
             else:
                 print("No aplicar loop checking")
             if bisimulation and not modal_superfluo: 
                 model = model.bisimulate()
 
             model.print_dot(dotmodel)
-            # if output:
-            #     os.system('dot -Tpng '+output+'/model.dot > '+output+'/model.png')
+            if output:
+                os.system('dot -Tpng '+output+'/model.dot > '+output+'/model.png')
             tree.print_open_close_branchs()
             print_result(True)
             model.print_model()

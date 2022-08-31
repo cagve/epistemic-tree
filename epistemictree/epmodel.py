@@ -139,13 +139,15 @@ class Model():
 
 
 
-    def closures(self, system):
-        agents = self.get_agents()
-        for agent in agents:
-            if "t" in system:
-                self.reflexive_closure(agent)
-            if "4" in  system:
+    def closures(self, agents, system):
+        print(agents)
+        if agents:
+            for agent in agents:
+                if "t" in system:
+                    self.reflexive_closure(agent)
+                if "4" in  system:
                     self.transitive_closure(agent)
+
 
 
 

@@ -249,9 +249,17 @@ class Formula:
             assert cursor.goto_next_sibling()
             agent = cursor.node
             return self.ts.get_node_text(agent)
-        else: 
+        elif(self.get_formula_type()=="not_know"): 
+            formula = self.get_terms()[0]
+            return formula.get_agent()
+            # assert cursor.goto_first_child()
+            # assert cursor.goto_first_child()
+            # assert cursor.goto_next_sibling()
+            # agent = cursor.node
+            # return self.ts.get_node_text(agent)
             # Crear un tipo de error para esto
             # print("No es una fórmula de conocimiento")
+        else:
             return 
 
     # TODO: Poner la negación por casos -> Literales y Demás(matiz conocimiento)
