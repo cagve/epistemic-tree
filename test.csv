@@ -1,0 +1,7 @@
+"Formula","System","Num of models","Model 0","Model 1","Model 2","Model 3","Branch 0","Branch 1","Branch 2","Branch 3"
+"-Ka((-KaKb-q)&&(Kb-KaKb-r))&&-KbKa(-Kb-r&&q)","k4",4,4,4,5,5,8,8,9,9
+"-Ka((-KaKb-q)&&(Kb-KaKb-r))&&-KbKa(-Kb-r&&q)","kt4",4,4,4,5,5,11,10,12,11
+"-Ka-Kb(p&&-Kb-q)&&-KbKb(p&&-Kb-q)","k4",2,4,4,7,7
+"-Ka-Kb(p&&-Kb-q)&&-KbKb(p&&-Kb-q)","kt4",2,5,5,15,16
+"-KaKb-(-Kb-r&&q)&&-Kb-((-KaKb-q&&Kb-KaKb-r) && (p&&-Kb-q))","k4",1,8,20
+"-KaKb-(-Kb-r&&q)&&-Kb-((-KaKb-q&&Kb-KaKb-r) && (p&&-Kb-q))","kt4",1,7,20

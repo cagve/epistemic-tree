@@ -69,6 +69,7 @@ class Model():
             print("}")
 
     def print_dot(self, filedot:str):
+        print("PRINTING "+filedot)
         file = open(filedot, 'w')
         file.write("digraph G {\n")
         file.write("node[shape=record]\n")
@@ -84,7 +85,7 @@ class Model():
                 file.write(relation.world1.name+' -> '+relation.world2.name+'[label="'+relation.agent+'"];\n')
             elif relation.type == "superfluo":
                 file.write(relation.world1.name+' -> '+relation.world2.name+'[style=dashed,color=blue, label="'+relation.agent+'"];\n')
-            else:
+            elif relation.type == "closure":
                 file.write(relation.world1.name+' -> '+relation.world2.name+'[ color=red, label="'+relation.agent+'"];\n')
         file.write("}")
         file.close
@@ -94,7 +95,6 @@ class Model():
         for world in self.worlds:
             relation = Relation( world, world, agent, "closure")
             if not self.contain_relation(relation):
-                print(relation.to_string()+" not in model")
                 self.add_relation(relation)
 
     def transitive_closure(self,agent):
@@ -115,6 +115,45 @@ class Model():
                 break
             closure = closure_until_now
         return closure
+
+    def eq_bisimulate(self):
+        bisimulate_W = []
+        for world in self.worlds:
+            if world.is_superfluo():
+                print("============"+world.name+" is superfluos ================")
+                originals = world.get_originals()
+                for original in originals:
+                    ori = self.get_world_by_name(original.name)
+                    if not ori:
+                        print("Error not originals in model") 
+                        return 
+                    world_evaluation = world.evaluation_to_list()
+                    ori_evaluation = ori.evaluation_to_list()
+                    print("Originals "+ori.name+" evaluation " + ori.evaluation_to_string())
+                    print("World "+world.name+"evaluation " + world.evaluation_to_string())
+                    eq_super = all(formula in ori_evaluation for formula in world_evaluation)
+                    if eq_super:
+                        print(world.name + " is equal superfluos of "+ ori.name)
+                    else:  
+                        print(world.name + " is not equal superfluos of "+ ori.name)
+                        new_world = World(world.name)
+                        new_world.add_true_formula_list(world.evaluation)
+                        bisimulate_W.append(world)
+            else:
+                print(world.name+" no es superfluo, hay que incluirlo")
+                new_world = World(world.name)
+                new_world.add_true_formula_list(world.evaluation)
+                bisimulate_W.append(world)
+
+        bisimulate_Model = Model(bisimulate_W, None)
+        for relation in self.relations:
+            world1 = relation.world1
+            world2 = relation.world2
+            if bisimulate_Model.contain_world(world1) and bisimulate_Model.contain_world(world2):
+                bisimulate_Model.add_relation(relation)
+
+        return bisimulate_Model
+
 
     def bisimulate(self):
         print("Bisimulation...")

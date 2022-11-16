@@ -233,16 +233,16 @@ class Tree:
         close_branchs = list(filter(lambda branch: branch.is_close(), branchs))
         open_branchs = list(filter(lambda branch: not branch.is_close(), branchs))
         for branch in close_branchs:
-            formula = parser.Formula('')
-            label = parser.Label('')
+            formula = parser.Formula('X')
+            label = parser.Label('X')
             lf = parser.LabelledFormula(label,formula)
             leaf = branch[0]
             id = int(str(leaf.id)+str(1))
             leaf.add_one_child(lf,id)
 
         for branch in open_branchs:
-            formula = parser.Formula('')
-            label = parser.Label('')
+            formula = parser.Formula('V')
+            label = parser.Label('V')
             lf = parser.LabelledFormula(label,formula)
             leaf = branch[0]
             id = int(str(leaf.id)+str(1))
@@ -375,7 +375,6 @@ class Tree:
 
 
     def create_counter_model(self, modal_superfluo) -> list:
-        #FIX duplica mundos
         """Method that create the set of models. For system with transitivity
         you need to execute loop_checking after this method to complete the
         system."""
@@ -386,28 +385,27 @@ class Tree:
 
         open_branchs = self.get_open_branchs()
 
-        # TODO ITER OVER OPEN BRANCHS
-        branch = open_branchs[0]
-        labelbranch = branch.get_label_branch()
-        modelo = epmodel.Model()
-        for label in labelbranch:
-            # ADD EVALUATION ONLY LITERAL
-            world = epmodel.World(str(label.simplify_label()))
-            world.add_true_formula_list(branch.get_base_set(label))
-            if not modelo.contain_world(world):
-                modelo.add_world(world)
-                if label.get_originals(branch, modal_superfluo) != None:
-                    for ori in label.get_originals(branch, modal_superfluo):
-                        world.add_original(epmodel.World(str(ori.simplify_label())))
-            if branch.get_simple_extensions(label) !=None:
-                for ext in branch.get_simple_extensions(label):
-                    agent=ext.get_agent()
-                    world1 = epmodel.World(str(label.simplify_label()))
-                    world2 = epmodel.World(str(ext.simplify_label()))
-                    relation = epmodel.Relation(world1,world2,agent, "normal") 
-                    if not modelo.contain_relation(relation):
-                        modelo.add_relation(relation)
-        counter_models.append(modelo)
+        for branch in open_branchs:
+            labelbranch = branch.get_label_branch()
+            modelo = epmodel.Model()
+            for label in labelbranch:
+                # ADD EVALUATION ONLY LITERAL
+                world = epmodel.World(str(label.simplify_label()))
+                world.add_true_formula_list(branch.get_base_set(label))
+                if not modelo.contain_world(world):
+                    modelo.add_world(world)
+                    if label.get_originals(branch, modal_superfluo) != None:
+                        for ori in label.get_originals(branch, modal_superfluo):
+                            world.add_original(epmodel.World(str(ori.simplify_label())))
+                if branch.get_simple_extensions(label) !=None:
+                    for ext in branch.get_simple_extensions(label):
+                        agent=ext.get_agent()
+                        world1 = epmodel.World(str(label.simplify_label()))
+                        world2 = epmodel.World(str(ext.simplify_label()))
+                        relation = epmodel.Relation(world1,world2,agent, "normal") 
+                        if not modelo.contain_relation(relation):
+                            modelo.add_relation(relation)
+            counter_models.append(modelo)
         return counter_models
 
 
@@ -476,7 +474,6 @@ class Branch(list):
 
     def get_base_set(self, label: parser.Label):
         """Return the set of true formulas in sigma"""
-        # TODO: Devuleve fórmulas duplicadas
         formulas = []
         for node in self:
             if node.get_label().label == label.label:

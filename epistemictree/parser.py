@@ -108,6 +108,16 @@ class Formula:
         self.tree = self.ts.get_tree()
         self.node = self.ts.get_root_node()
 
+    def get_all_agents(self):
+        fbf_query = LP_LANGUAGE.query("(agent)@agent")
+        agent = fbf_query.captures(self.node)
+        agent_list = []
+        for a in agent:
+            current_formula = a[0]
+            node_text=self.ts.get_node_text(current_formula)
+            agent_list.append(node_text)
+        return agent_list
+
     def to_string(self):
         return self.formula
 

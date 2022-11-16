@@ -300,9 +300,7 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, mo
     if formulas:
         for formula_str in formulas:
             formula= parser.Formula(formula_str)
-            if formula.is_modal():
-                print("Añadimos "+str(formula.get_agent()))
-                agents.append(formula.get_agent())
+            agents = set(formula.get_all_agents())
             if formula.parse():
                 lista_formulas.append(formula)
             else:
@@ -316,31 +314,35 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, mo
     else:
         # Printing tableau
         dottree = output+'/tree.dot'
-        dotmodel = output+'/model.dot'
-        tree.print_dot(tree.root, dottree)
-        os.system('dot -Tpng '+output+'/tree.dot > '+output+'/tree.png')
+        counter = 0
         if tree.open_branch():
-            model = tree.create_counter_model(modal_superfluo)[0]
-            if "4" in system:
-                print("Aplicando loop checking")
-                tree.loop_checking(model,system, modal_superfluo)
-                if clousure:
-                    model.closures(agents,system)
-            else:
-                print("No aplicar loop checking")
-            if bisimulation and not modal_superfluo: 
-                model = model.bisimulate()
-
-            model.print_dot(dotmodel)
-            if output:
-                os.system('dot -Tpng '+output+'/model.dot > '+output+'/model.png')
+            models = tree.create_counter_model(modal_superfluo)
+            for model in models:
+                dotmodel = output+'/model'+str(counter)+'.dot'
+                if "4" in system:
+                    print("Aplicando loop checking")
+                    tree.loop_checking(model,system, modal_superfluo)
+                    if clousure:
+                        model.closures(agents,system)
+                else:
+                    print("No aplicar loop checking")
+                if bisimulation and system == "kt4": 
+                    model = model.eq_bisimulate()
+                model.print_dot(dotmodel)
+                if output:
+                    os.system('dot -Tpng '+dotmodel+ '> '+output+'/model'+str(counter)+'.png')
+                counter = counter+1
+                print_result(True)
+                model.print_model()
             tree.print_open_close_branchs()
-            print_result(True)
-            model.print_model()
-            return(True,tree, model)
+            tree.print_dot(tree.root, dottree)
+            os.system('dot -Tpng '+output+'/tree.dot > '+output+'/tree.png')
+            return(True,tree, models)
         else: 
             print("No model")
             tree.print_open_close_branchs()
+            tree.print_dot(tree.root, dottree)
+            os.system('dot -Tpng '+output+'/tree.dot > '+output+'/tree.png')
             return(False, tree, None)
 
 def print_result(value:bool):
