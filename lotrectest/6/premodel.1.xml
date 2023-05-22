@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph>
+    <node>
+        <node-id>node1</node-id>
+        <formula>
+            <formula-code>imp and nec imp nec P nec nec P imp nec imp nec P P imp pos nec P nec P imp nec imp nec imp P nec P P imp pos nec P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or not and nec imp nec P nec nec P imp nec imp nec P P imp pos nec P nec P imp nec imp nec imp P nec P P imp pos nec P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not and nec imp nec P nec nec P imp nec imp nec P P imp pos nec P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or not nec imp nec P nec nec P not imp nec imp nec P P imp pos nec P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec imp nec P nec nec P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node2</node-id>
+        <formula>
+            <formula-code>not imp nec P nec nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node3</node-id>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>FALSE</formula-code>
+        </formula>
+    </node>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node2</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node3</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+</graph>

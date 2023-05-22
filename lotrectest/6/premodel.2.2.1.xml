@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph>
+    <node>
+        <node-id>node1</node-id>
+        <formula>
+            <formula-code>imp and nec imp nec P nec nec P imp nec imp nec P P imp pos nec P nec P imp nec imp nec imp P nec P P imp pos nec P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or not and nec imp nec P nec nec P imp nec imp nec P P imp pos nec P nec P imp nec imp nec imp P nec P P imp pos nec P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec imp nec imp P nec P P imp pos nec P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or not nec imp nec imp P nec P P imp pos nec P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp pos nec P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or not pos nec P nec P</formula-code>
+            <formula-mark>Cut</formula-mark>
+        </formula>
+        <formula>
+            <formula-code>not pos nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node8</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not pos nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node9</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not pos nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node8</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node8</edge-source>
+        <edge-target>node9</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node9</edge-source>
+        <edge-target>node8</edge-target>
+        <edge-label>Loop</edge-label>
+    </edge>
+</graph>

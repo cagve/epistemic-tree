@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph>
+    <node>
+        <node-id>node1</node-id>
+        <formula>
+            <formula-code>imp nec imp pos nec P P nec nec imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec nec imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not pos nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec not nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node4</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not pos nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec not nec P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node5</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not pos nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec not nec P</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node4</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node5</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node4</edge-source>
+        <edge-target>node5</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+</graph>

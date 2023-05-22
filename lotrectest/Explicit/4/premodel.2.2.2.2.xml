@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph>
+    <node>
+        <node-id>node1</node-id>
+        <formula>
+            <formula-code>and nec imp nec P P imp imp nec imp nec imp P nec P P imp pos nec P P imp nec imp nec imp P nec P P imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp imp nec imp nec imp P nec P P imp pos nec P P imp nec imp nec imp P nec P P imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec imp nec imp P nec P P imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec P P</formula-code>
+        </formula>
+    </node>
+</graph>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph>
+    <node>
+        <node-id>node1</node-id>
+        <formula>
+            <formula-code>and nec imp nec P P imp imp nec imp nec imp P nec P P imp pos nec P P imp nec imp nec imp P nec P P imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp imp nec imp nec imp P nec P P imp pos nec P P imp nec imp nec imp P nec P P imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or not imp nec imp nec imp P nec P P imp pos nec P P imp nec imp nec imp P nec P P imp pos nec P P</formula-code>
+            <formula-mark>Cut</formula-mark>
+        </formula>
+        <formula>
+            <formula-code>or not nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec imp nec imp P nec P P imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or not nec imp nec imp P nec P P imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or not pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not pos nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node28</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not pos nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or not nec P P</formula-code>
+            <formula-mark>Cut</formula-mark>
+        </formula>
+    </node>
+    <node>
+        <node-id>node29</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not pos nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or not nec P P</formula-code>
+            <formula-mark>Cut</formula-mark>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node28</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node28</edge-source>
+        <edge-target>node29</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node29</edge-source>
+        <edge-target>node28</edge-target>
+        <edge-label>Loop</edge-label>
+    </edge>
+</graph>

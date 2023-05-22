@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph>
+    <node>
+        <node-id>node1</node-id>
+        <formula>
+            <formula-code>and nec imp nec P P imp imp nec imp nec imp P nec P P imp pos nec P P imp nec imp nec imp P nec P P imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp imp nec imp nec imp P nec P P imp pos nec P P imp nec imp nec imp P nec P P imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not imp nec imp nec imp P nec P P imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec imp nec imp P nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec imp P nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec imp P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not imp P nec P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node2</node-id>
+        <formula>
+            <formula-code>nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec imp P nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node14</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec imp P nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec imp P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not imp P nec P</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node15</node-id>
+        <formula>
+            <formula-code>not imp P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec imp P nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec imp P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not imp P nec P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node16</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec imp P nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec imp P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not imp P nec P</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node17</node-id>
+        <formula>
+            <formula-code>not imp P nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp nec imp P nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node2</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node14</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node15</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node16</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node17</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node15</edge-source>
+        <edge-target>node16</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node15</edge-source>
+        <edge-target>node17</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+</graph>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph>
+    <node>
+        <node-id>node1</node-id>
+        <formula>
+            <formula-code>imp nec imp pos nec P P nec nec imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or not nec imp pos nec P P nec nec imp pos nec P P</formula-code>
+            <formula-mark>Cut</formula-mark>
+        </formula>
+        <formula>
+            <formula-code>nec nec imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>imp pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or not pos nec P P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>P</formula-code>
+        </formula>
+    </node>
+</graph>

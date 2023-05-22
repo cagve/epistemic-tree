@@ -1,0 +1,841 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph>
+    <node>
+        <node-id>node1</node-id>
+        <formula>
+            <formula-code>and and nec pos nec or P Q nec pos not P pos nec not R</formula-code>
+        </formula>
+        <formula>
+            <formula-code>and nec pos nec or P Q nec pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec not R</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node2</node-id>
+        <formula>
+            <formula-code>nec not R</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node3</node-id>
+        <formula>
+            <formula-code>nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node4</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node5</node-id>
+        <formula>
+            <formula-code>nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>Q</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node6</node-id>
+        <formula>
+            <formula-code>nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node7</node-id>
+        <formula>
+            <formula-code>nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>Q</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node8</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node9</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>Q</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node10</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node11</node-id>
+        <formula>
+            <formula-code>nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node12</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+        <formula>
+            <formula-code>Q</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node13</node-id>
+        <formula>
+            <formula-code>nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node14</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>Q</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node15</node-id>
+        <formula>
+            <formula-code>nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>Q</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node16</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node17</node-id>
+        <formula>
+            <formula-code>nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node18</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>Q</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node79</node-id>
+        <formula>
+            <formula-code>nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node80</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>Q</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node81</node-id>
+        <formula>
+            <formula-code>nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node82</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>Q</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node83</node-id>
+        <formula>
+            <formula-code>nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node84</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+        <formula>
+            <formula-code>Q</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node103</node-id>
+        <formula>
+            <formula-code>nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <node>
+        <node-id>node104</node-id>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos nec or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not R</formula-code>
+        </formula>
+        <formula>
+            <formula-code>or P Q</formula-code>
+        </formula>
+        <formula>
+            <formula-code>Q</formula-code>
+        </formula>
+        <node-mark>CONTAINED</node-mark>
+    </node>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node2</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node3</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node4</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node5</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node6</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node7</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node8</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node9</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node10</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node11</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node12</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node13</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node14</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node15</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node16</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node17</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node18</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node79</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node80</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node81</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node82</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node83</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node84</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node103</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node104</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node5</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node8</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node11</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node12</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node15</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node16</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node79</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node80</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node83</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node84</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node103</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node2</edge-source>
+        <edge-target>node104</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node3</edge-source>
+        <edge-target>node6</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node3</edge-source>
+        <edge-target>node9</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node3</edge-source>
+        <edge-target>node17</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node3</edge-source>
+        <edge-target>node18</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node4</edge-source>
+        <edge-target>node7</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node4</edge-source>
+        <edge-target>node10</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node4</edge-source>
+        <edge-target>node13</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node4</edge-source>
+        <edge-target>node14</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node4</edge-source>
+        <edge-target>node81</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node4</edge-source>
+        <edge-target>node82</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node5</edge-source>
+        <edge-target>node11</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node5</edge-source>
+        <edge-target>node12</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node5</edge-source>
+        <edge-target>node79</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node5</edge-source>
+        <edge-target>node80</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node7</edge-source>
+        <edge-target>node13</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node7</edge-source>
+        <edge-target>node14</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node7</edge-source>
+        <edge-target>node81</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node7</edge-source>
+        <edge-target>node82</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node8</edge-source>
+        <edge-target>node15</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node8</edge-source>
+        <edge-target>node16</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node8</edge-source>
+        <edge-target>node83</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node8</edge-source>
+        <edge-target>node84</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node8</edge-source>
+        <edge-target>node103</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node8</edge-source>
+        <edge-target>node104</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node9</edge-source>
+        <edge-target>node17</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node9</edge-source>
+        <edge-target>node18</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node12</edge-source>
+        <edge-target>node79</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node12</edge-source>
+        <edge-target>node80</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node14</edge-source>
+        <edge-target>node81</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node14</edge-source>
+        <edge-target>node82</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node15</edge-source>
+        <edge-target>node83</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node15</edge-source>
+        <edge-target>node84</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node15</edge-source>
+        <edge-target>node103</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node15</edge-source>
+        <edge-target>node104</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node84</edge-source>
+        <edge-target>node103</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+    <edge>
+        <edge-source>node84</edge-source>
+        <edge-target>node104</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+</graph>
