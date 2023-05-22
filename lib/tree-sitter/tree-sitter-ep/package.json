@@ -1,7 +1,7 @@
 {
-  "name": "tree-sitter-lp",
+  "name": "tree-sitter-ep",
   "version": "0.0.1",
-  "description": "lp grammar for tree-sitter",
+  "description": "ep grammar for tree-sitter",
   "main": "bindings/node",
   "keywords": [
     "parsing",
@@ -11,9 +11,10 @@
     "nan": "^2.12.1"
   },
   "devDependencies": {
-    "tree-sitter-cli": "^0.20.0"
+    "tree-sitter-cli": "^0.20.8"
   },
   "scripts": {
-    "test": "tree-sitter test"
+    "test": "tree-sitter test",
+	"build":"tree-sitter generate && cmake -Bbuild &&cmake --build build"
   }
 }

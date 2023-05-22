@@ -3,19 +3,20 @@ from epistemictree import tests
 import argparse
 
 def run():
-    parser = argparse.ArgumentParser(description="Creating your own model")
-    parser.add_argument("-f", "--formula", type=str, help="List of formulas", required=True)
-    parser.add_argument("-s", "--system", type=str, help="System(k, kt, kt4, k4)", required=True, choices=['k', 'kt', 'kt4', 'k4'])
-    parser.add_argument("-o", "--output", type=str, help="Path to save your imgs")
-    parser.add_argument("-c", "--closure", help="Makes clousure", action='store_true')
-    parser.add_argument("-t", "--test", help="Execute test", action='store_true')
-    parser.add_argument("-m", "--modal_superfluo", help="Modal superfluo", action='store_true')
-    parser.add_argument("-b", "--bisimulation", help="Simulate", action='store_true')
-    args = parser.parse_args()
-
-    list_formulas = args.formula.split(',')
-    if args.test:
-        tests.run_test()
-    else:
-        rules.epistemic_tableau(list_formulas, args.system, args.output, args.closure, args.modal_superfluo, args.bisimulation)
+    tests.run_test()
+    # parser = argparse.ArgumentParser(description="Creating your own model")
+    # parser.add_argument("-f", "--formula", type=str, help="List of formulas", required=True)
+    # parser.add_argument("-s", "--system", type=str, help="System(k, kt, kt4, k4)", required=True, choices=['k', 'kt', 'kt4', 'k4'])
+    # parser.add_argument("-o", "--output", type=str, help="Path to save your imgs")
+    # parser.add_argument("-c", "--closure", help="Makes clousure", action='store_true')
+    # parser.add_argument("-t", "--test", help="Execute test", action='store_true')
+    # parser.add_argument("-m", "--modal_superfluo", help="Modal superfluo", action='store_true')
+    # parser.add_argument("-b", "--bisimulation", help="Simulate", action='store_true')
+    # args = parser.parse_args()
+    #
+    # list_formulas = args.formula.split(',')
+    # if args.test:
+    #     tests.run_test()
+    # else:
+    #     rules.epistemic_tableau(list_formulas, args.system, args.output, args.closure, args.modal_superfluo, args.bisimulation)
 

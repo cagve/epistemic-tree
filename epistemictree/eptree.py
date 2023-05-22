@@ -340,6 +340,39 @@ class Tree:
     def open_branch(self):
         return len(self.get_open_branchs()) != 0
 
+
+    
+    def loop_checking_unique(self, model, system, modal_superfluo):
+        """
+        Method that add the superfluos relation of a given model. Only check the smaller superfluos. TODO
+        """
+        open_branchs = self.get_open_branchs()
+        branch = open_branchs[0]
+        labelbranch = branch.get_label_branch()
+        for label in labelbranch:
+            originals = label.get_originals(branch, modal_superfluo)
+            for original in originals:
+                if original.is_superfluo_in_branch(branch, modal_superfluo):
+                    continue
+                world1 = epmodel.World(str(label.simplify_label()))
+                if system =="kt4":
+                    # model.get_world_by_name(str(original.simplify_label()))
+                    agents = model.get_agents()
+                    world2 = epmodel.World(str(original.simplify_label()))
+                    for agent in agents:
+                        relation = epmodel.Relation(world1,world2,agent,"superfluo") 
+                        if not model.contain_relation(relation):
+                            model.add_relation(relation)
+                elif system =="k4":
+                    extensions = original.get_simple_extensions(branch)
+                    for i in extensions:
+                        agent = i.get_agent()
+                        model.get_world_by_name(str(i.simplify_label()))
+                        world2 = epmodel.World(str(i.simplify_label()))
+                        # print("SUPERFLUO RELATION BETWEEN "+)
+                        relation = epmodel.Relation(world1,world2,agent,"superfluo") 
+                        if not model.contain_relation(relation):
+                            model.add_relation(relation)
     
     def loop_checking(self, model, system, modal_superfluo):
         """

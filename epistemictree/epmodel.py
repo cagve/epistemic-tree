@@ -116,12 +116,14 @@ class Model():
             closure = closure_until_now
         return closure
 
+    # En verdad es una simulacion no bisi
     def eq_bisimulate(self):
         bisimulate_W = []
         for world in self.worlds:
             if world.is_superfluo():
                 print("============"+world.name+" is superfluos ================")
                 originals = world.get_originals()
+                flag = False
                 for original in originals:
                     ori = self.get_world_by_name(original.name)
                     if not ori:
@@ -133,12 +135,16 @@ class Model():
                     print("World "+world.name+"evaluation " + world.evaluation_to_string())
                     eq_super = all(formula in ori_evaluation for formula in world_evaluation)
                     if eq_super:
+                        # Aqui esta el fallo, si es al menps un superfluo debe parar el bucle
                         print(world.name + " is equal superfluos of "+ ori.name)
+                        flag = True;
                     else:  
                         print(world.name + " is not equal superfluos of "+ ori.name)
-                        new_world = World(world.name)
-                        new_world.add_true_formula_list(world.evaluation)
-                        bisimulate_W.append(world)
+                if not flag:
+                    new_world = World(world.name)
+                    new_world.add_true_formula_list(world.evaluation)
+                    bisimulate_W.append(world)
+
             else:
                 print(world.name+" no es superfluo, hay que incluirlo")
                 new_world = World(world.name)
@@ -155,8 +161,8 @@ class Model():
         return bisimulate_Model
 
 
-    def bisimulate(self):
-        print("Bisimulation...")
+    def simulate(self):
+        print("Simulación")
         bisimulate_W = []
         bisimulate_R = []
         for world in self.worlds:

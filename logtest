@@ -1,0 +1,450 @@
+====== Current test: test7 ==========
+Formula: ['Ka(-Ka-(Ka(p||q))) && Ka(-Ka(s)) && (-Ka-Ka-r)']
+System: kt4
+None
+>> Aplicando regla tipo and nodo 1 > formula 1 Ka(-Ka-(Ka(p||q)))&&Ka(-Ka(s))&&(-Ka-Ka-r)
+None
+>> Aplicando regla tipo and nodo 11 > formula 1 Ka(-Ka-(Ka(p||q)))&&Ka(-Ka(s))
+None
+>> Aplicando regla tipo know nodo 1111 > formula 1 Ka(-Ka-(Ka(p||q)))
+> Aplicando T
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 11111 > formula 1 Ka(-Ka(s))
+> Aplicando T
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo not_know nodo 111 > formula 1 -Ka-Ka-r
+___________________________________
+Label = 1  Formula= Ka-r
+ANALIZANDO 1
+-Ka-Ka-r
+-Ka(s)
+Ka(-Ka-(Ka(p||q)))
+Ka(-Ka-(Ka(p||q)))&&Ka(-Ka(s))
+Ka(-Ka(s))
+-Ka-(Ka(p||q))
+Ka(-Ka-(Ka(p||q)))&&Ka(-Ka(s))&&(-Ka-Ka-r)
+___________________________________
+None
+>> Aplicando regla tipo know nodo 1111 > formula 1 Ka(-Ka-(Ka(p||q)))
+> Aplicando T
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1
+> Aplicando K
+> Aplicando 4
+None
+>> Aplicando regla tipo know nodo 1111111111 > formula 1.a.1 Ka(-Ka-(Ka(p||q)))
+> Aplicando T
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1.a.1
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 11111 > formula 1 Ka(-Ka(s))
+> Aplicando T
+La fórmula -Ka(s) está en el conjunto base 1
+> Aplicando K
+> Aplicando 4
+None
+>> Aplicando regla tipo know nodo 111111111111 > formula 1.a.1 Ka(-Ka(s))
+> Aplicando T
+La fórmula -Ka(s) está en el conjunto base 1.a.1
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 11111111 > formula 1.a.1 Ka-r
+> Aplicando T
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo not_know nodo 111111 > formula 1 -Ka-(Ka(p||q))
+___________________________________
+Label = 1  Formula= Ka(p||q)
+ANALIZANDO 1.a.1
+Ka-r
+Ka(-Ka-(Ka(p||q)))
+Ka(-Ka(s))
+-Ka(s)
+-Ka-(Ka(p||q))
+-r
+ANALIZANDO 1
+-Ka-Ka-r
+-Ka(s)
+Ka(-Ka-(Ka(p||q)))
+Ka(-Ka-(Ka(p||q)))&&Ka(-Ka(s))
+Ka(-Ka(s))
+-Ka-(Ka(p||q))
+Ka(-Ka-(Ka(p||q)))&&Ka(-Ka(s))&&(-Ka-Ka-r)
+___________________________________
+None
+>> Aplicando regla tipo know nodo 1111 > formula 1 Ka(-Ka-(Ka(p||q)))
+> Aplicando T
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1
+> Aplicando 4
+La fórmula Ka(-Ka-(Ka(p||q))) está en el conjunto base 1.a.1
+> Aplicando K
+> Aplicando 4
+None
+>> Aplicando regla tipo know nodo 11111 > formula 1 Ka(-Ka(s))
+> Aplicando T
+La fórmula -Ka(s) está en el conjunto base 1
+La fórmula -Ka(s) está en el conjunto base 1
+> Aplicando 4
+La fórmula Ka(-Ka(s)) está en el conjunto base 1.a.1
+> Aplicando K
+> Aplicando 4
+None
+>> Aplicando regla tipo know nodo 111111111111111111 > formula 1.a.2 Ka(-Ka(s))
+> Aplicando T
+La fórmula -Ka(s) está en el conjunto base 1.a.2
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 1111111111111111 > formula 1.a.2 Ka(-Ka-(Ka(p||q)))
+> Aplicando T
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1.a.2
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 11111111111111 > formula 1.a.2 Ka(p||q)
+> Aplicando T
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo or nodo 1111111111111111111 > formula 1.a.2 p||q
+None
+>> Aplicando regla tipo not_know nodo 1111111 > formula 1 -Ka(s)
+___________________________________
+Label = 1  Formula= -s
+ANALIZANDO 1.a.1
+Ka-r
+Ka(-Ka-(Ka(p||q)))
+Ka(-Ka(s))
+-Ka(s)
+-Ka-(Ka(p||q))
+-r
+ANALIZANDO 1.a.2
+-Ka-(Ka(p||q))
+Ka(-Ka-(Ka(p||q)))
+p
+Ka(p||q)
+Ka(-Ka(s))
+p||q
+-Ka(s)
+ANALIZANDO 1
+-Ka-Ka-r
+-Ka(s)
+Ka(-Ka-(Ka(p||q)))
+Ka(-Ka-(Ka(p||q)))&&Ka(-Ka(s))
+Ka(-Ka(s))
+-Ka-(Ka(p||q))
+Ka(-Ka-(Ka(p||q)))&&Ka(-Ka(s))&&(-Ka-Ka-r)
+___________________________________
+___________________________________
+Label = 1  Formula= -s
+ANALIZANDO 1.a.1
+Ka-r
+Ka(-Ka-(Ka(p||q)))
+Ka(-Ka(s))
+-Ka(s)
+-Ka-(Ka(p||q))
+-r
+ANALIZANDO 1.a.2
+-Ka-(Ka(p||q))
+Ka(-Ka-(Ka(p||q)))
+Ka(p||q)
+q
+Ka(-Ka(s))
+p||q
+-Ka(s)
+ANALIZANDO 1
+-Ka-Ka-r
+-Ka(s)
+Ka(-Ka-(Ka(p||q)))
+Ka(-Ka-(Ka(p||q)))&&Ka(-Ka(s))
+Ka(-Ka(s))
+-Ka-(Ka(p||q))
+Ka(-Ka-(Ka(p||q)))&&Ka(-Ka(s))&&(-Ka-Ka-r)
+___________________________________
+None
+>> Aplicando regla tipo know nodo 1111 > formula 1 Ka(-Ka-(Ka(p||q)))
+> Aplicando T
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1
+> Aplicando 4
+La fórmula Ka(-Ka-(Ka(p||q))) está en el conjunto base 1.a.1
+> Aplicando K
+> Aplicando 4
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1
+> Aplicando 4
+La fórmula Ka(-Ka-(Ka(p||q))) está en el conjunto base 1.a.2
+> Aplicando T
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1
+> Aplicando 4
+La fórmula Ka(-Ka-(Ka(p||q))) está en el conjunto base 1.a.1
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1
+> Aplicando 4
+La fórmula Ka(-Ka-(Ka(p||q))) está en el conjunto base 1.a.2
+> Aplicando K
+> Aplicando 4
+None
+>> Aplicando regla tipo know nodo 11111 > formula 1 Ka(-Ka(s))
+> Aplicando T
+La fórmula -Ka(s) está en el conjunto base 1
+La fórmula -Ka(s) está en el conjunto base 1
+> Aplicando 4
+La fórmula Ka(-Ka(s)) está en el conjunto base 1.a.1
+> Aplicando K
+> Aplicando 4
+La fórmula -Ka(s) está en el conjunto base 1
+> Aplicando 4
+La fórmula Ka(-Ka(s)) está en el conjunto base 1.a.2
+> Aplicando T
+La fórmula -Ka(s) está en el conjunto base 1
+La fórmula -Ka(s) está en el conjunto base 1
+> Aplicando 4
+La fórmula Ka(-Ka(s)) está en el conjunto base 1.a.1
+La fórmula -Ka(s) está en el conjunto base 1
+> Aplicando 4
+La fórmula Ka(-Ka(s)) está en el conjunto base 1.a.2
+> Aplicando K
+> Aplicando 4
+None
+>> Aplicando regla tipo know nodo 1111111111111111111211111 > formula 1.a.3 Ka(-Ka(s))
+> Aplicando T
+La fórmula -Ka(s) está en el conjunto base 1.a.3
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 11111111111111111112111 > formula 1.a.3 Ka(-Ka-(Ka(p||q)))
+> Aplicando T
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1.a.3
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 11111111111111111111111 > formula 1.a.3 Ka(-Ka-(Ka(p||q)))
+> Aplicando T
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1.a.3
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 1111111111111111111111111 > formula 1.a.3 Ka(-Ka(s))
+> Aplicando T
+La fórmula -Ka(s) está en el conjunto base 1.a.3
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo not_know nodo 111111111 > formula 1.a.1 -Ka-(Ka(p||q))
+___________________________________
+Label = 1.a.1  Formula= Ka(p||q)
+ANALIZANDO 1.a.1
+Ka-r
+Ka(-Ka-(Ka(p||q)))
+Ka(-Ka(s))
+-Ka(s)
+-Ka-(Ka(p||q))
+-r
+___________________________________
+___________________________________
+Label = 1.a.1  Formula= Ka(p||q)
+ANALIZANDO 1.a.1
+Ka-r
+Ka(-Ka-(Ka(p||q)))
+Ka(-Ka(s))
+-Ka(s)
+-Ka-(Ka(p||q))
+-r
+___________________________________
+None
+>> Aplicando regla tipo know nodo 11111111 > formula 1.a.1 Ka-r
+> Aplicando T
+La fórmula -r está en el conjunto base 1.a.1
+> Aplicando K
+> Aplicando 4
+> Aplicando T
+La fórmula -r está en el conjunto base 1.a.1
+> Aplicando K
+> Aplicando 4
+None
+>> Aplicando regla tipo know nodo 1111111111111111111111111111 > formula 1.a.1.a.1 Ka-r
+> Aplicando T
+La fórmula -r está en el conjunto base 1.a.1.a.1
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 11111111111111111112111111 > formula 1.a.1.a.1 Ka(p||q)
+> Aplicando T
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 1111111111 > formula 1.a.1 Ka(-Ka-(Ka(p||q)))
+> Aplicando T
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1.a.1
+> Aplicando K
+> Aplicando 4
+> Aplicando T
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1.a.1
+> Aplicando K
+> Aplicando 4
+None
+>> Aplicando regla tipo know nodo 111111111111111111111111111111 > formula 1.a.1.a.1 Ka(-Ka-(Ka(p||q)))
+> Aplicando T
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1.a.1.a.1
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 11111111111111111111111111 > formula 1.a.1.a.1 Ka(p||q)
+> Aplicando T
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 111111111111 > formula 1.a.1 Ka(-Ka(s))
+> Aplicando T
+La fórmula -Ka(s) está en el conjunto base 1.a.1
+> Aplicando K
+> Aplicando 4
+> Aplicando T
+La fórmula -Ka(s) está en el conjunto base 1.a.1
+> Aplicando K
+> Aplicando 4
+None
+>> Aplicando regla tipo know nodo 111111111111111111111111111111111 > formula 1.a.1.a.1 Ka(-Ka(s))
+> Aplicando T
+La fórmula -Ka(s) está en el conjunto base 1.a.1.a.1
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 1111111111111111111211111111111 > formula 1.a.1.a.1 Ka(-Ka-(Ka(p||q)))
+> Aplicando T
+La fórmula -Ka-(Ka(p||q)) está en el conjunto base 1.a.1.a.1
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 111111111111111111121111111111111 > formula 1.a.1.a.1 Ka(-Ka(s))
+> Aplicando T
+La fórmula -Ka(s) está en el conjunto base 1.a.1.a.1
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo know nodo 1111111111111111111211111111 > formula 1.a.1.a.1 Ka-r
+> Aplicando T
+La fórmula -r está en el conjunto base 1.a.1.a.1
+> Aplicando K y 4
+Not extensions
+None
+>> Aplicando regla tipo or nodo 11111111111111111112111111111 > formula 1.a.1.a.1 p||q
+None
+>> Aplicando regla tipo or nodo 1111111111111111111111111111111 > formula 1.a.1.a.1 p||q
+None
+>> Aplicando regla tipo not_know nodo 11111111111 > formula 1.a.1 -Ka(s)
+___________________________________
+Label = 1.a.1  Formula= -s
+ANALIZANDO 1.a.1.a.1
+p||q
+-Ka-(Ka(p||q))
+Ka-r
+p
+Ka(-Ka-(Ka(p||q)))
+Ka(p||q)
+-Ka(s)
+Ka(-Ka(s))
+-r
+ANALIZANDO 1.a.1
+Ka-r
+Ka(-Ka-(Ka(p||q)))
+Ka(-Ka(s))
+-Ka(s)
+-Ka-(Ka(p||q))
+-r
+___________________________________
+kt4
+Es superfluo
+None
+>> Aplicando regla tipo not_know nodo 111111111111111 > formula 1.a.2 -Ka-(Ka(p||q))
+___________________________________
+Label = 1.a.2  Formula= Ka(p||q)
+ANALIZANDO 1.a.2
+-Ka-(Ka(p||q))
+Ka(-Ka-(Ka(p||q)))
+p
+Ka(p||q)
+Ka(-Ka(s))
+p||q
+-Ka(s)
+Está dentro
+---------------
+Ya se satisface
+---------------
+___________________________________
+Label = 1.a.2  Formula= Ka(p||q)
+ANALIZANDO 1.a.2
+-Ka-(Ka(p||q))
+Ka(-Ka-(Ka(p||q)))
+p
+Ka(p||q)
+Ka(-Ka(s))
+p||q
+-Ka(s)
+Está dentro
+---------------
+Ya se satisface
+---------------
+___________________________________
+Label = 1.a.2  Formula= Ka(p||q)
+ANALIZANDO 1.a.2
+-Ka-(Ka(p||q))
+Ka(-Ka-(Ka(p||q)))
+Ka(p||q)
+q
+Ka(-Ka(s))
+p||q
+-Ka(s)
+Está dentro
+---------------
+Ya se satisface
+---------------
+___________________________________
+Label = 1.a.2  Formula= Ka(p||q)
+ANALIZANDO 1.a.2
+-Ka-(Ka(p||q))
+Ka(-Ka-(Ka(p||q)))
+Ka(p||q)
+q
+Ka(-Ka(s))
+p||q
+-Ka(s)
+Está dentro
+---------------
+Ya se satisface
+---------------
+None
+>> Aplicando regla tipo not_know nodo 11111111111111111 > formula 1.a.2 -Ka(s)
+___________________________________
+Label = 1.a.2  Formula= -s
+ANALIZANDO 1.a.2
+-Ka-(Ka(p||q))
+Ka(-Ka-(Ka(p||q)))
+p
+Ka(p||q)
+Ka(-Ka(s))
+p||q
+-Ka(s)
+___________________________________
+kt4
+Es superfluo
+None
+>> Aplicando regla tipo not_know nodo 1111111111111111111111 > formula 1.a.3 -Ka-(Ka(p||q))
+___________________________________
+Label = 1.a.3  Formula= Ka(p||q)
+ANALIZANDO 1.a.3
+Ka(-Ka-(Ka(p||q)))
+-Ka-(Ka(p||q))
+Ka(-Ka(s))
+-s
+-Ka(s)
+___________________________________
+kt4
+Es superfluo

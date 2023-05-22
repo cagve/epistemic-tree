@@ -181,6 +181,15 @@ class Formula:
         else:
             return operator.type
 
+    def get_modal_len(self):
+        fbf_query = LP_LANGUAGE.query("""
+                                     (formula
+                                      operator:(know))@eq_formula
+                                     """)
+        fbf = fbf_query.captures(self.node)
+        return len(fbf)
+
+
     def get_terms(self) -> list:
         """
         Return terms list of the formula. For binary operators(&&,=>,||) return
@@ -224,6 +233,18 @@ class Formula:
             for i in self.get_terms():
                 len=len+i.get_len()
         return len
+
+   #     subformulas = []
+   #     for i in fbf:
+   #     current_formula = i[0]
+   #     node_text=self.ts.get_node_text(current_formula)
+   #     formula_stack.append(node_text) # Añado las fórmulas a una pila
+   #     formula_stack=list(dict.fromkeys(formula_stack))
+   #     for i in formula_stack:
+   #     formula=Formula(i)
+   #     subformulas.append(formula)
+
+        
 
     def parse(self) -> bool:
         """
@@ -386,11 +407,11 @@ class Label():
         return originals 
 
     def is_superfluo_of(self, branch, label, modal_superfluo):
-        # Etiqueta la misma return false
         if self.label == label.label:
             return False
 
         if modal_superfluo:
+
             base1 = branch.get_modal_base_set(self)
             base2 = branch.get_modal_base_set(label)
         else:

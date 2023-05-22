@@ -328,9 +328,11 @@ def epistemic_tableau(formulas:list, system:str, output: str, clousure: bool, mo
                     print("No aplicar loop checking")
                 if bisimulation and system == "kt4": 
                     model = model.eq_bisimulate()
+                    # model = model.simulate()
                 model.print_dot(dotmodel)
                 if output:
                     os.system('dot -Tpng '+dotmodel+ '> '+output+'/model'+str(counter)+'.png')
+                models[counter] = model
                 counter = counter+1
                 print_result(True)
                 model.print_model()
