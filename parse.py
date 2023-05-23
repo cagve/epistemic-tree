@@ -95,6 +95,6 @@ print(f1)
 # and pos pos and pos P Q pos and and nec pos pos P pos pos Q and pos Q R
 
 
-$\big(\lozenge\mmK\lozenge p\land \lozenge\lozenge(p\land q)\land r)\big)\land \big(\lozenge\lozenge p\land \mmK\lozenge(q\land r)\big)$
-(-Ka- Ka -Ka-p && -Ka--Ka-(p && q) && r)) && (-Ka--Ka-p && Ka -Ka-(q && r))
+# $\big(\lozenge\mmK\lozenge p\land \lozenge\lozenge(p\land q)\land r)\big)\land \big(\lozenge\lozenge p\land \mmK\lozenge(q\land r)\big)$
+e (-Ka- Ka -Ka-p && -Ka--Ka-(p && q) && r)) && (-Ka--Ka-p && Ka -Ka-(q && r))
 

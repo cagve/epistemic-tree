@@ -24,7 +24,8 @@ test_list = {
     #  'custom2': [' (-KaKa-p &&-Ka-(-Ka-(-Ka-p&&q)&&-Ka-((-Ka-p&&q) && Kar))) && (-Ka-(q&&-KaKa-r)&&-Ka-(q && -Ka-r))','kt4']
      # 'custom3': ['Ka(-Ka-p && -Ka-q) && ( Ka Ka(-Ka-p && -Ka-q) && Ka Ka Ka(-Ka-p && -Ka-q))','kt4']
       # 'custom4': [' -Ka--Ka-(-Ka-p && q)&&-Ka-((Ka-Ka--Ka-p && -Ka--Ka-q)&&(-Ka-q && r))','kt4']
-      'custom5': [' (-Ka-Ka-Ka-p && -Ka--Ka-((p&&q)&&r))&&(-Ka--Ka-p &&Ka-Ka-(q&&r))', 'kt4']
+      # 'custom5': ['(-Ka-Ka-Ka-p && -Ka--Ka-((p&&q)&&r))&&(-Ka--Ka-p &&Ka-Ka-(q&&r))', 'kt4']
+      'custom5': ['(-Ka-Ka-Ka-p && -Ka--Ka-((p&&q)&&r))&&(-Ka--Ka-p &&Ka-Ka-(q&&r)) ', 'kt4']
 
  
 
@@ -240,20 +241,20 @@ def run_test():
     with open("/home/caguiler/tests/sample.json", "a") as outfile:
         outfile.write(json_object)
 
-    for key in test_list:
-        file_path = "/home/caguiler/tests/"+key+"simulated"
-        if not os.path.exists(file_path):
-            os.mkdir(file_path)
-        formulas = test_list[key][0].split(',')
-        system = test_list[key][1]
-        print("====== Current test: "+ key + " ==========")
-        print("Formula: "+str(formulas))
-        print("System: "+system)
-        models = rules.epistemic_tableau(formulas, system, file_path, True, True, True)[2]
-        tree = rules.epistemic_tableau(formulas, system, file_path, True, True, True)[1]        
-        test_json(dict, key, formulas, system, models, tree)
-    #
-    json_object = json.dumps(dict, indent=4)
-    with open("/home/caguiler/tests/samplebisi.json", "a") as outfile:
-        outfile.write(json_object)
+    # for key in test_list:
+    #     file_path = "/home/caguiler/tests/"+key+"simulated"
+    #     if not os.path.exists(file_path):
+    #         os.mkdir(file_path)
+    #     formulas = test_list[key][0].split(',')
+    #     system = test_list[key][1]
+    #     print("====== Current test: "+ key + " ==========")
+    #     print("Formula: "+str(formulas))
+    #     print("System: "+system)
+    #     models = rules.epistemic_tableau(formulas, system, file_path, True, True, True)[2]
+    #     tree = rules.epistemic_tableau(formulas, system, file_path, True, True, True)[1]        
+    #     test_json(dict, key, formulas, system, models, tree)
+    # #
+    # json_object = json.dumps(dict, indent=4)
+    # with open("/home/caguiler/tests/samplebisi.json", "a") as outfile:
+    #     outfile.write(json_object)
 
