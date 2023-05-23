@@ -78,6 +78,23 @@ f3= "[] (<> ([] (P v Q))) & [] (<> (~ S)) & <> ([] (~ R))"
 f4= "[] ([] P -> P) & ([] ([] (P -> [] P) -> P) -> <> ([] P) -> P -> [] ([] (P -> [] P) -> P) -> <> ([] P) -> P) "
 f5= "[] (<> ([] P) -> P) -> [] ([] (<> ([] P) -> P)) "
 f6= "[] ([] P -> [] ([] P)) & ([] ([] P -> P) -> <> ([] P) -> [] P) -> [] ([] (P -> [] P) -> P) -> <> ([] P) -> [] P "
+f1 = f5.replace("[]","\\square_a").replace("<>","\\lozenge_a").replace("&","\\land").replace("v", '\\lor').replace("~","\\lnot").replace("P","p").replace("Q",'q').replace("R",'r').replace("S",'s').replace("->","\\to")
 
-f1 = f4.replace("[]","\\square_a").replace("<>","\\lozenge_a").replace("&","\\land").replace("v", '\\lor').replace("~","\\lnot").replace("P","p").replace("Q",'q').replace("R",'r').replace("S",'s').replace("->","\\to")
+
+custom1 ='Ka-Ka-Kap && -Ka-Ka-r'
+custom2 =' (-Ka--Ka-p &&-Ka-(-Ka-(-Ka-p&&q)&&-Ka-((-Ka-p&&q) && Kar))) && (-Ka-(q&&-KaKa-r)&&-Ka-(q && -Ka-r))'
+custom3 ='Ka(-Ka-p && -Ka-q) && ( Ka Ka(-Ka-p && -Ka-q) && Ka Ka Ka(-Ka-p && -Ka-q))'
+f1 = custom1.replace("-Ka-","\\lozenge ").replace("Ka","\\square ").replace("&&","\\land ").replace("v", '\\lor ').replace("-","\\lnot ").replace("P","p").replace("Q",'q').replace("R",'r').replace("S",'s').replace("->","\\to")
 print(f1)
+f1 = custom2.replace("-Ka-","\\lozenge ").replace("Ka","\\square ").replace("&&","\\land ").replace("v", '\\lor ').replace("-","\\lnot ").replace("P","p").replace("Q",'q').replace("R",'r').replace("S",'s').replace("->","\\to")
+print(f1)
+f1 = custom3.replace("-Ka-","\\lozenge ").replace("Ka","\\square ").replace("&&","\\land ").replace("v", '\\lor ').replace("-","\\lnot ").replace("P","p").replace("Q",'q').replace("R",'r').replace("S",'s').replace("->","\\to")
+print(f1)
+
+# -Ka--Ka-(-Ka-p && q) && -Ka- ((Ka-Ka--Ka-p && -Ka--Ka-q) && (-Ka-q && r)
+# and pos pos and pos P Q pos and and nec pos pos P pos pos Q and pos Q R
+
+
+$\big(\lozenge\mmK\lozenge p\land \lozenge\lozenge(p\land q)\land r)\big)\land \big(\lozenge\lozenge p\land \mmK\lozenge(q\land r)\big)$
+(-Ka- Ka -Ka-p && -Ka--Ka-(p && q) && r)) && (-Ka--Ka-p && Ka -Ka-(q && r))
+

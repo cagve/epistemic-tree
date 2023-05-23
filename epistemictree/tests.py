@@ -8,7 +8,7 @@ from epistemictree import parser
 test_list = {
         # 'lotrec1':['(Ka-Ka-Ka(p||q))&&((Ka-Kap) && (-Ka-Ka-r))']
     # 'paperexample':['-KaKb-(-Kb-p&&q)&&-Kb-((Kb-KaKb-p&&-KaKb-q)&&(-Kb-q &&r))', "kt4"], 
-    'paperexamplemonoagente':['-KaKa-(-Ka-p&&q)&&-Ka-((Ka-KaKa-p&&-KaKa-q)&&(-Ka-q &&r))', "kt4"], 
+    # 'paperexamplemonoagente':['-KaKa-(-Ka-p&&q)&&-Ka-((Ka-KaKa-p&&-KaKa-q)&&(-Ka-q &&r))', "kt4"], 
     # 'paper2':['Ka(Kap => Kaq) || Ka(Kaq => Kap)', "kt4"], 
 
     # 'lotrec1':['Ka(-Ka-(Ka(p||q)))&&Ka(-Ka-(-p))','kt4'],
@@ -16,8 +16,17 @@ test_list = {
     # 'lotrec3':['Ka(-Ka- (Ka (p || q))) && Ka(-Ka- (- s)) && -Ka-(Ka (- r))','kt4'],
     # 'lotrec4':['Ka(Ka p => p) && (Ka (Ka (p => Ka p) => p) => -Ka- (Ka p) => p => Ka (Ka (p => Ka p) => p) => -Ka- (Ka p) => p)','kt4'],
     # 'lotrec5':['Ka (-Ka- (Ka p) => p) => Ka (Ka (-Ka- (Ka p) => p))','kt4'],
-    'lotrec1k':['-Ka- p && Ka (p => -Ka- q) && -Ka- (- p)','k4'],
+    #
+    #  'alfredo1':['Ka-Ka-p => -Ka-Kap','kt4'],
+    #  'alfredo2':[' (-Ka-p && -Ka-q) && ((-Ka-p && -Ka-q) && (-Ka-p && -Ka-q))','kt4'],
+    #
+    #  'custom1':['Ka-Ka-Kap && -Ka-Ka-r','kt4'],
+    #  'custom2': [' (-KaKa-p &&-Ka-(-Ka-(-Ka-p&&q)&&-Ka-((-Ka-p&&q) && Kar))) && (-Ka-(q&&-KaKa-r)&&-Ka-(q && -Ka-r))','kt4']
+     # 'custom3': ['Ka(-Ka-p && -Ka-q) && ( Ka Ka(-Ka-p && -Ka-q) && Ka Ka Ka(-Ka-p && -Ka-q))','kt4']
+      # 'custom4': [' -Ka--Ka-(-Ka-p && q)&&-Ka-((Ka-Ka--Ka-p && -Ka--Ka-q)&&(-Ka-q && r))','kt4']
+      'custom5': [' (-Ka-Ka-Ka-p && -Ka--Ka-((p&&q)&&r))&&(-Ka--Ka-p &&Ka-Ka-(q&&r))', 'kt4']
 
+ 
 
 
     # "random0":["Kc-KcKdp||r", 'kt4'],
@@ -231,20 +240,20 @@ def run_test():
     with open("/home/caguiler/tests/sample.json", "a") as outfile:
         outfile.write(json_object)
 
-    # for key in test_list:
-    #     file_path = "/home/caguiler/tests/"+key+"simulated"
-    #     if not os.path.exists(file_path):
-    #         os.mkdir(file_path)
-    #     formulas = test_list[key][0].split(',')
-    #     system = test_list[key][1]
-    #     print("====== Current test: "+ key + " ==========")
-    #     print("Formula: "+str(formulas))
-    #     print("System: "+system)
-    #     models = rules.epistemic_tableau(formulas, system, file_path, True, True, True)[2]
-    #     tree = rules.epistemic_tableau(formulas, system, file_path, True, True, True)[1]        
-    #     test_json(dict, key, formulas, system, models, tree)
+    for key in test_list:
+        file_path = "/home/caguiler/tests/"+key+"simulated"
+        if not os.path.exists(file_path):
+            os.mkdir(file_path)
+        formulas = test_list[key][0].split(',')
+        system = test_list[key][1]
+        print("====== Current test: "+ key + " ==========")
+        print("Formula: "+str(formulas))
+        print("System: "+system)
+        models = rules.epistemic_tableau(formulas, system, file_path, True, True, True)[2]
+        tree = rules.epistemic_tableau(formulas, system, file_path, True, True, True)[1]        
+        test_json(dict, key, formulas, system, models, tree)
     #
-    # json_object = json.dumps(dict, indent=4)
-    # with open("/home/caguiler/tests/samplebisi.json", "a") as outfile:
-    #     outfile.write(json_object)
+    json_object = json.dumps(dict, indent=4)
+    with open("/home/caguiler/tests/samplebisi.json", "a") as outfile:
+        outfile.write(json_object)
 

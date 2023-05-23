@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graph>
+    <node>
+        <node-id>node1</node-id>
+        <formula>
+            <formula-code>imp nec pos P pos nec P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not nec pos P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>pos not pos P</formula-code>
+        </formula>
+    </node>
+    <node>
+        <node-id>node2</node-id>
+        <formula>
+            <formula-code>not pos P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>nec not P</formula-code>
+        </formula>
+        <formula>
+            <formula-code>not P</formula-code>
+        </formula>
+    </node>
+    <edge>
+        <edge-source>node1</edge-source>
+        <edge-target>node2</edge-target>
+        <edge-label>R</edge-label>
+    </edge>
+</graph>
